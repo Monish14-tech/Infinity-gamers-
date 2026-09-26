@@ -8,7 +8,43 @@ document.addEventListener("DOMContentLoaded", () => {
   initArcadeFilters();
   initContactForm();
   initActiveNavLink();
+  initHeroVideo();
 });
+
+// HERO VIDEO PLAYBACK (MOBILE + DESKTOP)
+function initHeroVideo() {
+  const video = document.querySelector(".hero-video");
+  if (!video) return;
+
+  video.muted = true;
+  video.playsInline = true;
+  video.setAttribute("playsinline", "");
+  video.setAttribute("webkit-playsinline", "");
+
+  const startPlayback = () => {
+    const promise = video.play();
+    if (promise !== undefined) {
+      promise.catch(() => {
+        const playOnInteraction = () => {
+          video.play().catch(() => {});
+          window.removeEventListener("touchstart", playOnInteraction);
+          window.removeEventListener("click", playOnInteraction);
+        };
+        window.addEventListener("touchstart", playOnInteraction, { once: true, passive: true });
+        window.addEventListener("click", playOnInteraction, { once: true, passive: true });
+      });
+    }
+  };
+
+  startPlayback();
+
+  // Keep video looping if low-power mode paused it
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden && video.paused) {
+      video.play().catch(() => {});
+    }
+  });
+}
 
 // MOBILE MENU TOGGLE
 function initMobileMenu() {
@@ -106,7 +142,7 @@ function initContactForm() {
     }
 
     form.reset();
-    showToast(`Thank you, ${name}! Your enquiry has been received. We'll call you shortly! 🎮`);
+    showToast(`Thank you, ${name}! Your enquiry has been received. We will contact you shortly.`);
   });
 }
 
