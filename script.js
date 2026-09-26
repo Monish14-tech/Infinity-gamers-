@@ -126,7 +126,7 @@ function initContactForm() {
       return;
     }
 
-    // Save enquiry to local storage for persistence
+    // Save enquiry to local storage for offline backup
     try {
       const enquiries = JSON.parse(localStorage.getItem("infinity_enquiries") || "[]");
       enquiries.push({
@@ -140,6 +140,13 @@ function initContactForm() {
     } catch (err) {
       console.warn("Storage error", err);
     }
+
+    // Sync enquiry with backend API
+    fetch("/api/enquiry", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, phone, players, msg })
+    }).catch(err => console.warn("Server enquiry sync error:", err));
 
     form.reset();
     showToast(`Thank you, ${name}! Your enquiry has been received. We will contact you shortly.`);
