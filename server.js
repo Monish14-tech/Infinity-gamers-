@@ -270,6 +270,20 @@ const server = createServer(async (request, response) => {
 
         const inTime = payload.inTime ? new Date(payload.inTime).toISOString() : new Date().toISOString();
         const outTime = payload.outTime ? new Date(payload.outTime).toISOString() : "";
+        const station = (payload.station || "PS5 Station 1").trim();
+        const status = outTime ? "completed" : (payload.status || "active");
+
+        // STATION LOCK ENFORCEMENT
+        // If creating an active session, ensure this station is NOT already locked by another active session
+        if (status === "active") {
+          const activeExisting = sessions.find(s => s.station === station && s.status === "active");
+          if (activeExisting) {
+            return send(response, 400, {
+              error: `${station} is currently locked! Active player "${activeExisting.customerName}" is currently playing. Please checkout or end that session first.`
+            });
+          }
+        }
+
         let durationMinutes = Number(payload.durationMinutes) || 0;
 
         if (!durationMinutes && inTime && outTime) {
@@ -281,12 +295,12 @@ const server = createServer(async (request, response) => {
           id: "sess_" + Date.now(),
           customerName: (payload.customerName || "Customer").trim(),
           phone: (payload.phone || "").trim(),
-          station: payload.station || "PS5 Station 1",
+          station,
           inTime,
           outTime,
-          status: outTime ? "completed" : (payload.status || "active"),
+          status,
           durationMinutes,
-          amount: Number(payload.amount) || 148,
+          amount: Number(payload.amount) || 150,
           game: payload.game || "EA Sports FC 26",
           notes: payload.notes || ""
         };

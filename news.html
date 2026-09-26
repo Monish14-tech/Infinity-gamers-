@@ -458,11 +458,17 @@
 
   <script src="script.js"></script>
   <script>
-    // DYNAMIC NEWS & LEADERBOARD FETCHING
+    // DYNAMIC NEWS & LEADERBOARD FETCHING (WITH AUTO-REFRESH)
     document.addEventListener("DOMContentLoaded", () => {
       initFilterTabs();
       fetchLatestNews();
       fetchTopPlayers();
+
+      // Automatically refresh news & leaderboard every 10 seconds
+      setInterval(() => {
+        fetchLatestNews();
+        fetchTopPlayers();
+      }, 10000);
     });
 
     function initFilterTabs() {

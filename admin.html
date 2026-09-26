@@ -148,10 +148,12 @@
       position: relative;
     }
     .station-live-card.active-session {
-      border-top: 3px solid #10b981;
+      border-top: 3px solid #00d4ff;
+      border-color: rgba(0, 212, 255, 0.4);
+      box-shadow: 0 4px 20px rgba(0, 212, 255, 0.12);
     }
     .station-live-card.vacant-session {
-      border-top: 3px solid var(--text-muted);
+      border-top: 3px solid var(--border-line);
     }
     .station-card-top {
       display: flex;
@@ -171,11 +173,21 @@
       padding: 3px 8px;
       border-radius: 2px;
       text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
     .station-badge.live {
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.4);
-      color: #10b981;
+      background: rgba(0, 212, 255, 0.15);
+      border: 1px solid rgba(0, 212, 255, 0.5);
+      color: var(--neon-blue);
+      font-weight: 700;
+    }
+    .station-badge.locked-badge {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.5);
+      color: #f87171;
+      font-weight: 700;
     }
     .station-badge.vacant {
       background: rgba(255, 255, 255, 0.04);
@@ -749,7 +761,28 @@
         <button type="button" class="modal-close-btn" onclick="closeSessionModal()">&times;</button>
       </h3>
 
+      <!-- ALL STATIONS OCCUPIED BANNER -->
+      <div id="allStationsLockedBanner" style="display:none; background:rgba(239, 68, 68, 0.12); border:1px solid rgba(239, 68, 68, 0.4); border-radius:var(--radius); padding:12px 14px; margin-bottom:14px; font-family:var(--font-mono); font-size:11.5px; color:#fca5a5; line-height:1.5;">
+        <strong>ALL PS5 CONSOLES CURRENTLY LOCKED</strong><br>
+        Both Station 1 and Station 2 have active players in session. To start a new session, end or delete an active session first.
+      </div>
+
       <form id="sessionForm" onsubmit="saveSession(event)">
+        <!-- SESSION TYPE RADIO -->
+        <div class="form-group" style="background:rgba(255,255,255,0.02); border:1px solid var(--border-line); border-radius:var(--radius); padding:10px 14px; margin-bottom:14px;">
+          <label style="margin-bottom:6px;">SESSION TYPE</label>
+          <div style="display:flex; gap:16px; flex-wrap:wrap;">
+            <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; color:#fff; font-size:12.5px; font-weight:normal;">
+              <input type="radio" name="sessionType" value="active" id="typeActive" checked onchange="toggleSessionTypeFields()">
+              <strong style="color:var(--neon-blue);">Live Active Session</strong> (Locks PS5 until checkout)
+            </label>
+            <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; color:var(--text-muted); font-size:12.5px; font-weight:normal;">
+              <input type="radio" name="sessionType" value="completed" id="typeCompleted" onchange="toggleSessionTypeFields()">
+              Past Completed Record
+            </label>
+          </div>
+        </div>
+
         <div class="form-group">
           <label for="sessCustName">CUSTOMER NAME</label>
           <input type="text" id="sessCustName" class="form-control" placeholder="Customer full name" required>
@@ -762,7 +795,7 @@
           </div>
           <div class="form-group">
             <label for="sessStation">ASSIGNED STATION</label>
-            <select id="sessStation" class="form-control">
+            <select id="sessStation" class="form-control" required>
               <option value="PS5 Station 1">PS5 Station 1</option>
               <option value="PS5 Station 2">PS5 Station 2</option>
             </select>
@@ -774,31 +807,50 @@
             <label for="sessInTime">IN TIME</label>
             <input type="datetime-local" id="sessInTime" class="form-control" required>
           </div>
-          <div class="form-group">
-            <label for="sessOutTime">OUT TIME (LEAVE EMPTY IF ACTIVE)</label>
+          <div class="form-group" id="outTimeGroup" style="display:none;">
+            <label for="sessOutTime">OUT TIME</label>
             <input type="datetime-local" id="sessOutTime" class="form-control">
+          </div>
+          <div class="form-group" id="liveLockInfo" style="display:block;">
+            <label>STATION LOCK STATUS</label>
+            <div style="font-family:var(--font-mono); font-size:11px; color:#10b981; padding:9px 12px; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); border-radius:var(--radius);">
+              Timer starts now • PS5 will remain LOCKED
+            </div>
           </div>
         </div>
 
         <div class="form-grid-2">
           <div class="form-group">
             <label for="sessGame">GAME / TITLE</label>
-            <input type="text" id="sessGame" class="form-control" placeholder="Game title (e.g. FC 26)">
+            <input type="text" id="sessGame" list="popularGames" class="form-control" placeholder="Game title (e.g. FC 26)" value="EA Sports FC 26">
+            <datalist id="popularGames">
+              <option value="EA Sports FC 26">
+              <option value="WWE 2K26">
+              <option value="Mortal Kombat 1">
+              <option value="GTA V">
+              <option value="God of War">
+              <option value="Spider-Man 2">
+              <option value="Red Dead Redemption 2">
+              <option value="It Takes Two">
+              <option value="A Way Out">
+              <option value="Overcooked">
+              <option value="007 First Light">
+            </datalist>
           </div>
           <div class="form-group">
             <label for="sessAmount">AMOUNT (₹)</label>
-            <input type="number" id="sessAmount" class="form-control" placeholder="Amount in ₹">
+            <input type="number" id="sessAmount" class="form-control" placeholder="150" value="150">
           </div>
         </div>
 
         <div class="form-group">
           <label for="sessNotes">NOTES (OPTIONAL)</label>
-          <input type="text" id="sessNotes" class="form-control" placeholder="Session notes (optional)">
+          <input type="text" id="sessNotes" class="form-control" placeholder="Controller count, guest names, or pass notes...">
         </div>
 
         <div style="display:flex; gap:10px; margin-top:20px;">
-          <button type="submit" class="btn-primary" style="flex:1; min-height:42px;">
-            SAVE SESSION RECORD
+          <button type="submit" id="btnSubmitSession" class="btn-primary" style="flex:1; min-height:42px;">
+            START &amp; LOCK PS5 STATION
           </button>
           <button type="button" class="btn-secondary" onclick="closeSessionModal()" style="min-height:42px;">
             CANCEL
@@ -845,9 +897,11 @@
         if (authCard) authCard.style.display = "none";
         if (dashView) dashView.style.display = "block";
         loadDashboardData();
+        startAutoUpdate();
       } else {
         if (authCard) authCard.style.display = "block";
         if (dashView) dashView.style.display = "none";
+        stopAutoUpdate();
       }
     }
 
@@ -903,6 +957,7 @@
 
     // LOGOUT HANDLER
     window.handleAdminLogout = function() {
+      stopAutoUpdate();
       adminToken = "";
       localStorage.removeItem(ADMIN_STORAGE_KEY);
       checkAuthStatus();
@@ -932,6 +987,82 @@
       }
     }
 
+    // AUTO-UPDATE & REAL-TIME SYNCHRONIZATION
+    let pollInterval = null;
+    let liveTimerInterval = null;
+    let lastSessionsJson = "";
+
+    function startAutoUpdate() {
+      stopAutoUpdate();
+
+      // Poll server every 3 seconds for session changes
+      pollInterval = setInterval(() => {
+        if (adminToken && document.getElementById("adminDashboardSection")?.style.display !== "none") {
+          loadSessionsSilent();
+        }
+      }, 3000);
+
+      // 1-second live ticking timer for elapsed times
+      liveTimerInterval = setInterval(() => {
+        tickElapsedTimes();
+      }, 1000);
+    }
+
+    function stopAutoUpdate() {
+      if (pollInterval) { clearInterval(pollInterval); pollInterval = null; }
+      if (liveTimerInterval) { clearInterval(liveTimerInterval); liveTimerInterval = null; }
+    }
+
+    async function loadSessionsSilent() {
+      try {
+        const res = await fetch("/api/admin/sessions?_t=" + Date.now(), {
+          headers: { "Authorization": `Bearer ${adminToken}` }
+        });
+        if (res.status === 401) {
+          handleAdminLogout();
+          return;
+        }
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          const newJson = JSON.stringify(data);
+          if (newJson !== lastSessionsJson) {
+            lastSessionsJson = newJson;
+            cachedSessions = data;
+            const searchVal = document.getElementById("sessionSearchInput")?.value.toLowerCase() || "";
+            renderSessionsTable(searchVal);
+            updateStationCards();
+            refreshModalStationOptions();
+          }
+        }
+      } catch (err) {
+        // Silent background poll
+      }
+    }
+
+    function tickElapsedTimes() {
+      if (!Array.isArray(cachedSessions)) return;
+
+      const active1 = cachedSessions.find(s => s.station === "PS5 Station 1" && s.status === "active");
+      const active2 = cachedSessions.find(s => s.station === "PS5 Station 2" && s.status === "active");
+
+      const elapsed1 = document.getElementById("stationElapsed1");
+      const elapsed2 = document.getElementById("stationElapsed2");
+
+      if (active1 && elapsed1) {
+        const totalSecs = Math.max(0, Math.floor((Date.now() - new Date(active1.inTime).getTime()) / 1000));
+        const m = Math.floor(totalSecs / 60);
+        const s = totalSecs % 60;
+        elapsed1.textContent = `${m}M ${s < 10 ? '0' : ''}${s}S`;
+      }
+
+      if (active2 && elapsed2) {
+        const totalSecs = Math.max(0, Math.floor((Date.now() - new Date(active2.inTime).getTime()) / 1000));
+        const m = Math.floor(totalSecs / 60);
+        const s = totalSecs % 60;
+        elapsed2.textContent = `${m}M ${s < 10 ? '0' : ''}${s}S`;
+      }
+    }
+
     // LOAD ALL DATA
     async function loadDashboardData() {
       await loadSessions();
@@ -951,8 +1082,12 @@
         }
         const data = await res.json();
         cachedSessions = Array.isArray(data) ? data : [];
-        renderSessionsTable();
+        lastSessionsJson = JSON.stringify(cachedSessions);
+        const searchVal = document.getElementById("sessionSearchInput")?.value.toLowerCase() || "";
+        renderSessionsTable(searchVal);
         updateStationCards();
+        tickElapsedTimes();
+        refreshModalStationOptions();
       } catch (err) {
         console.error("Failed to load sessions:", err);
       }
@@ -967,7 +1102,8 @@
         if (!filter) return true;
         return (s.customerName && s.customerName.toLowerCase().includes(filter)) ||
                (s.phone && s.phone.includes(filter)) ||
-               (s.station && s.station.toLowerCase().includes(filter));
+               (s.station && s.station.toLowerCase().includes(filter)) ||
+               (s.game && s.game.toLowerCase().includes(filter));
       });
 
       if (countLabel) countLabel.textContent = `${filtered.length} SESSIONS RECORDED`;
@@ -980,32 +1116,42 @@
       tbody.innerHTML = filtered.map(s => {
         const inFormatted = formatTime(s.inTime);
         const outFormatted = s.outTime ? formatTime(s.outTime) : "--";
-        const durationStr = s.durationMinutes ? `${s.durationMinutes} mins` : (s.status === "active" ? "In progress" : "--");
         const isActive = s.status === "active";
+
+        let durationStr = "--";
+        if (s.durationMinutes) {
+          durationStr = `${s.durationMinutes} mins`;
+        } else if (isActive) {
+          const totalSecs = Math.max(0, Math.floor((Date.now() - new Date(s.inTime).getTime()) / 1000));
+          const m = Math.floor(totalSecs / 60);
+          durationStr = `<span style="color:#00d4ff; font-weight:700;">${m}m (Live)</span>`;
+        }
 
         return `
           <tr>
             <td><strong>${escapeHtml(s.customerName)}</strong></td>
             <td><code>${escapeHtml(s.phone || "-")}</code></td>
-            <td><span class="admin-tag">${escapeHtml(s.station)}</span></td>
+            <td><span class="admin-tag" style="${isActive ? 'border-color:#00d4ff; color:#00d4ff;' : ''}">${escapeHtml(s.station)}</span></td>
             <td>${inFormatted}</td>
             <td>${outFormatted}</td>
             <td><strong>${durationStr}</strong></td>
             <td>₹${s.amount || 0}</td>
             <td>
-              <span class="badge-status ${isActive ? 'active' : 'completed'}">
-                ${isActive ? 'PLAYING' : 'COMPLETED'}
+              <span class="badge-status ${isActive ? 'active' : 'completed'}" style="${isActive ? 'background:rgba(0,212,255,0.15); border:1px solid #00d4ff; color:#00d4ff;' : ''}">
+                ${isActive ? 'IN SESSION (LOCKED)' : 'COMPLETED'}
               </span>
             </td>
             <td>
-              ${isActive ? `
-                <button type="button" class="btn-action-sm" onclick="checkoutSession('${s.id}')" style="color:#10b981; border-color:#10b981;">
-                  CHECKOUT
+              <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                ${isActive ? `
+                  <button type="button" class="btn-action-sm" onclick="checkoutSession('${s.id}')" style="color:#10b981; border-color:#10b981; font-weight:700;">
+                    END / CHECKOUT
+                  </button>
+                ` : ''}
+                <button type="button" class="btn-action-sm btn-action-danger" onclick="deleteSession('${s.id}')">
+                  DELETE
                 </button>
-              ` : ''}
-              <button type="button" class="btn-action-sm btn-action-danger" onclick="deleteSession('${s.id}')">
-                DELETE
-              </button>
+              </div>
             </td>
           </tr>
         `;
@@ -1033,50 +1179,128 @@
 
       if (session) {
         card.className = "station-live-card active-session";
-        badge.className = "station-badge live";
-        badge.textContent = "IN SESSION";
-        playerInfo.innerHTML = `<strong>${escapeHtml(session.customerName)}</strong><span>Phone: ${escapeHtml(session.phone || "-")} • ${escapeHtml(session.game || "PS5")}</span>`;
+        badge.className = "station-badge live locked-badge";
+        badge.textContent = "LOCKED // IN USE";
+        playerInfo.innerHTML = `
+          <strong style="color:var(--neon-blue);">${escapeHtml(session.customerName)}</strong>
+          <span>Phone: <code>${escapeHtml(session.phone || "-")}</code> • Game: <strong>${escapeHtml(session.game || "PS5")}</strong></span>
+          <div style="font-family:var(--font-mono); font-size:11px; color:#10b981; margin-top:4px;">
+            STATION LOCKED UNTIL SESSION ENDS
+          </div>
+        `;
         inEl.textContent = formatTimeOnly(session.inTime);
 
-        const diffMinutes = Math.max(0, Math.round((Date.now() - new Date(session.inTime).getTime()) / 60000));
-        elapsedEl.textContent = `${diffMinutes} MIN`;
+        const totalSecs = Math.max(0, Math.floor((Date.now() - new Date(session.inTime).getTime()) / 1000));
+        const m = Math.floor(totalSecs / 60);
+        const s = totalSecs % 60;
+        elapsedEl.textContent = `${m}M ${s < 10 ? '0' : ''}${s}S`;
         rateEl.textContent = `₹${session.amount || 0}`;
 
         actionsEl.innerHTML = `
-          <button type="button" class="btn-primary" onclick="checkoutSession('${session.id}')" style="width:100%; min-height:36px; font-size:11px; background:#10b981; color:#000;">
-            CHECKOUT / END SESSION
+          <button type="button" class="btn-primary" onclick="checkoutSession('${session.id}')" style="width:100%; min-height:38px; font-size:11px; background:#10b981; color:#000; font-weight:700; border-color:#10b981;">
+            END SESSION &amp; UNLOCK STATION
           </button>
         `;
       } else {
         card.className = "station-live-card vacant-session";
         badge.className = "station-badge vacant";
-        badge.textContent = "VACANT";
+        badge.textContent = "VACANT // READY";
         playerInfo.innerHTML = `<strong>No Active Player</strong><span>Station ready for walk-ins</span>`;
         inEl.textContent = "--:--";
         elapsedEl.textContent = "0 MIN";
         rateEl.textContent = "--";
         actionsEl.innerHTML = `
-          <button type="button" class="btn-primary" onclick="openSessionModal('PS5 Station ${num}')" style="width:100%; min-height:36px; font-size:11px;">
+          <button type="button" class="btn-primary" onclick="openSessionModal('PS5 Station ${num}')" style="width:100%; min-height:38px; font-size:11px;">
             START SESSION
           </button>
         `;
       }
     }
 
-    // MODAL CONTROL
-    window.openSessionModal = function(defaultStation = "PS5 Station 1") {
+    // MODAL CONTROL & STATION LOCK DROPDOWN
+    function refreshModalStationOptions(requestedStation = "") {
+      const stationSelect = document.getElementById("sessStation");
+      const lockedBanner = document.getElementById("allStationsLockedBanner");
+      const submitBtn = document.getElementById("btnSubmitSession");
+      if (!stationSelect) return;
+
+      const isStation1Active = cachedSessions.some(s => s.station === "PS5 Station 1" && s.status === "active");
+      const isStation2Active = cachedSessions.some(s => s.station === "PS5 Station 2" && s.status === "active");
+
+      const prevSelected = stationSelect.value;
+      stationSelect.innerHTML = "";
+
+      const opt1 = document.createElement("option");
+      opt1.value = "PS5 Station 1";
+      opt1.textContent = isStation1Active ? "PS5 Station 1 [LOCKED - IN USE]" : "PS5 Station 1 [AVAILABLE]";
+      opt1.disabled = isStation1Active;
+      if (isStation1Active) opt1.style.color = "#f87171";
+      stationSelect.appendChild(opt1);
+
+      const opt2 = document.createElement("option");
+      opt2.value = "PS5 Station 2";
+      opt2.textContent = isStation2Active ? "PS5 Station 2 [LOCKED - IN USE]" : "PS5 Station 2 [AVAILABLE]";
+      opt2.disabled = isStation2Active;
+      if (isStation2Active) opt2.style.color = "#f87171";
+      stationSelect.appendChild(opt2);
+
+      const bothLocked = isStation1Active && isStation2Active;
+      if (lockedBanner) lockedBanner.style.display = bothLocked ? "block" : "none";
+      if (submitBtn) {
+        if (bothLocked) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = "ALL STATIONS OCCUPIED";
+          submitBtn.style.opacity = "0.5";
+          submitBtn.style.cursor = "not-allowed";
+        } else {
+          submitBtn.disabled = false;
+          submitBtn.textContent = document.getElementById("typeActive")?.checked ? "START & LOCK PS5 STATION" : "SAVE SESSION RECORD";
+          submitBtn.style.opacity = "1";
+          submitBtn.style.cursor = "pointer";
+        }
+      }
+
+      // Choose active selection
+      if (requestedStation) {
+        if (requestedStation === "PS5 Station 1" && !isStation1Active) stationSelect.value = "PS5 Station 1";
+        else if (requestedStation === "PS5 Station 2" && !isStation2Active) stationSelect.value = "PS5 Station 2";
+        else if (!isStation1Active) stationSelect.value = "PS5 Station 1";
+        else if (!isStation2Active) stationSelect.value = "PS5 Station 2";
+      } else if (prevSelected && ((prevSelected === "PS5 Station 1" && !isStation1Active) || (prevSelected === "PS5 Station 2" && !isStation2Active))) {
+        stationSelect.value = prevSelected;
+      } else if (!isStation1Active) {
+        stationSelect.value = "PS5 Station 1";
+      } else if (!isStation2Active) {
+        stationSelect.value = "PS5 Station 2";
+      }
+    }
+
+    window.openSessionModal = function(defaultStation = "") {
       const modal = document.getElementById("sessionModal");
       const form = document.getElementById("sessionForm");
       if (!modal || !form) return;
 
       form.reset();
-      document.getElementById("sessStation").value = defaultStation;
 
-      // Set In-Time to current local datetime
+      // Reset to live session radio
+      const typeActive = document.getElementById("typeActive");
+      if (typeActive) {
+        typeActive.checked = true;
+        toggleSessionTypeFields();
+      }
+
+      // Pre-set In-Time to current local datetime
       const now = new Date();
       now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
       document.getElementById("sessInTime").value = now.toISOString().slice(0, 16);
       document.getElementById("sessOutTime").value = "";
+
+      // Default rate
+      const amountInput = document.getElementById("sessAmount");
+      if (amountInput) amountInput.value = "150";
+
+      // Configure station locks and options
+      refreshModalStationOptions(defaultStation);
 
       modal.classList.add("open");
     };
@@ -1085,25 +1309,45 @@
       document.getElementById("sessionModal")?.classList.remove("open");
     };
 
+    window.toggleSessionTypeFields = function() {
+      const isLive = document.getElementById("typeActive")?.checked ?? true;
+      const outTimeGroup = document.getElementById("outTimeGroup");
+      const liveLockInfo = document.getElementById("liveLockInfo");
+      const submitBtn = document.getElementById("btnSubmitSession");
+
+      if (outTimeGroup) outTimeGroup.style.display = isLive ? "none" : "block";
+      if (liveLockInfo) liveLockInfo.style.display = isLive ? "block" : "none";
+      if (submitBtn && !submitBtn.disabled) {
+        submitBtn.textContent = isLive ? "START & LOCK PS5 STATION" : "SAVE SESSION RECORD";
+      }
+    };
+
     // SAVE SESSION
     window.saveSession = async function(e) {
       if (e && e.preventDefault) e.preventDefault();
 
+      const isLive = document.getElementById("typeActive")?.checked ?? true;
       const customerName = document.getElementById("sessCustName").value.trim();
       const phone = document.getElementById("sessPhone").value.trim();
       const station = document.getElementById("sessStation").value;
       const inTime = document.getElementById("sessInTime").value;
-      const outTime = document.getElementById("sessOutTime").value;
-      const game = document.getElementById("sessGame").value.trim() || "PS5 Session";
-      const amount = document.getElementById("sessAmount").value || "0";
+      const outTime = isLive ? "" : document.getElementById("sessOutTime").value;
+      const game = document.getElementById("sessGame").value.trim() || "EA Sports FC 26";
+      const amount = document.getElementById("sessAmount").value || "150";
       const notes = document.getElementById("sessNotes").value.trim();
+
+      if (!customerName || !phone || !station) {
+        showToast("Please complete customer name, phone, and station.");
+        return false;
+      }
 
       const payload = {
         customerName,
         phone,
         station,
         inTime,
-        outTime,
+        outTime: isLive ? "" : outTime,
+        status: isLive ? "active" : "completed",
         game,
         amount,
         notes
@@ -1119,13 +1363,14 @@
           body: JSON.stringify(payload)
         });
 
-        if (res.ok) {
-          showToast("Session recorded successfully.");
+        const data = await res.json();
+        if (res.ok && data.success) {
+          showToast(isLive ? `${station} LOCKED: Session started.` : "Session record saved.");
           closeSessionModal();
           await loadSessions();
+          loadTopPlayers();
         } else {
-          const err = await res.json();
-          showToast(err.error || "Failed to record session.");
+          showToast(data.error || "Failed to record session.");
         }
       } catch (err) {
         showToast("Error saving session record.");
@@ -1135,6 +1380,14 @@
 
     // CHECKOUT SESSION
     window.checkoutSession = async function(sessionId) {
+      const session = cachedSessions.find(s => s.id === sessionId);
+      const name = session ? session.customerName : "Customer";
+      const station = session ? session.station : "Station";
+
+      if (!confirm(`End session for ${name} on ${station} and unlock station?`)) {
+        return;
+      }
+
       try {
         const res = await fetch(`/api/admin/sessions/${sessionId}?_t=` + Date.now(), {
           method: "PATCH",
@@ -1142,11 +1395,20 @@
             "Content-Type": "application/json",
             "Authorization": `Bearer ${adminToken}`
           },
-          body: JSON.stringify({ outTime: new Date().toISOString() })
+          body: JSON.stringify({ 
+            outTime: new Date().toISOString(),
+            status: "completed"
+          })
         });
 
-        showToast("Session checkout complete.");
-        await loadSessions();
+        const data = await res.json();
+        if (res.ok && data.success) {
+          showToast(`${station} is now UNLOCKED & available.`);
+          await loadSessions();
+          loadTopPlayers();
+        } else {
+          showToast(data.error || "Failed to checkout session.");
+        }
       } catch (err) {
         showToast("Failed to checkout session.");
       }
@@ -1154,14 +1416,27 @@
 
     // DELETE SESSION
     window.deleteSession = async function(sessionId) {
+      const session = cachedSessions.find(s => s.id === sessionId);
+      const name = session ? session.customerName : "Customer";
+
+      if (!confirm(`Permanently delete session record for ${name}?`)) {
+        return;
+      }
+
       try {
         const res = await fetch(`/api/admin/sessions/${sessionId}?_t=` + Date.now(), {
           method: "DELETE",
           headers: { "Authorization": `Bearer ${adminToken}` }
         });
 
-        showToast("Record removed.");
-        await loadSessions();
+        const data = await res.json();
+        if (res.ok) {
+          showToast("Session record removed. Station unlocked.");
+          await loadSessions();
+          loadTopPlayers();
+        } else {
+          showToast(data.error || "Error deleting session.");
+        }
       } catch (err) {
         showToast("Error deleting session.");
       }
