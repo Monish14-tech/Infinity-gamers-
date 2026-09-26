@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: infinity-gamers
+    env: node
+    plan: free
+    buildCommand: ""
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.0.0
+      - key: ADMIN_USER
+        value: admin
+      - key: ADMIN_PASS
+        value: infinity2026

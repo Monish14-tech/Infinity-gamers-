@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arcade Games | Infinity Gamers — PS5 Lounge in Coimbatore</title>
+  <meta name="description" content="PlayStation 5 game library at Infinity Gamers, Thoppampatti Pirivu, Coimbatore. FC 26, WWE 2K26, Mortal Kombat 1, GTA V, Spider-Man 2, RDR2, and multiplayer co-op on 4K 120Hz displays.">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="arcade">
+
+  <!-- NAVIGATION BAR -->
+  <header class="navbar">
+    <a class="logo" href="index.html">
+      <img src="assets/logo.png" alt="Infinity Gamers Logo" class="logo-img">
+      <div class="logo-text-block">
+        <span class="logo-title">INFINITY</span>
+        <span class="logo-gamers-text">GAMERS</span>
+        <span class="logo-tagline">PLAY BEYOND LIMITS</span>
+      </div>
+    </a>
+    <nav id="navLinks">
+      <a href="index.html">HOME</a>
+      <a href="arcade.html" class="active">ARCADE</a>
+      <a href="visit.html">VISIT US</a>
+      <a href="about.html">ABOUT US</a>
+      <a href="news.html">NEWS</a>
+      <a href="contact.html">CONTACT</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <main style="padding-top:80px;">
+    <!-- HEADER -->
+    <section class="section" style="padding-bottom:24px;">
+      <div class="section-header">
+        <span class="section-pill-badge">PS5 ARCADE VAULT</span>
+        <h2>PLAYSTATION 5 <span>GAME LIBRARY</span></h2>
+        <p>
+          Preloaded across 2 Sony PlayStation 5 consoles running on dedicated 4K 120Hz displays with DualSense controllers. Support for up to 5 players per station for multiplayer duels and squad rotations.
+        </p>
+      </div>
+
+      <!-- FILTER TABS -->
+      <div class="arcade-filter-bar">
+        <button class="filter-btn active" data-filter="all">ALL GAMES</button>
+        <button class="filter-btn" data-filter="sports">SPORTS &amp; WRESTLING</button>
+        <button class="filter-btn" data-filter="action">ACTION &amp; OPEN WORLD</button>
+        <button class="filter-btn" data-filter="fighting">FIGHTING DUELS</button>
+        <button class="filter-btn" data-filter="coop">CO-OP &amp; SQUADS</button>
+      </div>
+
+      <!-- GAMES GRID -->
+      <div class="arcade-games-grid" id="arcadeGrid">
+
+        <!-- 1. FC 26 -->
+        <article class="game-card-item" data-category="sports">
+          <div class="game-poster-box">
+            <img src="assets/game_fc26.png" alt="EA Sports FC 26">
+            <div class="game-poster-overlay"></div>
+            <span class="game-tag-badge">ESPORTS</span>
+            <span class="game-players-badge">1 - 4 PLAYERS</span>
+          </div>
+          <div class="game-info-content">
+            <h3>EA SPORTS FC 26</h3>
+            <span class="game-genre">Football / Tournament / Co-Op</span>
+            <p class="game-desc">The modern football simulator with HyperMotion technology, fluid dribbling, Champions League, and 4-player head-to-head showdowns.</p>
+            <div class="game-specs-chips">
+              <span class="spec-chip">4K 120 FPS</span>
+              <span class="spec-chip">LOCAL SQUADS</span>
+              <span class="spec-chip">DUALSENSE</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 2. WWE 2K26 -->
+        <article class="game-card-item" data-category="sports">
+          <div class="game-poster-box">
+            <img src="assets/game_wwe.png" alt="WWE 2K26">
+            <div class="game-poster-overlay"></div>
+            <span class="game-tag-badge">WRESTLING</span>
+            <span class="game-players-badge">1 - 4 PLAYERS</span>
+          </div>
+          <div class="game-info-content">
+            <h3>WWE 2K26</h3>
+            <span class="game-genre">Combat / Royal Rumble / Co-Op</span>
+            <p class="game-desc">Ring action featuring Royal Rumble, Hell in a Cell, TLC, and current superstar rosters with precision haptic feedback.</p>
+            <div class="game-specs-chips">
+              <span class="spec-chip">4K HDR</span>
+              <span class="spec-chip">4-WAY PLAY</span>
+              <span class="spec-chip">HAPTIC SLAMS</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 3. MORTAL KOMBAT 1 -->
+        <article class="game-card-item" data-category="fighting">
+          <div class="game-poster-box">
+            <img src="assets/game_mk1.jpg" alt="Mortal Kombat 1">
+            <div class="game-poster-overlay"></div>
+            <span class="game-tag-badge">FIGHTING</span>
+            <span class="game-players-badge">1 - 2 PLAYERS</span>
+          </div>
+          <div class="game-info-content">
+            <h3>MORTAL KOMBAT 1</h3>
+            <span class="game-genre">Fighting / Fatalities / Duels</span>
+            <p class="game-desc">Reborn universe with Kameo support fighters, bone-crushing Fatalities, and lightning-quick 60fps competitive combat.</p>
+            <div class="game-specs-chips">
+              <span class="spec-chip">120HZ ULTRA</span>
+              <span class="spec-chip">FATALITIES</span>
+              <span class="spec-chip">TOURNAMENT</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 4. GRAND THEFT AUTO V -->
+        <article class="game-card-item" data-category="action">
+          <div class="game-poster-box">
+            <img src="assets/game_gtav.jpg.jpeg" alt="Grand Theft Auto V">
+            <div class="game-poster-overlay"></div>
+            <span class="game-tag-badge">OPEN WORLD</span>
+            <span class="game-players-badge">1 PLAYER</span>
+          </div>
+          <div class="game-info-content">
+            <h3>GRAND THEFT AUTO V</h3>
+            <span class="game-genre">Action / Crime / Los Santos</span>
+            <p class="game-desc">Los Santos with ray tracing, fast NVMe load times, DualSense adaptive triggers, and 60fps performance mode.</p>
+            <div class="game-specs-chips">
+              <span class="spec-chip">RAY TRACING</span>
+              <span class="spec-chip">60 FPS MODE</span>
+              <span class="spec-chip">3D AUDIO</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 5. 007 FIRST LIGHT -->
+        <article class="game-card-item" data-category="action">
+          <div class="game-poster-box">
+            <img src="assets/game_007.jpg" alt="007 First Light">
+            <div class="game-poster-overlay"></div>
+            <span class="game-tag-badge">ACTION / SHOOTER</span>
+            <span class="game-players-badge">1 PLAYER</span>
+          </div>
+          <div class="game-info-content">
+            <h3>007 FIRST LIGHT</h3>
+            <span class="game-genre">Tactical / Espionage / Shooter</span>
+            <p class="game-desc">Next-gen James Bond origin thriller featuring stealth mechanics, high-speed pursuits, and dynamic controller trigger resistance.</p>
+            <div class="game-specs-chips">
+              <span class="spec-chip">ADAPTIVE TRIGGERS</span>
+              <span class="spec-chip">CINEMATIC 4K</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 6. MARVEL'S SPIDER-MAN 2 -->
+        <article class="game-card-item" data-category="action">
+          <div class="game-poster-box">
+            <img src="assets/game_spiderman.jpg" alt="Marvel's Spider-Man 2">
+            <div class="game-poster-overlay"></div>
+            <span class="game-tag-badge">ACTION</span>
+            <span class="game-players-badge">1 PLAYER</span>
+          </div>
+          <div class="game-info-content">
+            <h3>MARVEL'S SPIDER-MAN 2</h3>
+            <span class="game-genre">Action / Superhero / NYC</span>
+            <p class="game-desc">Peter Parker and Miles Morales battle Venom and Kraven. Sub-second fast-travel and high-framerate ray-traced visuals.</p>
+            <div class="game-specs-chips">
+              <span class="spec-chip">RAY TRACING</span>
+              <span class="spec-chip">FAST LOAD</span>
+              <span class="spec-chip">4K HDR</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 7. RED DEAD REDEMPTION 2 -->
+        <article class="game-card-item" data-category="action">
+          <div class="game-poster-box">
+            <img src="assets/game_rdr2.png" alt="Red Dead Redemption 2">
+            <div class="game-poster-overlay"></div>
+            <span class="game-tag-badge">OPEN WORLD</span>
+            <span class="game-players-badge">1 PLAYER</span>
+          </div>
+          <div class="game-info-content">
+            <h3>RED DEAD REDEMPTION 2</h3>
+            <span class="game-genre">Western / Adventure / Narrative</span>
+            <p class="game-desc">Arthur Morgan and the Van der Linde gang. One of the highest-rated narrative open worlds rendered in rich HDR detail.</p>
+            <div class="game-specs-chips">
+              <span class="spec-chip">4K HDR</span>
+              <span class="spec-chip">OPEN WORLD</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 8. GOD OF WAR -->
+        <article class="game-card-item" data-category="action">
+          <div class="game-poster-box">
+            <img src="assets/game_gow.png" alt="God of War">
+            <div class="game-poster-overlay"></div>
+            <span class="game-tag-badge">ACTION RPG</span>
+            <span class="game-players-badge">1 PLAYER</span>
+          </div>
+          <div class="game-info-content">
+            <h3>GOD OF WAR</h3>
+            <span class="game-genre">Mythology / Action / Combat</span>
+            <p class="game-desc">Journey alongside Kratos and his son Atreus across the brutal Norse realm of Midgard. Master the Leviathan Axe and combat vicious mythological creatures.</p>
+            <div class="game-specs-chips">
+              <span class="spec-chip">HAPTIC AXE</span>
+              <span class="spec-chip">60 FPS 4K</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 9. IT TAKES TWO -->
+        <article class="game-card-item" data-category="coop">
+          <div class="game-poster-box">
+            <img src="assets/game_ittakestwo.jpg" alt="It Takes Two">
+            <div class="game-poster-overlay"></div>
+            <span class="game-tag-badge">CO-OP GOTY</span>
+            <span class="game-players-badge">2 PLAYERS CO-OP</span>
+          </div>
+          <div class="game-info-content">
+            <h3>IT TAKES TWO</h3>
+            <span class="game-genre">Split-Screen / Platformer / Co-Op</span>
+            <p class="game-desc">Two-player cooperative puzzle platformer where each level introduces completely new mechanics and teamwork requirements.</p>
+            <div class="game-specs-chips">
+              <span class="spec-chip">SHARED SCREEN</span>
+              <span class="spec-chip">DUO CO-OP</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 10. A WAY OUT -->
+        <article class="game-card-item" data-category="coop">
+          <div class="game-poster-box">
+            <img src="assets/game_awayout.jpg" alt="A Way Out">
+            <div class="game-poster-overlay"></div>
+            <span class="game-tag-badge">CO-OP ADVENTURE</span>
+            <span class="game-players-badge">2 PLAYERS CO-OP</span>
+          </div>
+          <div class="game-info-content">
+            <h3>A WAY OUT</h3>
+            <span class="game-genre">Split-Screen / Prison Break / Story</span>
+            <p class="game-desc">Cinematic prison break engineered strictly for two players on the same screen with synchronized puzzles and escape sequences.</p>
+            <div class="game-specs-chips">
+              <span class="spec-chip">SPLIT SCREEN</span>
+              <span class="spec-chip">TEAMWORK</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 11. OVERCOOKED! ALL YOU CAN EAT -->
+        <article class="game-card-item" data-category="coop">
+          <div class="game-poster-box">
+            <img src="assets/game_overcooked.jpg" alt="Overcooked All You Can Eat">
+            <div class="game-poster-overlay"></div>
+            <span class="game-tag-badge">PARTY CO-OP</span>
+            <span class="game-players-badge">1 - 4 PLAYERS</span>
+          </div>
+          <div class="game-info-content">
+            <h3>OVERCOOKED! ALL YOU CAN EAT</h3>
+            <span class="game-genre">Party / Chaos / Multiplayer</span>
+            <p class="game-desc">High-speed culinary party game for up to 4 players. Coordinate recipes, manage hazards, and deliver orders as a squad.</p>
+            <div class="game-specs-chips">
+              <span class="spec-chip">4 PLAYERS</span>
+              <span class="spec-chip">PARTY GAME</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 12. MORTAL KOMBAT 11 ULTIMATE -->
+        <article class="game-card-item" data-category="fighting">
+          <div class="game-poster-box">
+            <img src="assets/game_mk11.jpg" alt="Mortal Kombat 11 Ultimate">
+            <div class="game-poster-overlay"></div>
+            <span class="game-tag-badge">FIGHTING</span>
+            <span class="game-players-badge">1 - 2 PLAYERS</span>
+          </div>
+          <div class="game-info-content">
+            <h3>MORTAL KOMBAT 11 ULTIMATE</h3>
+            <span class="game-genre">Fighting / Custom / Duels</span>
+            <p class="game-desc">Includes full DLC roster (RoboCop, Terminator, Spawn, Rambo) and competitive 4K 60fps local tournament duels.</p>
+            <div class="game-specs-chips">
+              <span class="spec-chip">4K 60 FPS</span>
+              <span class="spec-chip">FULL ROSTER</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- PS5 HARDWARE FEATURES HIGHLIGHT -->
+    <section class="section" style="padding-top:10px;">
+      <div class="pillars-grid">
+        <div class="pillar-card">
+          <div class="pillar-number">SPEC // 01</div>
+          <h3>120HZ ULTRA HD DISPLAYS</h3>
+          <p>Low-input-lag gaming displays with high refresh rates for crisp motion handling and zero ghosting.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-number">SPEC // 02</div>
+          <h3>DUALSENSE WIRELESS</h3>
+          <p>Genuine wireless controllers featuring haptic feedback motors and dynamic adaptive trigger resistance.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-number">SPEC // 03</div>
+          <h3>UP TO 5 PLAYERS PER STATION</h3>
+          <p>Comfortable space configured for group rotations, 4-controller local matches, and spectating.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALL TO ACTION BANNER -->
+    <div class="section" style="padding-top:0;">
+      <div class="cta-banner">
+        <div class="cta-banner-text">
+          <h3>PLAY THESE TITLES <span>AT OUR LOUNGE</span></h3>
+          <p>Thoppampatti Pirivu, Coimbatore • 1 Hour Pass @ ₹148 (+30M Bonus) • 2 Hour Pass @ ₹288 (+1H Bonus)</p>
+        </div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <a href="visit.html" class="btn-primary">VISIT OUR LOUNGE</a>
+          <a href="tel:9994420447" class="btn-secondary">CALL: 99944 20447</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand-box">
+        <div class="footer-logo-row">
+          <img src="assets/logo.png" alt="Infinity Gamers">
+          <div>
+            <div style="font-family:var(--font-heading);font-weight:900;font-size:16px;color:#fff;">INFINITY GAMERS</div>
+            <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:2px;color:var(--neon-blue);">PLAY BEYOND LIMITS</div>
+          </div>
+        </div>
+        <p style="margin-top:8px;line-height:1.5;color:var(--text-muted);">
+          PlayStation 5 console gaming lounge in Thoppampatti Pirivu, Coimbatore. Two PS5 stations, up to 5 players per console, 4K displays, and full air conditioning.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>EXPLORE</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="arcade.html">Arcade Games</a></li>
+          <li><a href="visit.html">Visit Us &amp; Location</a></li>
+          <li><a href="about.html">About Us &amp; Specs</a></li>
+          <li><a href="news.html">Latest News &amp; Tournaments</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="admin.html">Admin Portal</a></li>
+          <li><a href="terms.html">Terms &amp; Conditions</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>SPECIFICATIONS</h4>
+        <ul class="footer-links">
+          <li>10:00 AM – 09:30 PM</li>
+          <li>Open All 7 Days</li>
+          <li>2x PS5 Consoles</li>
+          <li>Up to 5 Players / Station</li>
+          <li>Air Conditioned Lounge</li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>LOCATION &amp; CONTACT</h4>
+        <p style="color:#e2e8f0; margin-bottom:8px;">
+          Thoppampatti Pirivu, CBE - 19<br>
+          <span style="color:var(--neon-pink);">Opposite HDFC Bank</span>
+        </p>
+        <p style="margin-bottom:8px;">
+          Phone: <a href="tel:9994420447" style="color:var(--neon-blue);font-weight:700;">99944 20447</a>
+        </p>
+        <p>
+          Instagram: <a href="https://instagram.com/infinitygamers_cbe" target="_blank" rel="noopener" style="color:var(--neon-pink);font-weight:700;">@infinitygamers_cbe</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>
+        &copy; 2026 Infinity Gamers. All rights reserved. Play Beyond Limits.
+      </div>
+      <div>
+        <a href="terms.html">Terms &amp; Conditions</a> • <a href="visit.html">Find Us on Map</a> • <a href="admin.html">Admin</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Console | Infinity Gamers</title>
+  <meta name="description" content="Infinity Gamers Administrative Portal — Customer session tracker, in/out logging, top players leaderboard, and news publisher.">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ADMIN CONSOLE STYLING */
+    .admin-wrapper {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 90px clamp(16px, 3.5vw, 40px) 60px;
+    }
+    .admin-auth-card {
+      max-width: 420px;
+      margin: 80px auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border-blue);
+      border-radius: var(--radius);
+      padding: 36px 30px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+      text-align: center;
+    }
+    .admin-auth-card h2 {
+      font-family: var(--font-heading);
+      font-size: 22px;
+      letter-spacing: 1.5px;
+      color: #fff;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .admin-auth-card p {
+      color: var(--text-muted);
+      font-size: 13.5px;
+      margin-bottom: 24px;
+    }
+    .admin-auth-hint {
+      margin-top: 18px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 8px 12px;
+      border: 1px solid var(--border-line);
+      border-radius: var(--radius);
+    }
+    .admin-login-error {
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 8px 12px;
+      border-radius: var(--radius);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      margin-top: 14px;
+      display: none;
+    }
+
+    /* ADMIN DASHBOARD HEADER */
+    .admin-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-line);
+      margin-bottom: 28px;
+    }
+    .admin-brand-col h1 {
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: 22px;
+      letter-spacing: 1.5px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .admin-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 1px;
+      background: rgba(0, 212, 255, 0.1);
+      border: 1px solid var(--border-blue);
+      color: var(--neon-blue);
+      padding: 2px 8px;
+      border-radius: 2px;
+    }
+    .admin-actions-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* NAV TABS */
+    .admin-tabs-nav {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--border-line);
+      margin-bottom: 28px;
+      overflow-x: auto;
+    }
+    .admin-tab-btn {
+      background: transparent;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 1px;
+      padding: 10px 18px;
+      cursor: pointer;
+      transition: 0.2s;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .admin-tab-btn:hover {
+      color: #fff;
+    }
+    .admin-tab-btn.active {
+      color: var(--neon-blue);
+      border-bottom-color: var(--neon-blue);
+      background: rgba(0, 212, 255, 0.04);
+    }
+
+    /* STATION REALTIME STATUS CARDS */
+    .station-live-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .station-live-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-line);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      position: relative;
+    }
+    .station-live-card.active-session {
+      border-top: 3px solid #10b981;
+    }
+    .station-live-card.vacant-session {
+      border-top: 3px solid var(--text-muted);
+    }
+    .station-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .station-title {
+      font-family: var(--font-heading);
+      font-size: 16px;
+      letter-spacing: 1px;
+      color: #fff;
+    }
+    .station-badge {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 1px;
+      padding: 3px 8px;
+      border-radius: 2px;
+      text-transform: uppercase;
+    }
+    .station-badge.live {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #10b981;
+    }
+    .station-badge.vacant {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-line);
+      color: var(--text-muted);
+    }
+    .station-player-info strong {
+      display: block;
+      font-size: 16px;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+    .station-player-info span {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .station-metrics-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 10px 14px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-line);
+    }
+    .station-metrics-row span {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .station-metrics-row strong {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: #e2e8f0;
+    }
+
+    /* DATA PANELS */
+    .panel-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-line);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 28px;
+    }
+    .panel-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border-line);
+    }
+    .panel-header-row h3 {
+      font-family: var(--font-heading);
+      font-size: 16px;
+      letter-spacing: 1px;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    /* DATA TABLE */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+    .data-table th {
+      padding: 12px 14px;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border-line);
+      background: rgba(0, 0, 0, 0.2);
+      white-space: nowrap;
+    }
+    .data-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-line);
+      color: var(--text-dim);
+      white-space: nowrap;
+    }
+    .data-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .badge-status {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 1px;
+      padding: 2px 7px;
+      border-radius: 2px;
+      text-transform: uppercase;
+    }
+    .badge-status.active {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #10b981;
+    }
+    .badge-status.completed {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-line);
+      color: var(--text-muted);
+    }
+    .btn-action-sm {
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-dim);
+      padding: 4px 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      cursor: pointer;
+      border-radius: var(--radius);
+      transition: 0.2s;
+    }
+    .btn-action-sm:hover {
+      border-color: var(--neon-blue);
+      color: var(--neon-blue);
+    }
+    .btn-action-danger:hover {
+      border-color: #ef4444;
+      color: #ef4444;
+    }
+
+    /* TOP PLAYERS PODIUM */
+    .podium-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+    .podium-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-line);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      text-align: center;
+      position: relative;
+    }
+    .podium-card.rank-1 {
+      border-top: 3px solid #ffbe0b;
+    }
+    .podium-card.rank-2 {
+      border-top: 3px solid #cbd5e1;
+    }
+    .podium-card.rank-3 {
+      border-top: 3px solid #f97316;
+    }
+    .podium-rank-tag {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .podium-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 18px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .podium-hours {
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: 28px;
+      color: var(--neon-blue);
+      line-height: 1;
+      margin: 8px 0;
+    }
+    .podium-sub {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* MODAL FORM */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 150;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.open {
+      display: flex;
+    }
+    .modal-box {
+      width: 100%;
+      max-width: 520px;
+      background: #0b0e1a;
+      border: 1px solid var(--border-blue);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+    }
+    .modal-box h3 {
+      font-family: var(--font-heading);
+      font-size: 18px;
+      letter-spacing: 1px;
+      color: #fff;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-close-btn {
+      background: transparent;
+      border: 0;
+      color: var(--text-muted);
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .station-live-grid { grid-template-columns: 1fr; }
+      .podium-grid { grid-template-columns: 1fr; }
+      .form-grid-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body data-page="admin">
+
+  <!-- NAVIGATION BAR -->
+  <header class="navbar">
+    <a class="logo" href="index.html">
+      <img src="assets/logo.png" alt="Infinity Gamers Logo" class="logo-img">
+      <div class="logo-text-block">
+        <span class="logo-title">INFINITY</span>
+        <span class="logo-gamers-text">GAMERS</span>
+        <span class="logo-tagline">PLAY BEYOND LIMITS</span>
+      </div>
+    </a>
+    <nav id="navLinks">
+      <a href="index.html">HOME</a>
+      <a href="arcade.html">ARCADE</a>
+      <a href="visit.html">VISIT US</a>
+      <a href="about.html">ABOUT US</a>
+      <a href="news.html">NEWS</a>
+      <a href="contact.html">CONTACT</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <main>
+    <div class="admin-wrapper">
+
+      <!-- 1. AUTH SCREEN (IF LOGGED OUT) -->
+      <div id="adminAuthSection" class="admin-auth-card">
+        <span class="admin-tag">INFINITY GAMERS</span>
+        <h2 style="margin-top:10px;">ADMIN LOGIN</h2>
+        <p>Enter administrator credentials to manage customer logs, stations, and news.</p>
+
+        <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
+          <div class="form-group" style="text-align:left;">
+            <label for="adminUsername">USERNAME</label>
+            <input type="text" id="adminUsername" class="form-control" value="admin" required autofocus>
+          </div>
+          <div class="form-group" style="text-align:left;">
+            <label for="adminPassword">PASSWORD</label>
+            <input type="password" id="adminPassword" class="form-control" value="infinity2026" required>
+          </div>
+          <button type="submit" class="btn-primary" id="btnAdminLogin" style="width:100%; min-height:44px; margin-top:8px;">
+            SIGN IN TO CONSOLE
+          </button>
+          <div class="admin-login-error" id="adminLoginError"></div>
+        </form>
+
+        <div class="admin-auth-hint">
+          ACCESS CREDENTIALS: <strong>admin</strong> / <strong>infinity2026</strong>
+        </div>
+      </div>
+
+      <!-- 2. DASHBOARD VIEW (IF LOGGED IN) -->
+      <div id="adminDashboardSection" style="display:none;">
+        
+        <!-- HEADER BAR -->
+        <div class="admin-header-bar">
+          <div class="admin-brand-col">
+            <h1>
+              ADMINISTRATIVE SYSTEM
+              <span class="admin-tag">LIVE CONSOLE</span>
+            </h1>
+            <p style="color:var(--text-muted); font-size:13px; font-family:var(--font-mono); margin-top:4px;" id="adminCurrentTime">
+              SYSTEM READY
+            </p>
+          </div>
+
+          <div class="admin-actions-bar">
+            <button type="button" class="btn-secondary" id="btnOpenNewSession" onclick="openSessionModal('PS5 Station 1')" style="min-height:38px; padding:0 14px; font-size:12px;">
+              + LOG NEW SESSION
+            </button>
+            <button type="button" class="btn-action-sm btn-action-danger" id="btnAdminLogout" onclick="handleAdminLogout()" style="padding:8px 14px;">
+              LOGOUT
+            </button>
+          </div>
+        </div>
+
+        <!-- TABS NAV -->
+        <div class="admin-tabs-nav">
+          <button type="button" class="admin-tab-btn active" data-tab="tabSessions" onclick="switchAdminTab('tabSessions', this)">CUSTOMER SESSIONS</button>
+          <button type="button" class="admin-tab-btn" data-tab="tabLeaderboard" onclick="switchAdminTab('tabLeaderboard', this)">TOP PLAYERS</button>
+          <button type="button" class="admin-tab-btn" data-tab="tabNews" onclick="switchAdminTab('tabNews', this)">POST NEWS &amp; TOURNAMENTS</button>
+        </div>
+
+        <!-- TAB 1: SESSIONS & ACTIVE STATIONS -->
+        <div id="tabSessions" class="admin-tab-content">
+          
+          <!-- LIVE STATION STATUS OVERVIEW -->
+          <div class="station-live-grid">
+            <!-- STATION 1 -->
+            <div class="station-live-card vacant-session" id="stationCard1">
+              <div class="station-card-top">
+                <span class="station-title">PS5 STATION 1</span>
+                <span class="station-badge vacant" id="stationBadge1">VACANT</span>
+              </div>
+              <div class="station-player-info" id="stationPlayer1">
+                <strong>No Active Player</strong>
+                <span>Station ready for walk-ins</span>
+              </div>
+              <div class="station-metrics-row">
+                <div>
+                  <span>IN TIME</span>
+                  <strong id="stationIn1">--:--</strong>
+                </div>
+                <div>
+                  <span>ELAPSED</span>
+                  <strong id="stationElapsed1">0 MIN</strong>
+                </div>
+                <div>
+                  <span>PASS RATE</span>
+                  <strong id="stationRate1">--</strong>
+                </div>
+              </div>
+              <div style="display:flex; gap:8px;" id="stationActions1">
+                <button type="button" class="btn-primary" onclick="openSessionModal('PS5 Station 1')" style="width:100%; min-height:36px; font-size:11px;">
+                  START SESSION
+                </button>
+              </div>
+            </div>
+
+            <!-- STATION 2 -->
+            <div class="station-live-card vacant-session" id="stationCard2">
+              <div class="station-card-top">
+                <span class="station-title">PS5 STATION 2</span>
+                <span class="station-badge vacant" id="stationBadge2">VACANT</span>
+              </div>
+              <div class="station-player-info" id="stationPlayer2">
+                <strong>No Active Player</strong>
+                <span>Station ready for walk-ins</span>
+              </div>
+              <div class="station-metrics-row">
+                <div>
+                  <span>IN TIME</span>
+                  <strong id="stationIn2">--:--</strong>
+                </div>
+                <div>
+                  <span>ELAPSED</span>
+                  <strong id="stationElapsed2">0 MIN</strong>
+                </div>
+                <div>
+                  <span>PASS RATE</span>
+                  <strong id="stationRate2">--</strong>
+                </div>
+              </div>
+              <div style="display:flex; gap:8px;" id="stationActions2">
+                <button type="button" class="btn-primary" onclick="openSessionModal('PS5 Station 2')" style="width:100%; min-height:36px; font-size:11px;">
+                  START SESSION
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- SESSIONS LOG TABLE -->
+          <div class="panel-card">
+            <div class="panel-header-row">
+              <div>
+                <h3>CUSTOMER SESSION LOGS</h3>
+                <span style="font-family:var(--font-mono); font-size:12px; color:var(--text-muted);" id="sessionCountLabel">0 SESSIONS RECORDED</span>
+              </div>
+              <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <input type="text" id="sessionSearchInput" class="form-control" placeholder="Search customer or phone..." style="height:36px; max-width:220px; font-size:12px;">
+                <button type="button" class="btn-secondary" id="btnExportCsv" onclick="exportSessionsCsv()" style="min-height:36px; padding:0 12px; font-size:11px;">
+                  EXPORT CSV
+                </button>
+              </div>
+            </div>
+
+            <div class="table-container">
+              <table class="data-table" id="sessionsTable">
+                <thead>
+                  <tr>
+                    <th>CUSTOMER</th>
+                    <th>CONTACT</th>
+                    <th>STATION</th>
+                    <th>IN TIME</th>
+                    <th>OUT TIME</th>
+                    <th>DURATION</th>
+                    <th>AMOUNT</th>
+                    <th>STATUS</th>
+                    <th>ACTIONS</th>
+                  </tr>
+                </thead>
+                <tbody id="sessionsTableBody">
+                  <tr>
+                    <td colspan="9" style="text-align:center; color:var(--text-muted); padding:24px;">No customer sessions recorded yet. Click "+ LOG NEW SESSION" to begin.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: TOP PLAYERS (HIGH PLAYTIME) -->
+        <div id="tabLeaderboard" class="admin-tab-content" style="display:none;">
+          <div class="panel-card">
+            <div class="panel-header-row">
+              <div>
+                <h3>HIGH PLAYTIME LEADERBOARD</h3>
+                <span style="font-family:var(--font-mono); font-size:12px; color:var(--text-muted);">
+                  Ranked by cumulative hours logged at Infinity Gamers
+                </span>
+              </div>
+            </div>
+
+            <!-- PODIUM CARDS -->
+            <div class="podium-grid" id="podiumContainer">
+              <div style="grid-column: 1 / -1; background: rgba(255,255,255,0.02); border: 1px dashed var(--border-line); border-radius: var(--radius); padding: 32px 20px; text-align: center;">
+                <p style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase;">NO PLAYER SESSIONS RECORDED YET</p>
+                <p style="color: var(--text-dim); font-size: 13px; margin-top: 4px;">Leaderboards and top 3 podium ranks will populate automatically as customer sessions are logged.</p>
+              </div>
+            </div>
+
+            <!-- LEADERBOARD TABLE -->
+            <div class="table-container">
+              <table class="data-table" id="topPlayersTable">
+                <thead>
+                  <tr>
+                    <th>RANK</th>
+                    <th>PLAYER NAME</th>
+                    <th>CONTACT</th>
+                    <th>TOTAL PLAYTIME</th>
+                    <th>SESSIONS</th>
+                    <th>TOTAL SPENT</th>
+                    <th>FAVORITE TITLE</th>
+                    <th>TIER</th>
+                  </tr>
+                </thead>
+                <tbody id="topPlayersBody">
+                  <tr>
+                    <td colspan="8" style="text-align:center; color:var(--text-muted); padding:24px;">No player data available yet.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: POST NEWS & TOURNAMENTS -->
+        <div id="tabNews" class="admin-tab-content" style="display:none;">
+          <div class="contact-layout" style="max-width:100%;">
+            
+            <!-- CREATE NEWS FORM -->
+            <div class="panel-card" style="margin-bottom:0;">
+              <h3 style="font-family:var(--font-heading); font-size:16px; margin-bottom:14px; color:#fff;">
+                PUBLISH ANNOUNCEMENT / TOURNAMENT
+              </h3>
+
+              <form id="createNewsForm" onsubmit="saveNewsPost(event)">
+                <div class="form-group">
+                  <label for="newsTitle">HEADLINE / TITLE</label>
+                  <input type="text" id="newsTitle" class="form-control" placeholder="Tournament or announcement title" required>
+                </div>
+
+                <div class="form-grid-2">
+                  <div class="form-group">
+                    <label for="newsCategory">CATEGORY</label>
+                    <select id="newsCategory" class="form-control">
+                      <option value="TOURNAMENT">TOURNAMENT</option>
+                      <option value="NEW GAME">NEW GAME</option>
+                      <option value="PROMOTION">PROMOTION / DEAL</option>
+                      <option value="ANNOUNCEMENT">GENERAL ANNOUNCEMENT</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="newsBadge">BADGE TEXT</label>
+                    <input type="text" id="newsBadge" class="form-control" placeholder="Badge text (e.g. REGISTRATION OPEN)" required>
+                  </div>
+                </div>
+
+                <div class="form-grid-2">
+                  <div class="form-group">
+                    <label for="newsDate">EVENT DATE</label>
+                    <input type="text" id="newsDate" class="form-control" placeholder="Date of event" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="newsTime">TIMING / SCHEDULE</label>
+                    <input type="text" id="newsTime" class="form-control" placeholder="Schedule or lounge hours">
+                  </div>
+                </div>
+
+                <div class="form-grid-2">
+                  <div class="form-group">
+                    <label for="newsPrize">PRIZE POOL (OPTIONAL)</label>
+                    <input type="text" id="newsPrize" class="form-control" placeholder="Prize details (optional)">
+                  </div>
+                  <div class="form-group">
+                    <label for="newsEntry">ENTRY / PASS FEE</label>
+                    <input type="text" id="newsEntry" class="form-control" placeholder="Entry fee (optional)">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="newsSummary">DETAILS &amp; RULES</label>
+                  <textarea id="newsSummary" class="form-control" placeholder="Full announcement information, registration details, tournament format..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary" style="width:100%; min-height:44px;">
+                  PUBLISH TO NEWS PAGE
+                </button>
+              </form>
+            </div>
+
+            <!-- ACTIVE NEWS MANAGER LIST -->
+            <div class="panel-card" style="margin-bottom:0;">
+              <h3 style="font-family:var(--font-heading); font-size:16px; margin-bottom:14px; color:#fff;">
+                CURRENT PUBLISHED POSTS
+              </h3>
+              <div id="adminNewsList" style="display:flex; flex-direction:column; gap:14px;">
+                <p style="color:var(--text-muted); font-size:13px;">No announcements published yet.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL: ADD / LOG CUSTOMER SESSION -->
+  <div class="modal-overlay" id="sessionModal">
+    <div class="modal-box">
+      <h3>
+        <span id="sessionModalTitle">LOG CUSTOMER SESSION</span>
+        <button type="button" class="modal-close-btn" onclick="closeSessionModal()">&times;</button>
+      </h3>
+
+      <form id="sessionForm" onsubmit="saveSession(event)">
+        <div class="form-group">
+          <label for="sessCustName">CUSTOMER NAME</label>
+          <input type="text" id="sessCustName" class="form-control" placeholder="Customer full name" required>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="sessPhone">CONTACT NUMBER</label>
+            <input type="tel" id="sessPhone" class="form-control" placeholder="10-digit mobile number" required>
+          </div>
+          <div class="form-group">
+            <label for="sessStation">ASSIGNED STATION</label>
+            <select id="sessStation" class="form-control">
+              <option value="PS5 Station 1">PS5 Station 1</option>
+              <option value="PS5 Station 2">PS5 Station 2</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="sessInTime">IN TIME</label>
+            <input type="datetime-local" id="sessInTime" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="sessOutTime">OUT TIME (LEAVE EMPTY IF ACTIVE)</label>
+            <input type="datetime-local" id="sessOutTime" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="sessGame">GAME / TITLE</label>
+            <input type="text" id="sessGame" class="form-control" placeholder="Game title (e.g. FC 26)">
+          </div>
+          <div class="form-group">
+            <label for="sessAmount">AMOUNT (₹)</label>
+            <input type="number" id="sessAmount" class="form-control" placeholder="Amount in ₹">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="sessNotes">NOTES (OPTIONAL)</label>
+          <input type="text" id="sessNotes" class="form-control" placeholder="Session notes (optional)">
+        </div>
+
+        <div style="display:flex; gap:10px; margin-top:20px;">
+          <button type="submit" class="btn-primary" style="flex:1; min-height:42px;">
+            SAVE SESSION RECORD
+          </button>
+          <button type="button" class="btn-secondary" onclick="closeSessionModal()" style="min-height:42px;">
+            CANCEL
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast-msg" id="toastMsg"></div>
+
+  <!-- GLOBAL SCRIPT FOR NAVBAR TOGGLE -->
+  <script src="script.js"></script>
+
+  <!-- ADMIN SCRIPTS -->
+  <script>
+    const ADMIN_STORAGE_KEY = "infinity_admin_token";
+    let adminToken = localStorage.getItem(ADMIN_STORAGE_KEY) || "";
+    let cachedSessions = [];
+
+    document.addEventListener("DOMContentLoaded", () => {
+      checkAuthStatus();
+      initSearchListener();
+      startClock();
+    });
+
+    function startClock() {
+      const clockEl = document.getElementById("adminCurrentTime");
+      function update() {
+        if (!clockEl) return;
+        const now = new Date();
+        clockEl.textContent = now.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric" }) + " • " + now.toLocaleTimeString();
+      }
+      update();
+      setInterval(update, 1000);
+    }
+
+    function checkAuthStatus() {
+      const authCard = document.getElementById("adminAuthSection");
+      const dashView = document.getElementById("adminDashboardSection");
+
+      if (adminToken) {
+        if (authCard) authCard.style.display = "none";
+        if (dashView) dashView.style.display = "block";
+        loadDashboardData();
+      } else {
+        if (authCard) authCard.style.display = "block";
+        if (dashView) dashView.style.display = "none";
+      }
+    }
+
+    // LOGIN HANDLER
+    window.handleAdminLogin = async function(e) {
+      if (e && e.preventDefault) e.preventDefault();
+
+      const usernameInput = document.getElementById("adminUsername");
+      const passwordInput = document.getElementById("adminPassword");
+      const errBox = document.getElementById("adminLoginError");
+      if (errBox) errBox.style.display = "none";
+
+      const username = usernameInput ? usernameInput.value.trim() : "";
+      const password = passwordInput ? passwordInput.value.trim() : "";
+
+      if (!username || !password) {
+        if (errBox) {
+          errBox.textContent = "Please enter both username and password.";
+          errBox.style.display = "block";
+        }
+        return false;
+      }
+
+      try {
+        const res = await fetch("/api/admin/login?_t=" + Date.now(), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await res.json();
+        if (data.success && data.token) {
+          adminToken = data.token;
+          localStorage.setItem(ADMIN_STORAGE_KEY, adminToken);
+          checkAuthStatus();
+          showToast("Admin authenticated successfully.");
+        } else {
+          if (errBox) {
+            errBox.textContent = data.error || "Invalid username or password.";
+            errBox.style.display = "block";
+          }
+          showToast(data.error || "Authentication failed.");
+        }
+      } catch (err) {
+        if (errBox) {
+          errBox.textContent = "Network error connecting to local server.";
+          errBox.style.display = "block";
+        }
+        showToast("Server connection error.");
+      }
+      return false;
+    };
+
+    // LOGOUT HANDLER
+    window.handleAdminLogout = function() {
+      adminToken = "";
+      localStorage.removeItem(ADMIN_STORAGE_KEY);
+      checkAuthStatus();
+      showToast("Signed out from admin console.");
+    };
+
+    // TAB SWITCHER
+    window.switchAdminTab = function(targetId, btn) {
+      document.querySelectorAll(".admin-tab-btn").forEach(b => b.classList.remove("active"));
+      if (btn) btn.classList.add("active");
+
+      document.querySelectorAll(".admin-tab-content").forEach(content => {
+        content.style.display = content.id === targetId ? "block" : "none";
+      });
+
+      if (targetId === "tabSessions") loadSessions();
+      if (targetId === "tabLeaderboard") loadTopPlayers();
+      if (targetId === "tabNews") loadAdminNews();
+    };
+
+    function initSearchListener() {
+      const searchInput = document.getElementById("sessionSearchInput");
+      if (searchInput) {
+        searchInput.addEventListener("input", (e) => {
+          renderSessionsTable(e.target.value.toLowerCase());
+        });
+      }
+    }
+
+    // LOAD ALL DATA
+    async function loadDashboardData() {
+      await loadSessions();
+      loadTopPlayers();
+      loadAdminNews();
+    }
+
+    // SESSIONS MANAGEMENT
+    async function loadSessions() {
+      try {
+        const res = await fetch("/api/admin/sessions?_t=" + Date.now(), {
+          headers: { "Authorization": `Bearer ${adminToken}` }
+        });
+        if (res.status === 401) {
+          handleAdminLogout();
+          return;
+        }
+        const data = await res.json();
+        cachedSessions = Array.isArray(data) ? data : [];
+        renderSessionsTable();
+        updateStationCards();
+      } catch (err) {
+        console.error("Failed to load sessions:", err);
+      }
+    }
+
+    function renderSessionsTable(filter = "") {
+      const tbody = document.getElementById("sessionsTableBody");
+      const countLabel = document.getElementById("sessionCountLabel");
+      if (!tbody) return;
+
+      const filtered = cachedSessions.filter(s => {
+        if (!filter) return true;
+        return (s.customerName && s.customerName.toLowerCase().includes(filter)) ||
+               (s.phone && s.phone.includes(filter)) ||
+               (s.station && s.station.toLowerCase().includes(filter));
+      });
+
+      if (countLabel) countLabel.textContent = `${filtered.length} SESSIONS RECORDED`;
+
+      if (!filtered.length) {
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:var(--text-muted); padding:24px;">No customer sessions recorded yet. Click "+ LOG NEW SESSION" to begin.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(s => {
+        const inFormatted = formatTime(s.inTime);
+        const outFormatted = s.outTime ? formatTime(s.outTime) : "--";
+        const durationStr = s.durationMinutes ? `${s.durationMinutes} mins` : (s.status === "active" ? "In progress" : "--");
+        const isActive = s.status === "active";
+
+        return `
+          <tr>
+            <td><strong>${escapeHtml(s.customerName)}</strong></td>
+            <td><code>${escapeHtml(s.phone || "-")}</code></td>
+            <td><span class="admin-tag">${escapeHtml(s.station)}</span></td>
+            <td>${inFormatted}</td>
+            <td>${outFormatted}</td>
+            <td><strong>${durationStr}</strong></td>
+            <td>₹${s.amount || 0}</td>
+            <td>
+              <span class="badge-status ${isActive ? 'active' : 'completed'}">
+                ${isActive ? 'PLAYING' : 'COMPLETED'}
+              </span>
+            </td>
+            <td>
+              ${isActive ? `
+                <button type="button" class="btn-action-sm" onclick="checkoutSession('${s.id}')" style="color:#10b981; border-color:#10b981;">
+                  CHECKOUT
+                </button>
+              ` : ''}
+              <button type="button" class="btn-action-sm btn-action-danger" onclick="deleteSession('${s.id}')">
+                DELETE
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function updateStationCards() {
+      const activeStation1 = cachedSessions.find(s => s.station === "PS5 Station 1" && s.status === "active");
+      const activeStation2 = cachedSessions.find(s => s.station === "PS5 Station 2" && s.status === "active");
+
+      applyStationStatus("1", activeStation1);
+      applyStationStatus("2", activeStation2);
+    }
+
+    function applyStationStatus(num, session) {
+      const card = document.getElementById(`stationCard${num}`);
+      const badge = document.getElementById(`stationBadge${num}`);
+      const playerInfo = document.getElementById(`stationPlayer${num}`);
+      const inEl = document.getElementById(`stationIn${num}`);
+      const elapsedEl = document.getElementById(`stationElapsed${num}`);
+      const rateEl = document.getElementById(`stationRate${num}`);
+      const actionsEl = document.getElementById(`stationActions${num}`);
+
+      if (!card) return;
+
+      if (session) {
+        card.className = "station-live-card active-session";
+        badge.className = "station-badge live";
+        badge.textContent = "IN SESSION";
+        playerInfo.innerHTML = `<strong>${escapeHtml(session.customerName)}</strong><span>Phone: ${escapeHtml(session.phone || "-")} • ${escapeHtml(session.game || "PS5")}</span>`;
+        inEl.textContent = formatTimeOnly(session.inTime);
+
+        const diffMinutes = Math.max(0, Math.round((Date.now() - new Date(session.inTime).getTime()) / 60000));
+        elapsedEl.textContent = `${diffMinutes} MIN`;
+        rateEl.textContent = `₹${session.amount || 0}`;
+
+        actionsEl.innerHTML = `
+          <button type="button" class="btn-primary" onclick="checkoutSession('${session.id}')" style="width:100%; min-height:36px; font-size:11px; background:#10b981; color:#000;">
+            CHECKOUT / END SESSION
+          </button>
+        `;
+      } else {
+        card.className = "station-live-card vacant-session";
+        badge.className = "station-badge vacant";
+        badge.textContent = "VACANT";
+        playerInfo.innerHTML = `<strong>No Active Player</strong><span>Station ready for walk-ins</span>`;
+        inEl.textContent = "--:--";
+        elapsedEl.textContent = "0 MIN";
+        rateEl.textContent = "--";
+        actionsEl.innerHTML = `
+          <button type="button" class="btn-primary" onclick="openSessionModal('PS5 Station ${num}')" style="width:100%; min-height:36px; font-size:11px;">
+            START SESSION
+          </button>
+        `;
+      }
+    }
+
+    // MODAL CONTROL
+    window.openSessionModal = function(defaultStation = "PS5 Station 1") {
+      const modal = document.getElementById("sessionModal");
+      const form = document.getElementById("sessionForm");
+      if (!modal || !form) return;
+
+      form.reset();
+      document.getElementById("sessStation").value = defaultStation;
+
+      // Set In-Time to current local datetime
+      const now = new Date();
+      now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+      document.getElementById("sessInTime").value = now.toISOString().slice(0, 16);
+      document.getElementById("sessOutTime").value = "";
+
+      modal.classList.add("open");
+    };
+
+    window.closeSessionModal = function() {
+      document.getElementById("sessionModal")?.classList.remove("open");
+    };
+
+    // SAVE SESSION
+    window.saveSession = async function(e) {
+      if (e && e.preventDefault) e.preventDefault();
+
+      const customerName = document.getElementById("sessCustName").value.trim();
+      const phone = document.getElementById("sessPhone").value.trim();
+      const station = document.getElementById("sessStation").value;
+      const inTime = document.getElementById("sessInTime").value;
+      const outTime = document.getElementById("sessOutTime").value;
+      const game = document.getElementById("sessGame").value.trim() || "PS5 Session";
+      const amount = document.getElementById("sessAmount").value || "0";
+      const notes = document.getElementById("sessNotes").value.trim();
+
+      const payload = {
+        customerName,
+        phone,
+        station,
+        inTime,
+        outTime,
+        game,
+        amount,
+        notes
+      };
+
+      try {
+        const res = await fetch("/api/admin/sessions?_t=" + Date.now(), {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${adminToken}`
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          showToast("Session recorded successfully.");
+          closeSessionModal();
+          await loadSessions();
+        } else {
+          const err = await res.json();
+          showToast(err.error || "Failed to record session.");
+        }
+      } catch (err) {
+        showToast("Error saving session record.");
+      }
+      return false;
+    };
+
+    // CHECKOUT SESSION
+    window.checkoutSession = async function(sessionId) {
+      try {
+        const res = await fetch(`/api/admin/sessions/${sessionId}?_t=` + Date.now(), {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${adminToken}`
+          },
+          body: JSON.stringify({ outTime: new Date().toISOString() })
+        });
+
+        showToast("Session checkout complete.");
+        await loadSessions();
+      } catch (err) {
+        showToast("Failed to checkout session.");
+      }
+    };
+
+    // DELETE SESSION
+    window.deleteSession = async function(sessionId) {
+      try {
+        const res = await fetch(`/api/admin/sessions/${sessionId}?_t=` + Date.now(), {
+          method: "DELETE",
+          headers: { "Authorization": `Bearer ${adminToken}` }
+        });
+
+        showToast("Record removed.");
+        await loadSessions();
+      } catch (err) {
+        showToast("Error deleting session.");
+      }
+    };
+
+    // TOP PLAYERS LEADERBOARD
+    async function loadTopPlayers() {
+      try {
+        const res = await fetch("/api/top-players?_t=" + Date.now());
+        const players = await res.json();
+        renderTopPlayers(Array.isArray(players) ? players : []);
+      } catch (err) {
+        console.error("Failed to load top players:", err);
+      }
+    }
+
+    function renderTopPlayers(players) {
+      const podiumEl = document.getElementById("podiumContainer");
+      const tbody = document.getElementById("topPlayersBody");
+
+      if (!players.length) {
+        if (podiumEl) podiumEl.innerHTML = `<div style="grid-column: 1 / -1; background: rgba(255,255,255,0.02); border: 1px dashed var(--border-line); border-radius: var(--radius); padding: 32px 20px; text-align: center;"><p style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase;">NO PLAYER SESSIONS RECORDED YET</p><p style="color: var(--text-dim); font-size: 13px; margin-top: 4px;">Leaderboards and top 3 podium ranks will populate automatically as customer sessions are logged.</p></div>`;
+        if (tbody) tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:24px;">No player data available yet.</td></tr>`;
+        return;
+      }
+
+      // Podium top 3
+      if (podiumEl) {
+        const top3 = players.slice(0, 3);
+        podiumEl.innerHTML = top3.map((p, i) => `
+          <div class="podium-card rank-${i+1}">
+            <div class="podium-rank-tag">RANK #0${p.rank} // ${p.tier}</div>
+            <div class="podium-name">${escapeHtml(p.customerName)}</div>
+            <div class="podium-hours">${p.totalHours} <span style="font-size:14px; font-weight:600;">HOURS</span></div>
+            <div class="podium-sub">${p.sessionCount} Sessions • Top: ${escapeHtml(p.favoriteGame)}</div>
+          </div>
+        `).join("");
+      }
+
+      // Full Table
+      if (tbody) {
+        tbody.innerHTML = players.map(p => `
+          <tr>
+            <td><strong>#${p.rank}</strong></td>
+            <td><strong>${escapeHtml(p.customerName)}</strong></td>
+            <td><code>${escapeHtml(p.phone)}</code></td>
+            <td><strong style="color:var(--neon-blue);">${p.totalHours} hrs</strong> (${p.totalMinutes} mins)</td>
+            <td>${p.sessionCount} sessions</td>
+            <td>₹${p.totalSpent}</td>
+            <td>${escapeHtml(p.favoriteGame)}</td>
+            <td><span class="admin-tag">${p.tier}</span></td>
+          </tr>
+        `).join("");
+      }
+    }
+
+    // NEWS MANAGEMENT
+    async function loadAdminNews() {
+      const listEl = document.getElementById("adminNewsList");
+      if (!listEl) return;
+
+      try {
+        const res = await fetch("/api/news?_t=" + Date.now());
+        const news = await res.json();
+
+        if (!news || !news.length) {
+          listEl.innerHTML = `<p style="color:var(--text-muted); font-size:13px;">No announcements published yet.</p>`;
+          return;
+        }
+
+        listEl.innerHTML = news.map(item => `
+          <div style="background:rgba(255,255,255,0.02); border:1px solid var(--border-line); border-radius:var(--radius); padding:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span class="admin-tag">${escapeHtml(item.category)}</span>
+              <span style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);">${escapeHtml(item.date)}</span>
+            </div>
+            <strong style="color:#fff; font-size:16px; display:block; margin-bottom:4px;">${escapeHtml(item.title)}</strong>
+            <p style="color:var(--text-muted); font-size:13px; margin-bottom:10px;">${escapeHtml(item.summary)}</p>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-family:var(--font-mono); font-size:11px; color:var(--neon-pink);">${escapeHtml(item.prize || item.badge || "")}</span>
+              <button type="button" class="btn-action-sm btn-action-danger" onclick="deleteNewsItem('${item.id}')">
+                DELETE
+              </button>
+            </div>
+          </div>
+        `).join("");
+      } catch (err) {
+        listEl.innerHTML = `<p style="color:var(--text-muted); font-size:13px;">Failed to load announcements.</p>`;
+      }
+    }
+
+    window.saveNewsPost = async function(e) {
+      if (e && e.preventDefault) e.preventDefault();
+
+      const title = document.getElementById("newsTitle").value.trim();
+      const category = document.getElementById("newsCategory").value;
+      const badge = document.getElementById("newsBadge").value.trim();
+      const date = document.getElementById("newsDate").value.trim();
+      const time = document.getElementById("newsTime").value.trim();
+      const prize = document.getElementById("newsPrize").value.trim();
+      const entryFee = document.getElementById("newsEntry").value.trim();
+      const summary = document.getElementById("newsSummary").value.trim();
+
+      const payload = {
+        title,
+        category,
+        badge,
+        date,
+        time,
+        prize,
+        entryFee,
+        summary
+      };
+
+      try {
+        const res = await fetch("/api/admin/news?_t=" + Date.now(), {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${adminToken}`
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          showToast("Announcement published successfully.");
+          document.getElementById("createNewsForm").reset();
+          loadAdminNews();
+        } else {
+          showToast("Failed to publish post.");
+        }
+      } catch (err) {
+        showToast("Error creating announcement.");
+      }
+      return false;
+    };
+
+    window.deleteNewsItem = async function(id) {
+      try {
+        const res = await fetch(`/api/admin/news/${id}?_t=` + Date.now(), {
+          method: "DELETE",
+          headers: { "Authorization": `Bearer ${adminToken}` }
+        });
+        showToast("Announcement deleted.");
+        loadAdminNews();
+      } catch (err) {
+        showToast("Error deleting item.");
+      }
+    };
+
+    // CSV EXPORT
+    window.exportSessionsCsv = function() {
+      if (!cachedSessions.length) {
+        showToast("No session records to export.");
+        return;
+      }
+
+      const headers = ["ID", "Customer Name", "Phone", "Station", "In Time", "Out Time", "Duration Minutes", "Amount Paid", "Game", "Status"];
+      const rows = cachedSessions.map(s => [
+        s.id,
+        `"${(s.customerName || "").replace(/"/g, '""')}"`,
+        `"${s.phone || ""}"`,
+        `"${s.station || ""}"`,
+        `"${s.inTime || ""}"`,
+        `"${s.outTime || ""}"`,
+        s.durationMinutes || 0,
+        s.amount || 0,
+        `"${(s.game || "").replace(/"/g, '""')}"`,
+        s.status || ""
+      ]);
+
+      const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `infinity_gamers_sessions_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+
+    // UTILITIES
+    function formatTime(isoStr) {
+      if (!isoStr) return "--";
+      try {
+        const d = new Date(isoStr);
+        return d.toLocaleDateString("en-US", { month: "short", day: "numeric" }) + " " + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      } catch {
+        return isoStr;
+      }
+    }
+
+    function formatTimeOnly(isoStr) {
+      if (!isoStr) return "--:--";
+      try {
+        const d = new Date(isoStr);
+        return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      } catch {
+        return isoStr;
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str).replace(/[&<>"']/g, m => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[m]);
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById("toastMsg");
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3200);
+    }
+  </script>
+</body>
+</html>
