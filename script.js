@@ -97,8 +97,9 @@ function initArcadeFilters() {
       const filter = btn.dataset.filter;
 
       gameCards.forEach(card => {
-        const category = card.dataset.category;
-        if (filter === "all" || category === filter) {
+        const category = card.dataset.category || "";
+        const matchesFilter = filter === "all" || category === filter || category.split(" ").includes(filter);
+        if (matchesFilter) {
           card.style.display = "flex";
           card.style.animation = "fadeIn 0.35s ease";
         } else {
