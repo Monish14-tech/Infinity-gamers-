@@ -308,12 +308,9 @@ button, input, select, textarea { font: inherit; }
   font-size: clamp(46px, 8vw, 102px);
   line-height: 0.9;
   letter-spacing: 2px;
-  background: linear-gradient(90deg, #00e1ff 0%, #60a5fa 32%, #c084fc 68%, #ff70cc 100%);
+  background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 12px rgba(0, 225, 255, 0.45)) drop-shadow(0 0 12px rgba(255, 112, 204, 0.45));
   margin-top: 2px;
   text-align: left;
 }
@@ -492,15 +489,11 @@ button, input, select, textarea { font: inherit; }
   letter-spacing: 1.5px;
   color: #fff;
   text-transform: uppercase;
-  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.95), 0 0 28px rgba(0, 212, 255, 0.22);
 }
 .section-header h2 span {
-  background: linear-gradient(90deg, #00e1ff 0%, #60a5fa 32%, #c084fc 68%, #ff70cc 100%);
+  background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-  filter: drop-shadow(0 0 10px rgba(0, 225, 255, 0.4)) drop-shadow(0 0 10px rgba(255, 112, 204, 0.4));
 }
 .section-header p {
   color: var(--text-dim);
