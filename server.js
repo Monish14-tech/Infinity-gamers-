@@ -23,13 +23,13 @@ const venueInfo = {
   name: "INFINITY GAMERS",
   tagline: "PLAY BEYOND LIMITS",
   experience: "PS5 GAMING LOUNGE",
-  location: "THOPPAMPATTI PIRIVU, CBE - 19",
+  location: "THOPPAMPATTI PIRIVU, CBE - 17, PINCODE - 641017",
   landmark: "Opposite HDFC Bank",
   timings: "10:00 AM TO 09:30 PM",
   phone: "99944 20447",
   social: "@infinitygamers_cbe",
-  capacity: "2 PS5 Consoles • Up to 5 Players Per Console",
-  features: ["Air Conditioned Lounge", "4K 120Hz Displays", "DualSense Haptics", "Walk-ins Welcome"],
+  capacity: "2 PS5 Consoles • Up to 4 Players Per Console",
+  features: ["Air Conditioned Lounge", "4K 120Hz Displays", "DualSense Haptics", "Pre-booking Recommended", "Walk-ins Welcome"],
   games: ["FC26", "WWE 2K26", "MORTAL KOMBAT 1", "GTA V", "007 FIRST LIGHT", "SPIDER-MAN 2", "RDR2", "GOD OF WAR", "IT TAKES TWO", "A WAY OUT", "OVERCOOKED"]
 };
 

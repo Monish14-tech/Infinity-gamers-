@@ -76,12 +76,12 @@ body:not([data-page="home"]):before {
   z-index: -1;
   pointer-events: none;
   background-image: 
-    linear-gradient(180deg, rgba(7, 8, 15, 0.32) 0%, rgba(7, 8, 15, 0.48) 38%, rgba(7, 8, 15, 0.72) 100%),
-    radial-gradient(circle at 50% 12%, rgba(0, 212, 255, 0.18) 0%, transparent 60%),
+    linear-gradient(180deg, rgba(7, 8, 15, 0.78) 0%, rgba(7, 8, 15, 0.88) 45%, rgba(7, 8, 15, 0.96) 100%),
+    radial-gradient(circle at 50% 12%, rgba(0, 212, 255, 0.10) 0%, transparent 60%),
     radial-gradient(circle at 85% 85%, rgba(255, 20, 147, 0.08) 0%, transparent 50%),
-    url('assets/bg_futuristic_blue.jpg');
+    url('assets/bg_dark_cyber.jpg');
   background-size: cover;
-  background-position: center top;
+  background-position: center center;
   background-repeat: no-repeat;
 }
 
@@ -704,19 +704,275 @@ button, input, select, textarea { font: inherit; }
 
 .walk-in-note {
   max-width: 1040px;
-  margin: 0 auto;
-  background: rgba(0, 212, 255, 0.03);
-  border: 1px solid rgba(0, 212, 255, 0.2);
-  padding: 14px 20px;
+  margin: 24px auto 0;
+  background: rgba(0, 212, 255, 0.04);
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  padding: 16px 22px;
   border-radius: var(--radius);
   text-align: center;
   font-family: var(--font-mono);
   font-size: 13px;
-  color: var(--text-dim);
+  color: #e2e8f0;
   letter-spacing: 0.5px;
 }
 .walk-in-note strong {
   color: var(--neon-blue);
+}
+
+/* TARIFF PLANS & PACKAGES FROM FLYER */
+.tariff-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  max-width: 1040px;
+  margin: 0 auto 30px;
+}
+.tariff-card {
+  background: rgba(14, 19, 34, 0.92);
+  border: 1px solid var(--border-line);
+  border-radius: var(--radius);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+.tariff-card.tariff-weekdays {
+  border-color: rgba(0, 212, 255, 0.35);
+}
+.tariff-card.tariff-weekends {
+  border-color: rgba(255, 20, 147, 0.35);
+}
+.tariff-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 2px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+.tariff-weekdays .tariff-badge {
+  background: rgba(0, 212, 255, 0.15);
+  color: var(--neon-blue);
+  border: 1px solid var(--border-blue);
+}
+.tariff-weekends .tariff-badge {
+  background: rgba(255, 20, 147, 0.15);
+  color: var(--neon-pink-light);
+  border: 1px solid var(--border-pink);
+}
+.tariff-card h3 {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+  color: #fff;
+}
+.tariff-rates-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.tariff-rate-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+}
+.tariff-rate-time {
+  font-family: var(--font-sub);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 1px;
+  color: #fff;
+}
+.tariff-rate-price {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--neon-blue);
+}
+.tariff-weekends .tariff-rate-price {
+  color: var(--neon-pink);
+}
+.tariff-extra-line {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  border-top: 1px dashed rgba(255, 255, 255, 0.12);
+  padding-top: 12px;
+  margin-top: 8px;
+}
+
+/* VALUE PACKAGES */
+.packages-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 1040px;
+  margin: 0 auto 30px;
+}
+.package-card {
+  background: rgba(14, 19, 34, 0.92);
+  border: 1px solid var(--border-line);
+  border-radius: var(--radius);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease;
+}
+.package-card:hover {
+  transform: translateY(-4px);
+}
+.package-card.package-highlight {
+  border-color: rgba(157, 78, 221, 0.5);
+  box-shadow: 0 0 24px rgba(157, 78, 221, 0.2);
+}
+.package-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 2px;
+  display: inline-block;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.package-save-badge {
+  background: rgba(0, 212, 255, 0.15);
+  color: var(--neon-blue);
+  border: 1px solid var(--border-blue);
+}
+.package-card h3 {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #fff;
+}
+.package-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 12px 0 16px;
+}
+.package-act-price {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 32px;
+  color: #fff;
+}
+.package-old-price {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+.package-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-grow: 1;
+}
+.package-features li {
+  font-size: 13px;
+  color: var(--text-dim);
+  position: relative;
+  padding-left: 16px;
+}
+.package-features li:before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--neon-blue);
+  font-weight: bold;
+}
+
+/* CREDIT POINTS MEMBERSHIP */
+.credit-points-banner {
+  max-width: 1040px;
+  margin: 0 auto 30px;
+  background: linear-gradient(135deg, rgba(14, 19, 34, 0.95) 0%, rgba(20, 10, 36, 0.95) 100%);
+  border: 1px solid rgba(157, 78, 221, 0.4);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
+}
+.credit-points-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 16px;
+}
+.credit-points-title h3 {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  color: #fff;
+  letter-spacing: 1px;
+}
+.credit-points-title p {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--neon-pink-light);
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+.credit-fee-chip {
+  background: rgba(255, 20, 147, 0.15);
+  border: 1px solid var(--neon-pink);
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 4px;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 18px;
+  text-align: right;
+}
+.credit-fee-chip small {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+}
+.credit-tiers-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+.credit-tier-box {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius);
+  padding: 12px;
+  text-align: center;
+}
+.credit-tier-pts {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  color: var(--neon-blue);
+  margin-bottom: 4px;
+}
+.credit-tier-reward {
+  font-family: var(--font-sub);
+  font-weight: 700;
+  font-size: 12px;
+  color: #fff;
 }
 
 /* ========================================================
@@ -1377,6 +1633,15 @@ footer {
 .footer-links a:hover {
   color: var(--neon-blue);
 }
+
+/* FOOTER LOCATION & CONTACT TEXT — PURE CRISP WHITE */
+.footer-col-location,
+.footer-col-location h4,
+.footer-col-location p,
+.footer-col-location span,
+.footer-col-location a {
+  color: #ffffff !important;
+}
 .footer-bottom {
   max-width: 1200px;
   margin: 24px auto 0;
@@ -1589,6 +1854,17 @@ footer {
   .map-embed-wrapper {
     min-height: 320px;
     height: 340px;
+  }
+
+  /* TARIFF & PACKAGES ON MOBILE */
+  .tariff-grid,
+  .packages-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .credit-tiers-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
   }
 
   /* CTA & FOOTER ON MOBILE */
