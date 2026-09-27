@@ -30,7 +30,7 @@ const venueInfo = {
   social: "@infinitygamers_cbe",
   capacity: "2 PS5 Consoles • Up to 4 Players Per Console",
   features: ["Air Conditioned Lounge", "4K 120Hz Displays", "DualSense Haptics", "Pre-booking Recommended", "Walk-ins Welcome"],
-  games: ["FC26", "WWE 2K26", "CRICKET 24", "MORTAL KOMBAT 1", "GTA V", "007 FIRST LIGHT", "SPIDER-MAN 2", "RDR2", "GOD OF WAR", "IT TAKES TWO", "A WAY OUT", "OVERCOOKED"]
+  games: ["FC26", "WWE 2K26", "CRICKET 24", "UNCHARTED", "MORTAL KOMBAT 1", "GTA V", "007 FIRST LIGHT", "SPIDER-MAN 2", "RDR2", "GOD OF WAR", "IT TAKES TWO", "A WAY OUT", "OVERCOOKED"]
 };
 
 const contentTypes = {

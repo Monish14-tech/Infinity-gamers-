@@ -23,11 +23,19 @@
     }
     .offers-group-header {
       display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      width: 100%;
+    }
+    .offers-group-title-row {
+      display: flex;
       align-items: center;
       gap: 12px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       flex-wrap: wrap;
+      width: 100%;
     }
     .offers-group-tag {
       font-family: var(--font-mono, monospace);
@@ -62,9 +70,12 @@
     }
     .offers-group-desc {
       font-family: var(--font-body, sans-serif);
-      font-size: 13px;
+      font-size: 13.5px;
       color: #cbd5e1;
-      margin-left: auto;
+      margin-left: 0 !important;
+      margin-top: 2px;
+      width: 100%;
+      text-align: left;
     }
     .tariff-grid {
       display: grid;
@@ -599,9 +610,11 @@
         <!-- GROUP 1: HOURLY TARIFF PLANS (BOXED SEPARATELY) -->
         <div class="offers-group">
           <div class="offers-group-header">
-            <span class="offers-group-tag">PLAN 01</span>
-            <h3 class="offers-group-title">HOURLY TARIFF RATES</h3>
-            <span class="offers-group-desc">Standard per-hour console rates for solo or squad gaming</span>
+            <div class="offers-group-title-row">
+              <span class="offers-group-tag">PLAN 01</span>
+              <h3 class="offers-group-title">HOURLY TARIFF RATES</h3>
+            </div>
+            <p class="offers-group-desc">Standard per-hour console rates for solo or squad gaming</p>
           </div>
 
           <div class="tariff-grid">
@@ -668,9 +681,11 @@
         <!-- GROUP 2: VALUE COMBO PACKAGES (BOXED SEPARATELY) -->
         <div class="offers-group">
           <div class="offers-group-header">
-            <span class="offers-group-tag pink">PLAN 02</span>
-            <h3 class="offers-group-title">VALUE COMBO PACKAGES</h3>
-            <span class="offers-group-desc">Extended playtime packages with free bonus hours and extra controllers. Only available on weekdays and government holidays.</span>
+            <div class="offers-group-title-row">
+              <span class="offers-group-tag pink">PLAN 02</span>
+              <h3 class="offers-group-title">VALUE COMBO PACKAGES</h3>
+            </div>
+            <p class="offers-group-desc">Extended playtime packages with free bonus hours and extra controllers. Only available on weekdays and government holidays.</p>
           </div>
 
           <div class="packages-grid">
@@ -781,9 +796,11 @@
         <!-- GROUP 3: MEMBERSHIP & REWARDS (BOXED SEPARATELY) -->
         <div class="offers-group">
           <div class="offers-group-header">
-            <span class="offers-group-tag purple">PLAN 03</span>
-            <h3 class="offers-group-title">INFINITY CREDIT POINTS MEMBERSHIP</h3>
-            <span class="offers-group-desc">Earn points every hour and redeem for free gaming playtime</span>
+            <div class="offers-group-title-row">
+              <span class="offers-group-tag purple">PLAN 03</span>
+              <h3 class="offers-group-title">INFINITY CREDIT POINTS MEMBERSHIP</h3>
+            </div>
+            <p class="offers-group-desc">Earn points every hour and redeem for free gaming playtime</p>
           </div>
 
           <div class="membership-boxed-container">
@@ -946,7 +963,7 @@
       </div>
 
       <div style="text-align:center; margin-top:36px;">
-        <a href="arcade.html" class="btn-primary">VIEW ALL TITLES (FC 26, WWE, CRICKET 24, GTA, MK &amp; MORE)</a>
+        <a href="arcade.html" class="btn-primary">VIEW ALL TITLES (FC 26, WWE, CRICKET 24, UNCHARTED &amp; MORE)</a>
       </div>
     </section>
 
