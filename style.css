@@ -59,30 +59,31 @@ body[data-page="home"]:before {
   content: none !important;
 }
 
-/* GLOBAL FUTURISTIC CYBER-GAMING BACKGROUND WALLPAPER FOR ALL OTHER SUBPAGES */
+/* GLOBAL SLEEK DARK CYBER GAMING BACKGROUND FOR ALL SUBPAGES (NON-AI, HIGH CONTRAST) */
 body:not([data-page="home"]) {
-  background-color: transparent;
+  background-color: #07080f !important;
+  color: var(--text-white);
+  min-height: 100vh;
+  position: relative;
   isolation: isolate;
 }
 body:not([data-page="home"]):before {
   content: '';
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   width: 100vw;
   height: 100vh;
   z-index: -1;
   pointer-events: none;
+  background-color: #07080f;
   background-image: 
-    linear-gradient(180deg, rgba(7, 8, 15, 0.78) 0%, rgba(7, 8, 15, 0.88) 45%, rgba(7, 8, 15, 0.96) 100%),
-    radial-gradient(circle at 50% 12%, rgba(0, 212, 255, 0.10) 0%, transparent 60%),
-    radial-gradient(circle at 85% 85%, rgba(255, 20, 147, 0.08) 0%, transparent 50%),
-    url('assets/bg_dark_cyber.jpg');
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 212, 255, 0.12), transparent 70%),
+    radial-gradient(circle 600px at 90% 90%, rgba(255, 20, 147, 0.08), transparent 70%),
+    radial-gradient(circle 500px at 10% 80%, rgba(157, 78, 221, 0.07), transparent 70%),
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+  background-position: 0 0, 0 0, 0 0, center center, center center;
 }
 
 a { text-decoration: none; color: inherit; }
@@ -1103,15 +1104,15 @@ button, input, select, textarea { font: inherit; }
   line-height: 1.4;
 }
 
-.feature-dot {
-  font-weight: 900;
-  font-size: 13px;
+.feature-svg-check {
+  width: 14px;
+  height: 14px;
   flex-shrink: 0;
-  margin-top: 1px;
+  margin-top: 3px;
 }
-.feature-dot.cyan { color: var(--neon-blue); }
-.feature-dot.green { color: #34d399; }
-.feature-dot.purple { color: #c084fc; }
+.feature-svg-check.cyan { stroke: var(--neon-blue); }
+.feature-svg-check.green { stroke: #34d399; }
+.feature-svg-check.purple { stroke: #c084fc; }
 
 .btn-package {
   display: block;
