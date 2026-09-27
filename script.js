@@ -116,7 +116,7 @@ function initContactForm() {
   const form = document.getElementById("enquiryForm");
   if (!form) return;
 
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const name = document.getElementById("contactName")?.value.trim() || "";
     const phone = document.getElementById("contactPhone")?.value.trim() || "";
@@ -152,7 +152,31 @@ function initContactForm() {
       console.warn("Storage error", err);
     }
 
-    // Sync enquiry with backend API
+    // Send enquiry to FormSubmit API (email dispatch to infinitygamersofficial.8@gmail.com)
+    const emailPayload = {
+      name: name,
+      phone: phone,
+      players: players,
+      message: msg,
+      _subject: `New PS5 Lounge Enquiry from ${name} (${phone}) - Infinity Gamers`,
+      _captcha: "false",
+      _template: "table"
+    };
+
+    try {
+      await fetch("https://formsubmit.co/ajax/infinitygamersofficial.8@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(emailPayload)
+      });
+    } catch (err) {
+      console.warn("Email service notice:", err);
+    }
+
+    // Also sync with backend API if running
     fetch("/api/enquiry", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -168,8 +192,8 @@ function initContactForm() {
         }, 500);
       }
       form.reset();
-      showToast(`Thank you, ${name}! Your enquiry has been received. We will contact you shortly.`);
-    }, 850);
+      showToast(`Thank you, ${name}! Your enquiry has been sent to our team at infinitygamersofficial.8@gmail.com.`);
+    }, 750);
   });
 }
 

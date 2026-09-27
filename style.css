@@ -1842,20 +1842,30 @@ button, input, select, textarea { font: inherit; }
   width: 44px;
   height: 44px;
   border-radius: var(--radius);
-  display: grid;
-  place-items: center;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 700;
-  background: rgba(0, 212, 255, 0.08);
-  border: 1px solid rgba(0, 212, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 225, 255, 0.08);
+  border: 1px solid rgba(0, 225, 255, 0.3);
   color: var(--neon-blue);
+  flex-shrink: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.channel-icon svg {
+  display: block;
   flex-shrink: 0;
 }
 .channel-icon.pink {
-  background: rgba(255, 20, 147, 0.08);
-  border-color: rgba(255, 20, 147, 0.3);
+  background: rgba(255, 112, 204, 0.08);
+  border-color: rgba(255, 112, 204, 0.3);
   color: var(--neon-pink);
+}
+.contact-channel-card:hover .channel-icon {
+  transform: scale(1.08);
+  box-shadow: 0 0 14px rgba(0, 225, 255, 0.35);
+}
+.contact-channel-card:hover .channel-icon.pink {
+  box-shadow: 0 0 14px rgba(255, 112, 204, 0.35);
 }
 .channel-text h4 {
   font-family: var(--font-mono);
