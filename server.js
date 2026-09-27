@@ -182,6 +182,7 @@ const server = createServer(async (request, response) => {
   }
 
   // REDIRECTS FOR LEGACY / CLEAN URLS
+  if (url.pathname === "/admin" || url.pathname === "/admin.html") return redirect(response, "/index.html");
   if (url.pathname === "/games" || url.pathname === "/games.html") return redirect(response, "/arcade.html");
   if (url.pathname === "/booking" || url.pathname === "/booking.html") return redirect(response, "/visit.html");
   if (url.pathname === "/bookings" || url.pathname === "/bookings.html") return redirect(response, "/index.html");
