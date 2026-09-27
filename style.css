@@ -59,7 +59,7 @@ body[data-page="home"]:before {
   content: none !important;
 }
 
-/* GLOBAL SLEEK DARK CYBER GAMING BACKGROUND FOR ALL SUBPAGES (NON-AI, HIGH CONTRAST) */
+/* GLOBAL SLEEK DARK CYBER GAMING BACKGROUND FOR ALL SUBPAGES */
 body:not([data-page="home"]) {
   background-color: #07080f !important;
   color: var(--text-white);
@@ -77,13 +77,12 @@ body:not([data-page="home"]):before {
   pointer-events: none;
   background-color: #07080f;
   background-image: 
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 212, 255, 0.12), transparent 70%),
-    radial-gradient(circle 600px at 90% 90%, rgba(255, 20, 147, 0.08), transparent 70%),
-    radial-gradient(circle 500px at 10% 80%, rgba(157, 78, 221, 0.07), transparent 70%),
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 100% 100%, 40px 40px, 40px 40px;
-  background-position: 0 0, 0 0, 0 0, center center, center center;
+    linear-gradient(180deg, rgba(7, 8, 15, 0.78) 0%, rgba(7, 8, 15, 0.84) 45%, rgba(7, 8, 15, 0.94) 100%),
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0, 212, 255, 0.15), transparent 70%),
+    url('assets/bg_futuristic_blue2.jpg');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
 }
 
 a { text-decoration: none; color: inherit; }
@@ -1966,85 +1965,125 @@ textarea.form-control {
 footer {
   background: #05060b;
   border-top: 1px solid var(--border-line);
-  padding: 50px clamp(16px, 3.5vw, 40px) 28px;
-  color: var(--text-muted);
-  font-size: 13px;
+  padding: 48px clamp(16px, 3.5vw, 40px) 24px;
+  color: #ffffff !important;
+  font-size: 13.5px;
 }
 .footer-top {
-  max-width: 1200px;
+  max-width: 1100px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
-  gap: 36px;
-  padding-bottom: 36px;
-  border-bottom: 1px solid var(--border-line);
+  grid-template-columns: 1.5fr 1fr 1.3fr;
+  gap: 40px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 .footer-brand-box {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 .footer-logo-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 .footer-logo-row img {
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  border: 1px solid var(--border-blue);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.footer-brand-title {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 17px;
+  letter-spacing: 1px;
+  color: #ffffff !important;
+}
+.footer-brand-sub {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 2px;
+  color: #ffffff !important;
+}
+.footer-brand-desc {
+  color: #ffffff !important;
+  font-size: 13.5px;
+  line-height: 1.6;
 }
 .footer-col h4 {
   font-family: var(--font-mono);
   font-weight: 700;
-  font-size: 12px;
+  font-size: 12.5px;
   letter-spacing: 1.5px;
-  color: var(--neon-blue);
+  color: #ffffff !important;
   text-transform: uppercase;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 .footer-links {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 .footer-links a {
-  color: var(--text-muted);
+  color: #ffffff !important;
   font-family: var(--font-sub);
   font-weight: 600;
-  font-size: 13.5px;
+  font-size: 14px;
   letter-spacing: 0.5px;
-  transition: color 0.2s ease;
+  transition: opacity 0.2s ease;
+  display: inline-block;
 }
 .footer-links a:hover {
-  color: var(--neon-blue);
-}
-
-/* FOOTER LOCATION & CONTACT TEXT — PURE CRISP WHITE */
-.footer-col-location,
-.footer-col-location h4,
-.footer-col-location p,
-.footer-col-location span,
-.footer-col-location a {
   color: #ffffff !important;
+  opacity: 0.75;
+  text-decoration: underline;
+}
+.footer-col p {
+  color: #ffffff !important;
+  font-size: 13.5px;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+.footer-col p:last-child {
+  margin-bottom: 0;
+}
+.footer-col a {
+  color: #ffffff !important;
+  text-decoration: underline;
+  transition: opacity 0.2s ease;
+}
+.footer-col a:hover {
+  color: #ffffff !important;
+  opacity: 0.75;
 }
 .footer-bottom {
-  max-width: 1200px;
-  margin: 24px auto 0;
+  max-width: 1100px;
+  margin: 20px auto 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 14px;
-  font-size: 12px;
+  font-size: 12.5px;
+  color: #ffffff !important;
 }
 .footer-bottom a {
-  color: var(--neon-blue);
+  color: #ffffff !important;
+  text-decoration: underline;
+  transition: opacity 0.2s ease;
 }
 .footer-bottom a:hover {
-  color: var(--neon-pink);
+  color: #ffffff !important;
+  opacity: 0.75;
+}
+
+/* Force 100% color uniformity across all footer elements */
+footer,
+footer * {
+  color: #ffffff !important;
 }
 
 /* TOAST */
