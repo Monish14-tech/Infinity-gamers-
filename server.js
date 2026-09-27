@@ -422,12 +422,12 @@ const server = createServer(async (request, response) => {
     }
 
     const ext = path.extname(filePath).toLowerCase();
-    const isHtml = ext === ".html";
+    const isDynamicAsset = ext === ".html" || ext === ".css" || ext === ".js";
     const headers = {
       "Content-Type": contentTypes[ext] || "application/octet-stream",
-      "Cache-Control": isHtml ? "no-store, no-cache, must-revalidate, max-age=0" : "max-age=3600"
+      "Cache-Control": isDynamicAsset ? "no-store, no-cache, must-revalidate, max-age=0" : "max-age=3600"
     };
-    if (isHtml) {
+    if (isDynamicAsset) {
       headers["Pragma"] = "no-cache";
       headers["Expires"] = "0";
     }

@@ -6,7 +6,505 @@
   <title>Infinity Gamers | PS5 Gaming Lounge — Thoppampatti Pirivu, Coimbatore</title>
   <meta name="description" content="Infinity Gamers — PlayStation 5 console gaming lounge in Thoppampatti Pirivu, CBE - 17, Pincode - 641017 (Opp. HDFC Bank). PS5 setups, up to 4 players per console, 4K 120Hz displays, air conditioned.">
   <link rel="icon" type="image/png" href="assets/logo.png">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2.3.0">
+  <style>
+    /* GUARANTEED BOXED & ALIGNED LAYOUT FOR OFFERS & TARIFF SECTION */
+    .offers-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    .offers-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .offers-group-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      flex-wrap: wrap;
+    }
+    .offers-group-tag {
+      font-family: var(--font-mono, monospace);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      padding: 3px 10px;
+      border-radius: 2px;
+      background: rgba(0, 212, 255, 0.12);
+      color: #00d4ff;
+      border: 1px solid rgba(0, 212, 255, 0.35);
+      text-transform: uppercase;
+    }
+    .offers-group-tag.pink {
+      background: rgba(255, 20, 147, 0.12);
+      color: #ff66b2;
+      border-color: rgba(255, 20, 147, 0.35);
+    }
+    .offers-group-tag.purple {
+      background: rgba(157, 78, 221, 0.15);
+      color: #d8b4fe;
+      border-color: rgba(157, 78, 221, 0.4);
+    }
+    .offers-group-title {
+      font-family: var(--font-heading, sans-serif);
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #ffffff;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    .offers-group-desc {
+      font-family: var(--font-body, sans-serif);
+      font-size: 13px;
+      color: #cbd5e1;
+      margin-left: auto;
+    }
+    .tariff-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      width: 100%;
+    }
+    .tariff-box-card {
+      background: rgba(14, 19, 34, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .tariff-box-card:hover { transform: translateY(-3px); }
+    .tariff-weekday-box { border-top: 3px solid #00d4ff; }
+    .tariff-weekday-box:hover { border-color: rgba(0, 212, 255, 0.45); box-shadow: 0 8px 32px rgba(0, 212, 255, 0.15); }
+    .tariff-weekend-box { border-top: 3px solid #ff1493; }
+    .tariff-weekend-box:hover { border-color: rgba(255, 20, 147, 0.45); box-shadow: 0 8px 32px rgba(255, 20, 147, 0.15); }
+    .tariff-box-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .tariff-box-pill {
+      font-family: var(--font-mono, monospace);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      padding: 4px 10px;
+      border-radius: 2px;
+      text-transform: uppercase;
+    }
+    .tariff-box-pill.cyan { background: rgba(0, 212, 255, 0.15); color: #00d4ff; border: 1px solid rgba(0, 212, 255, 0.35); }
+    .tariff-box-pill.pink { background: rgba(255, 20, 147, 0.15); color: #ff66b2; border: 1px solid rgba(255, 20, 147, 0.35); }
+    .tariff-box-days {
+      font-family: var(--font-mono, monospace);
+      font-size: 12px;
+      color: #8492a6;
+      font-weight: 600;
+    }
+    .tariff-box-name {
+      font-family: var(--font-heading, sans-serif);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: #ffffff;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+    .tariff-detail-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .tariff-detail-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    .tariff-detail-item:hover { background: rgba(255, 255, 255, 0.06); }
+    .tariff-detail-label { display: flex; flex-direction: column; gap: 2px; }
+    .tariff-time-text {
+      font-family: var(--font-sub, sans-serif);
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 1px;
+      color: #ffffff;
+    }
+    .tariff-subtext { font-family: var(--font-mono, monospace); font-size: 11px; color: #8492a6; }
+    .tariff-price-badge {
+      font-family: var(--font-heading, sans-serif);
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      padding: 4px 12px;
+      border-radius: 4px;
+    }
+    .tariff-price-badge.cyan { color: #6be5ff; background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.25); }
+    .tariff-price-badge.pink { color: #ff66b2; background: rgba(255, 20, 147, 0.1); border: 1px solid rgba(255, 20, 147, 0.25); }
+    .tariff-extra-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px dashed rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      margin-top: auto;
+    }
+    .tariff-extra-tag {
+      font-family: var(--font-mono, monospace);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #8492a6;
+    }
+    .tariff-extra-value {
+      font-family: var(--font-heading, sans-serif);
+      font-size: 15px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+    .tariff-extra-value span {
+      font-family: var(--font-mono, monospace);
+      font-size: 10px;
+      font-weight: 500;
+      color: #8492a6;
+      margin-left: 4px;
+    }
+    .packages-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      width: 100%;
+    }
+    .package-box-card {
+      background: rgba(14, 19, 34, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .package-box-card:hover { transform: translateY(-4px); border-color: rgba(255, 255, 255, 0.2); }
+    .package-vip-highlight {
+      border: 1px solid rgba(157, 78, 221, 0.5);
+      background: linear-gradient(170deg, rgba(14, 19, 34, 0.98) 0%, rgba(28, 12, 48, 0.95) 100%);
+      box-shadow: 0 8px 32px rgba(157, 78, 221, 0.2);
+    }
+    .package-vip-highlight:hover { border-color: rgba(157, 78, 221, 0.8); box-shadow: 0 8px 36px rgba(157, 78, 221, 0.35); }
+    .package-discount-pill {
+      font-family: var(--font-mono, monospace);
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      padding: 4px 10px;
+      border-radius: 2px;
+      display: inline-block;
+      align-self: flex-start;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .package-discount-pill.cyan { background: rgba(0, 212, 255, 0.12); color: #00d4ff; border: 1px solid rgba(0, 212, 255, 0.35); }
+    .package-discount-pill.green { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .package-discount-pill.purple { background: rgba(157, 78, 221, 0.2); color: #e9d5ff; border: 1px solid rgba(157, 78, 221, 0.5); }
+    .package-box-title {
+      font-family: var(--font-heading, sans-serif);
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+    .package-box-sub {
+      font-family: var(--font-mono, monospace);
+      font-size: 11.5px;
+      color: #8492a6;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+    }
+    .package-price-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+    .package-main-price {
+      font-family: var(--font-heading, sans-serif);
+      font-size: 34px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+    .package-main-price.cyan { color: #6be5ff; }
+    .package-main-price.green { color: #34d399; }
+    .package-main-price.purple { color: #f472b6; }
+    .package-original-price {
+      font-family: var(--font-mono, monospace);
+      font-size: 15px;
+      color: #8492a6;
+      text-decoration: line-through;
+    }
+    .package-validity-badge {
+      font-family: var(--font-mono, monospace);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #e9d5ff;
+      background: rgba(157, 78, 221, 0.25);
+      border: 1px solid rgba(157, 78, 221, 0.4);
+      padding: 3px 8px;
+      border-radius: 2px;
+      margin-left: auto;
+    }
+    .package-features-box {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 22px;
+      flex-grow: 1;
+    }
+    .package-feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13.5px;
+      color: #cbd5e1;
+      line-height: 1.4;
+    }
+    .feature-dot {
+      font-weight: 900;
+      font-size: 13px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .feature-dot.cyan { color: #00d4ff; }
+    .feature-dot.green { color: #34d399; }
+    .feature-dot.purple { color: #c084fc; }
+    .btn-package {
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding: 12px 18px;
+      font-family: var(--font-mono, monospace);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 3px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .btn-package.cyan {
+      background: linear-gradient(90deg, #00d4ff, #0099cc);
+      color: #07080f;
+      border: none;
+    }
+    .btn-package.cyan:hover { box-shadow: 0 0 18px rgba(0, 212, 255, 0.4); transform: translateY(-1px); }
+    .btn-package.green {
+      background: linear-gradient(90deg, #10b981, #059669);
+      color: #07080f;
+      border: none;
+    }
+    .btn-package.green:hover { box-shadow: 0 0 18px rgba(16, 185, 129, 0.4); transform: translateY(-1px); }
+    .btn-package.purple {
+      background: linear-gradient(90deg, #9d4edd, #ff1493);
+      color: #ffffff;
+      border: none;
+    }
+    .btn-package.purple:hover { box-shadow: 0 0 22px rgba(255, 20, 147, 0.45); transform: translateY(-1px); }
+    .membership-boxed-container {
+      background: linear-gradient(145deg, rgba(14, 19, 34, 0.96) 0%, rgba(22, 12, 40, 0.96) 100%);
+      border: 1px solid rgba(157, 78, 221, 0.4);
+      border-radius: 4px;
+      padding: 30px;
+      box-shadow: 0 8px 36px rgba(0, 0, 0, 0.6);
+    }
+    .membership-top-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 24px;
+    }
+    .membership-badge {
+      font-family: var(--font-mono, monospace);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #d8b4fe;
+      background: rgba(157, 78, 221, 0.2);
+      border: 1px solid rgba(157, 78, 221, 0.4);
+      padding: 3px 8px;
+      border-radius: 2px;
+      display: inline-block;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .membership-heading {
+      font-family: var(--font-heading, sans-serif);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+    .membership-rate-rule {
+      font-family: var(--font-mono, monospace);
+      font-size: 12.5px;
+      color: #ff66b2;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .membership-rate-rule .rule-icon { color: #ffd700; }
+    .membership-rate-rule strong { color: #ffffff; font-weight: 700; }
+    .membership-fee-card {
+      background: rgba(255, 20, 147, 0.12);
+      border: 1px solid rgba(255, 20, 147, 0.4);
+      border-radius: 4px;
+      padding: 12px 22px;
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .fee-label {
+      font-family: var(--font-mono, monospace);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #ff66b2;
+      text-transform: uppercase;
+    }
+    .fee-amount {
+      font-family: var(--font-heading, sans-serif);
+      font-size: 28px;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+    .fee-validity {
+      font-family: var(--font-mono, monospace);
+      font-size: 10px;
+      color: #cbd5e1;
+      letter-spacing: 1px;
+    }
+    .membership-milestones-label {
+      font-family: var(--font-mono, monospace);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #8492a6;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .membership-tiers-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+    }
+    .tier-tile {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      padding: 14px 12px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .tier-tile:hover {
+      transform: translateY(-2px);
+      border-color: rgba(0, 212, 255, 0.4);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .tier-tile-vip {
+      border-color: rgba(255, 20, 147, 0.4);
+      background: rgba(255, 20, 147, 0.05);
+    }
+    .tier-tile-vip:hover { border-color: rgba(255, 20, 147, 0.8); }
+    .tier-pts-box {
+      font-family: var(--font-heading, sans-serif);
+      font-size: 16px;
+      font-weight: 800;
+      color: #00d4ff;
+      letter-spacing: 0.5px;
+    }
+    .tier-pts-box.vip { color: #ff66b2; }
+    .tier-reward-box { display: flex; flex-direction: column; gap: 2px; }
+    .tier-reward-label {
+      font-family: var(--font-mono, monospace);
+      font-size: 9.5px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: #8492a6;
+      text-transform: uppercase;
+    }
+    .tier-reward-val {
+      font-family: var(--font-sub, sans-serif);
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.25;
+    }
+    .booking-notice-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 24px;
+      background: rgba(13, 17, 30, 0.95);
+      border: 1px solid rgba(0, 212, 255, 0.35);
+      border-left: 4px solid #00d4ff;
+      border-radius: 4px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+    .booking-notice-icon { font-size: 24px; color: #00d4ff; flex-shrink: 0; }
+    .booking-notice-content { font-size: 14px; line-height: 1.6; color: #cbd5e1; }
+    .booking-notice-content strong { color: #ffffff; }
+    .booking-notice-content a { color: #6be5ff; text-decoration: underline; font-weight: 700; }
+    @media (max-width: 992px) {
+      .packages-grid { grid-template-columns: 1fr; }
+      .membership-tiers-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .tariff-grid { grid-template-columns: 1fr; }
+      .membership-tiers-grid { grid-template-columns: repeat(2, 1fr); }
+      .membership-top-banner { flex-direction: column; align-items: flex-start; }
+      .membership-fee-card { text-align: left; width: 100%; }
+      .offers-group-desc { margin-left: 0; width: 100%; }
+    }
+    @media (max-width: 480px) {
+      .membership-tiers-grid { grid-template-columns: 1fr; }
+      .tariff-detail-item { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .tariff-price-badge { align-self: flex-start; }
+    }
+  </style>
 </head>
 <body data-page="home">
 
@@ -97,134 +595,255 @@
         <p>Transparent weekday &amp; weekend rates, value packages with bonus playtime, and exclusive membership rewards.</p>
       </div>
 
-      <!-- FULL TARIFF PLANS (WEEKDAYS & WEEKENDS) -->
-      <div class="tariff-grid">
-        <article class="tariff-card tariff-weekdays">
-          <span class="tariff-badge">WEEKDAYS (MON - FRI)</span>
-          <h3>HOURLY TARIFF</h3>
-          <div class="tariff-rates-list">
-            <div class="tariff-rate-row">
-              <span class="tariff-rate-time">1 HOUR PLAY</span>
-              <span class="tariff-rate-price">₹148</span>
+      <div class="offers-wrapper">
+        <!-- GROUP 1: HOURLY TARIFF PLANS (BOXED SEPARATELY) -->
+        <div class="offers-group">
+          <div class="offers-group-header">
+            <span class="offers-group-tag">PLAN 01</span>
+            <h3 class="offers-group-title">HOURLY TARIFF RATES</h3>
+            <span class="offers-group-desc">Standard per-hour console rates for solo or squad gaming</span>
+          </div>
+
+          <div class="tariff-grid">
+            <!-- WEEKDAY TARIFF CARD -->
+            <div class="tariff-box-card tariff-weekday-box">
+              <div class="tariff-box-header">
+                <span class="tariff-box-pill cyan">WEEKDAYS</span>
+                <span class="tariff-box-days">MON - FRI</span>
+              </div>
+              <h4 class="tariff-box-name">HOURLY TARIFF</h4>
+              <div class="tariff-detail-rows">
+                <div class="tariff-detail-item">
+                  <div class="tariff-detail-label">
+                    <span class="tariff-time-text">1 HOUR PLAY</span>
+                    <span class="tariff-subtext">Single hour playtime</span>
+                  </div>
+                  <div class="tariff-price-badge cyan">₹148</div>
+                </div>
+                <div class="tariff-detail-item">
+                  <div class="tariff-detail-label">
+                    <span class="tariff-time-text">2 HOURS PLAY</span>
+                    <span class="tariff-subtext">2 hours continuous play</span>
+                  </div>
+                  <div class="tariff-price-badge cyan">₹288</div>
+                </div>
+              </div>
+              <div class="tariff-extra-box">
+                <span class="tariff-extra-tag">EXTRA CONTROLLERS:</span>
+                <span class="tariff-extra-value">₹50 <span>PER CONTROLLER</span></span>
+              </div>
             </div>
-            <div class="tariff-rate-row">
-              <span class="tariff-rate-time">2 HOURS PLAY</span>
-              <span class="tariff-rate-price">₹288</span>
+
+            <!-- WEEKEND TARIFF CARD -->
+            <div class="tariff-box-card tariff-weekend-box">
+              <div class="tariff-box-header">
+                <span class="tariff-box-pill pink">WEEKEND</span>
+                <span class="tariff-box-days">SAT - SUN (PEAK HOURS)</span>
+              </div>
+              <h4 class="tariff-box-name">WEEKEND TARIFF</h4>
+              <div class="tariff-detail-rows">
+                <div class="tariff-detail-item">
+                  <div class="tariff-detail-label">
+                    <span class="tariff-time-text">1 HOUR PLAY</span>
+                    <span class="tariff-subtext">Peak weekend session</span>
+                  </div>
+                  <div class="tariff-price-badge pink">₹198</div>
+                </div>
+                <div class="tariff-detail-item">
+                  <div class="tariff-detail-label">
+                    <span class="tariff-time-text">2 HOURS PLAY</span>
+                    <span class="tariff-subtext">2 hours peak weekend play</span>
+                  </div>
+                  <div class="tariff-price-badge pink">₹348</div>
+                </div>
+              </div>
+              <div class="tariff-extra-box">
+                <span class="tariff-extra-tag">EXTRA CONTROLLERS:</span>
+                <span class="tariff-extra-value">₹50 <span>PER CONTROLLER</span></span>
+              </div>
             </div>
-          </div>
-          <div class="tariff-extra-line">
-            EXTRA CONTROLLERS: <strong>₹50 PER CONTROLLER</strong>
-          </div>
-        </article>
-
-        <article class="tariff-card tariff-weekends">
-          <span class="tariff-badge">WEEKEND (SAT - SUN)</span>
-          <h3>WEEKEND TARIFF</h3>
-          <div class="tariff-rates-list">
-            <div class="tariff-rate-row">
-              <span class="tariff-rate-time">1 HOUR PLAY</span>
-              <span class="tariff-rate-price">₹198</span>
-            </div>
-            <div class="tariff-rate-row">
-              <span class="tariff-rate-time">2 HOURS PLAY</span>
-              <span class="tariff-rate-price">₹348</span>
-            </div>
-          </div>
-          <div class="tariff-extra-line">
-            EXTRA CONTROLLERS: <strong>₹50 PER CONTROLLER</strong>
-          </div>
-        </article>
-      </div>
-
-      <!-- VALUE PACKAGES -->
-      <div class="packages-grid">
-        <article class="package-card">
-          <span class="package-tag package-save-badge">SAVE ₹244 (38% OFF)</span>
-          <h3>3 HOURS + 1 HOUR FREE</h3>
-          <div class="package-price-row">
-            <span class="package-act-price">₹398</span>
-            <span class="package-old-price">₹642</span>
-          </div>
-          <ul class="package-features">
-            <li>4 total hours of gaming playtime</li>
-            <li>+ 1 controller free of charge</li>
-            <li>Up to 4 players can join and rotate</li>
-            <li>Play any title across full PS5 library</li>
-          </ul>
-          <a href="tel:9994420447" class="btn-primary" style="text-align:center;">PRE-BOOK PACKAGE</a>
-        </article>
-
-        <article class="package-card">
-          <span class="package-tag package-save-badge">SAVE ₹240 (26% OFF)</span>
-          <h3>5 HOURS + 1 HOUR FREE</h3>
-          <div class="package-price-row">
-            <span class="package-act-price">₹698</span>
-            <span class="package-old-price">₹938</span>
-          </div>
-          <ul class="package-features">
-            <li>6 total hours of gaming playtime</li>
-            <li>+ 1 controller free of charge</li>
-            <li>Perfect for squad marathons &amp; tournaments</li>
-            <li>Full DualSense haptic &amp; 4K 120Hz access</li>
-          </ul>
-          <a href="tel:9994420447" class="btn-primary" style="text-align:center;">PRE-BOOK PACKAGE</a>
-        </article>
-
-        <article class="package-card package-highlight">
-          <span class="package-tag" style="background:rgba(157,78,221,0.25);color:#d8b4fe;border:1px solid rgba(157,78,221,0.5);">SPECIAL ALL-IN-ONE</span>
-          <h3>UNLIMITED SPECIAL</h3>
-          <div class="package-price-row">
-            <span class="package-act-price">₹888</span>
-            <span style="font-family:var(--font-mono);font-size:12px;color:var(--neon-pink);font-weight:700;">1 DAY VALIDITY</span>
-          </div>
-          <ul class="package-features">
-            <li>Unlimited hours on valid date</li>
-            <li>Unlimited controllers included</li>
-            <li>1 snack free + 1 tin can soft drink free</li>
-            <li>Maximum value for dedicated gaming squads</li>
-          </ul>
-          <a href="tel:9994420447" class="btn-primary" style="text-align:center;background:linear-gradient(90deg,var(--neon-purple),var(--neon-pink));">PRE-BOOK ₹888 SPECIAL</a>
-        </article>
-      </div>
-
-      <!-- INFINITY CREDIT POINTS MEMBERSHIP -->
-      <div class="credit-points-banner">
-        <div class="credit-points-header">
-          <div class="credit-points-title">
-            <h3>INFINITY CREDIT POINTS MEMBERSHIP</h3>
-            <p>PLAY MORE • EARN MORE • GET REWARDED (1 HOUR PLAY = 10 POINTS)</p>
-          </div>
-          <div class="credit-fee-chip">
-            ₹99 <small>ONE-TIME FEE • LIFETIME VALIDITY</small>
           </div>
         </div>
 
-        <div class="credit-tiers-grid">
-          <div class="credit-tier-box">
-            <div class="credit-tier-pts">100 PTS</div>
-            <div class="credit-tier-reward">1/2 HOUR FREE</div>
+        <!-- GROUP 2: VALUE COMBO PACKAGES (BOXED SEPARATELY) -->
+        <div class="offers-group">
+          <div class="offers-group-header">
+            <span class="offers-group-tag pink">PLAN 02</span>
+            <h3 class="offers-group-title">VALUE COMBO PACKAGES</h3>
+            <span class="offers-group-desc">Extended playtime packages with free bonus hours and extra controllers</span>
           </div>
-          <div class="credit-tier-box">
-            <div class="credit-tier-pts">150 PTS</div>
-            <div class="credit-tier-reward">1 HOUR FREE</div>
-          </div>
-          <div class="credit-tier-box">
-            <div class="credit-tier-pts">200 PTS</div>
-            <div class="credit-tier-reward">1.5 HOURS FREE</div>
-          </div>
-          <div class="credit-tier-box">
-            <div class="credit-tier-pts">250 PTS</div>
-            <div class="credit-tier-reward">2 HOURS FREE</div>
-          </div>
-          <div class="credit-tier-box" style="border-color:rgba(255,20,147,0.4);">
-            <div class="credit-tier-pts" style="color:var(--neon-pink-light);">250+ PTS</div>
-            <div class="credit-tier-reward">2H FREE OR FREE TOURNAMENT ENTRY</div>
+
+          <div class="packages-grid">
+            <!-- PACKAGE 1 -->
+            <div class="package-box-card">
+              <span class="package-discount-pill cyan">SAVE ₹244 • 38% OFF</span>
+              <h4 class="package-box-title">3 HOURS + 1 HOUR FREE</h4>
+              <div class="package-box-sub">4 Total Hours of Gaming Playtime</div>
+              <div class="package-price-wrap">
+                <span class="package-main-price cyan">₹398</span>
+                <span class="package-original-price">₹642</span>
+              </div>
+              <div class="package-features-box">
+                <div class="package-feature-item">
+                  <span class="feature-dot cyan">✓</span>
+                  <span>4 total hours of gaming playtime</span>
+                </div>
+                <div class="package-feature-item">
+                  <span class="feature-dot cyan">✓</span>
+                  <span>+ 1 controller free of charge</span>
+                </div>
+                <div class="package-feature-item">
+                  <span class="feature-dot cyan">✓</span>
+                  <span>Up to 4 players can join and rotate</span>
+                </div>
+                <div class="package-feature-item">
+                  <span class="feature-dot cyan">✓</span>
+                  <span>Play any title across full PS5 library</span>
+                </div>
+              </div>
+              <a href="tel:9994420447" class="btn-package cyan">PRE-BOOK PACKAGE</a>
+            </div>
+
+            <!-- PACKAGE 2 -->
+            <div class="package-box-card">
+              <span class="package-discount-pill green">SAVE ₹240 • 26% OFF</span>
+              <h4 class="package-box-title">5 HOURS + 1 HOUR FREE</h4>
+              <div class="package-box-sub">6 Total Hours Squad Marathon</div>
+              <div class="package-price-wrap">
+                <span class="package-main-price green">₹698</span>
+                <span class="package-original-price">₹938</span>
+              </div>
+              <div class="package-features-box">
+                <div class="package-feature-item">
+                  <span class="feature-dot green">✓</span>
+                  <span>6 total hours of gaming playtime</span>
+                </div>
+                <div class="package-feature-item">
+                  <span class="feature-dot green">✓</span>
+                  <span>+ 1 controller free of charge</span>
+                </div>
+                <div class="package-feature-item">
+                  <span class="feature-dot green">✓</span>
+                  <span>Perfect for squad marathons &amp; tournaments</span>
+                </div>
+                <div class="package-feature-item">
+                  <span class="feature-dot green">✓</span>
+                  <span>Full DualSense haptic &amp; 4K 120Hz access</span>
+                </div>
+              </div>
+              <a href="tel:9994420447" class="btn-package green">PRE-BOOK PACKAGE</a>
+            </div>
+
+            <!-- PACKAGE 3 (VIP SPECIAL) -->
+            <div class="package-box-card package-vip-highlight">
+              <span class="package-discount-pill purple">SPECIAL ALL-IN-ONE</span>
+              <h4 class="package-box-title">UNLIMITED SPECIAL</h4>
+              <div class="package-box-sub">Full Day Squad Pass</div>
+              <div class="package-price-wrap">
+                <span class="package-main-price purple">₹888</span>
+                <span class="package-validity-badge">1 DAY VALIDITY</span>
+              </div>
+              <div class="package-features-box">
+                <div class="package-feature-item">
+                  <span class="feature-dot purple">✓</span>
+                  <span>Unlimited hours on valid date</span>
+                </div>
+                <div class="package-feature-item">
+                  <span class="feature-dot purple">✓</span>
+                  <span>Unlimited controllers included</span>
+                </div>
+                <div class="package-feature-item">
+                  <span class="feature-dot purple">✓</span>
+                  <span>1 snack free + 1 tin can soft drink free</span>
+                </div>
+                <div class="package-feature-item">
+                  <span class="feature-dot purple">✓</span>
+                  <span>Maximum value for dedicated gaming squads</span>
+                </div>
+              </div>
+              <a href="tel:9994420447" class="btn-package purple">PRE-BOOK ₹888 SPECIAL</a>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="walk-in-note">
-        <strong>PRE-BOOKING RECOMMENDED:</strong> Call or WhatsApp <strong><a href="tel:9994420447" style="color:var(--neon-pink);text-decoration:underline;">99944 20447</a></strong> to reserve your preferred station and time slot. Walk-ins are also welcome between <strong>10:00 AM – 09:30 PM</strong>.
+        <!-- GROUP 3: MEMBERSHIP & REWARDS (BOXED SEPARATELY) -->
+        <div class="offers-group">
+          <div class="offers-group-header">
+            <span class="offers-group-tag purple">PLAN 03</span>
+            <h3 class="offers-group-title">INFINITY CREDIT POINTS MEMBERSHIP</h3>
+            <span class="offers-group-desc">Earn points every hour and redeem for free gaming playtime</span>
+          </div>
+
+          <div class="membership-boxed-container">
+            <div class="membership-top-banner">
+              <div class="membership-title-col">
+                <span class="membership-badge">LOYALTY REWARDS</span>
+                <h4 class="membership-heading">PLAY MORE • EARN MORE • GET REWARDED</h4>
+                <div class="membership-rate-rule">
+                  <span class="rule-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></span>
+                  <span>CONVERSION RATE: <strong>1 HOUR PLAY = 10 POINTS</strong></span>
+                </div>
+              </div>
+              <div class="membership-fee-card">
+                <span class="fee-label">MEMBERSHIP PASS</span>
+                <div class="fee-amount">₹99</div>
+                <span class="fee-validity">ONE-TIME FEE • LIFETIME VALIDITY</span>
+              </div>
+            </div>
+
+            <div class="membership-milestones-label">MILESTONE REDEMPTION TIERS</div>
+
+            <div class="membership-tiers-grid">
+              <div class="tier-tile">
+                <div class="tier-pts-box">100 PTS</div>
+                <div class="tier-reward-box">
+                  <span class="tier-reward-label">REWARD</span>
+                  <strong class="tier-reward-val">1/2 HOUR FREE</strong>
+                </div>
+              </div>
+
+              <div class="tier-tile">
+                <div class="tier-pts-box">150 PTS</div>
+                <div class="tier-reward-box">
+                  <span class="tier-reward-label">REWARD</span>
+                  <strong class="tier-reward-val">1 HOUR FREE</strong>
+                </div>
+              </div>
+
+              <div class="tier-tile">
+                <div class="tier-pts-box">200 PTS</div>
+                <div class="tier-reward-box">
+                  <span class="tier-reward-label">REWARD</span>
+                  <strong class="tier-reward-val">1.5 HOURS FREE</strong>
+                </div>
+              </div>
+
+              <div class="tier-tile">
+                <div class="tier-pts-box">250 PTS</div>
+                <div class="tier-reward-box">
+                  <span class="tier-reward-label">REWARD</span>
+                  <strong class="tier-reward-val">2 HOURS FREE</strong>
+                </div>
+              </div>
+
+              <div class="tier-tile tier-tile-vip">
+                <div class="tier-pts-box vip">250+ PTS</div>
+                <div class="tier-reward-box">
+                  <span class="tier-reward-label">ELITE PERK</span>
+                  <strong class="tier-reward-val">2H FREE OR FREE TOURNAMENT ENTRY</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- GROUP 4: PRE-BOOKING & WALK-IN CALLOUT (BOXED SEPARATELY) -->
+        <div class="booking-notice-card">
+          <div class="booking-notice-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
+          <div class="booking-notice-content">
+            <strong>PRE-BOOKING RECOMMENDED:</strong> Call or WhatsApp <strong><a href="tel:9994420447">99944 20447</a></strong> to reserve your preferred station and time slot. Walk-ins are also welcome between <strong>10:00 AM – 09:30 PM</strong> daily.
+          </div>
+        </div>
       </div>
     </section>
 

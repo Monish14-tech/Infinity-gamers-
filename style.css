@@ -719,260 +719,647 @@ button, input, select, textarea { font: inherit; }
   color: var(--neon-blue);
 }
 
-/* TARIFF PLANS & PACKAGES FROM FLYER */
+/* ========================================================
+   OFFERS & TARIFF SECTION — BOXED & ALIGNED CARDS
+   ======================================================== */
+.offers-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.offers-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.offers-group-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-wrap: wrap;
+}
+
+.offers-group-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 3px 10px;
+  border-radius: 2px;
+  background: rgba(0, 212, 255, 0.12);
+  color: var(--neon-blue);
+  border: 1px solid rgba(0, 212, 255, 0.35);
+  text-transform: uppercase;
+}
+
+.offers-group-tag.pink {
+  background: rgba(255, 20, 147, 0.12);
+  color: var(--neon-pink-light);
+  border-color: rgba(255, 20, 147, 0.35);
+}
+
+.offers-group-tag.purple {
+  background: rgba(157, 78, 221, 0.15);
+  color: #d8b4fe;
+  border-color: rgba(157, 78, 221, 0.4);
+}
+
+.offers-group-title {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.offers-group-desc {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-left: auto;
+}
+
+/* 1. HOURLY TARIFF GRID & CARDS */
 .tariff-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  max-width: 1040px;
-  margin: 0 auto 30px;
+  gap: 24px;
+  width: 100%;
 }
-.tariff-card {
-  background: rgba(14, 19, 34, 0.92);
-  border: 1px solid var(--border-line);
+
+.tariff-box-card {
+  background: rgba(14, 19, 34, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius);
-  padding: 24px;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
   position: relative;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
-.tariff-card.tariff-weekdays {
-  border-color: rgba(0, 212, 255, 0.35);
+
+.tariff-box-card:hover {
+  transform: translateY(-3px);
 }
-.tariff-card.tariff-weekends {
-  border-color: rgba(255, 20, 147, 0.35);
+
+.tariff-weekday-box {
+  border-top: 3px solid var(--neon-blue);
 }
-.tariff-badge {
-  display: inline-block;
+.tariff-weekday-box:hover {
+  border-color: rgba(0, 212, 255, 0.45);
+  box-shadow: 0 8px 32px rgba(0, 212, 255, 0.15);
+}
+
+.tariff-weekend-box {
+  border-top: 3px solid var(--neon-pink);
+}
+.tariff-weekend-box:hover {
+  border-color: rgba(255, 20, 147, 0.45);
+  box-shadow: 0 8px 32px rgba(255, 20, 147, 0.15);
+}
+
+.tariff-box-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.tariff-box-pill {
   font-family: var(--font-mono);
   font-size: 11px;
-  letter-spacing: 1.5px;
   font-weight: 700;
+  letter-spacing: 1.5px;
   padding: 4px 10px;
   border-radius: 2px;
-  margin-bottom: 12px;
   text-transform: uppercase;
 }
-.tariff-weekdays .tariff-badge {
+.tariff-box-pill.cyan {
   background: rgba(0, 212, 255, 0.15);
   color: var(--neon-blue);
-  border: 1px solid var(--border-blue);
+  border: 1px solid rgba(0, 212, 255, 0.35);
 }
-.tariff-weekends .tariff-badge {
+.tariff-box-pill.pink {
   background: rgba(255, 20, 147, 0.15);
   color: var(--neon-pink-light);
-  border: 1px solid var(--border-pink);
+  border: 1px solid rgba(255, 20, 147, 0.35);
 }
-.tariff-card h3 {
+
+.tariff-box-days {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.tariff-box-name {
   font-family: var(--font-heading);
-  font-size: 20px;
-  letter-spacing: 1px;
-  margin-bottom: 16px;
-  color: #fff;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #ffffff;
+  margin-bottom: 20px;
+  text-transform: uppercase;
 }
-.tariff-rates-list {
+
+.tariff-detail-rows {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
-.tariff-rate-row {
+
+.tariff-detail-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 14px;
+  padding: 14px 18px;
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  transition: background 0.2s;
 }
-.tariff-rate-time {
-  font-family: var(--font-sub);
-  font-weight: 700;
-  font-size: 15px;
-  letter-spacing: 1px;
-  color: #fff;
-}
-.tariff-rate-price {
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 20px;
-  color: var(--neon-blue);
-}
-.tariff-weekends .tariff-rate-price {
-  color: var(--neon-pink);
-}
-.tariff-extra-line {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--text-dim);
-  border-top: 1px dashed rgba(255, 255, 255, 0.12);
-  padding-top: 12px;
-  margin-top: 8px;
+.tariff-detail-item:hover {
+  background: rgba(255, 255, 255, 0.06);
 }
 
-/* VALUE PACKAGES */
+.tariff-detail-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tariff-time-text {
+  font-family: var(--font-sub);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 1px;
+  color: #ffffff;
+}
+
+.tariff-subtext {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.tariff-price-badge {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  padding: 4px 12px;
+  border-radius: 4px;
+}
+.tariff-price-badge.cyan {
+  color: var(--neon-blue-light);
+  background: rgba(0, 212, 255, 0.1);
+  border: 1px solid rgba(0, 212, 255, 0.25);
+}
+.tariff-price-badge.pink {
+  color: var(--neon-pink-light);
+  background: rgba(255, 20, 147, 0.1);
+  border: 1px solid rgba(255, 20, 147, 0.25);
+}
+
+.tariff-extra-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  margin-top: auto;
+}
+
+.tariff-extra-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.tariff-extra-value {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 800;
+  color: #ffffff;
+}
+.tariff-extra-value span {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-left: 4px;
+}
+
+/* 2. VALUE PACKAGES GRID & CARDS */
 .packages-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  max-width: 1040px;
-  margin: 0 auto 30px;
+  gap: 22px;
+  width: 100%;
 }
-.package-card {
-  background: rgba(14, 19, 34, 0.92);
-  border: 1px solid var(--border-line);
+
+.package-box-card {
+  background: rgba(14, 19, 34, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius);
-  padding: 24px;
+  padding: 26px;
   display: flex;
   flex-direction: column;
   position: relative;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-  transition: transform 0.2s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
-.package-card:hover {
+
+.package-box-card:hover {
   transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.2);
 }
-.package-card.package-highlight {
-  border-color: rgba(157, 78, 221, 0.5);
-  box-shadow: 0 0 24px rgba(157, 78, 221, 0.2);
+
+.package-vip-highlight {
+  border: 1px solid rgba(157, 78, 221, 0.5);
+  background: linear-gradient(170deg, rgba(14, 19, 34, 0.98) 0%, rgba(28, 12, 48, 0.95) 100%);
+  box-shadow: 0 8px 32px rgba(157, 78, 221, 0.2);
 }
-.package-tag {
+.package-vip-highlight:hover {
+  border-color: rgba(157, 78, 221, 0.8);
+  box-shadow: 0 8px 36px rgba(157, 78, 221, 0.35);
+}
+
+.package-discount-pill {
   font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 1.5px;
+  font-size: 10.5px;
   font-weight: 700;
-  padding: 3px 8px;
+  letter-spacing: 1.5px;
+  padding: 4px 10px;
   border-radius: 2px;
   display: inline-block;
-  margin-bottom: 10px;
+  align-self: flex-start;
+  margin-bottom: 12px;
   text-transform: uppercase;
 }
-.package-save-badge {
-  background: rgba(0, 212, 255, 0.15);
+.package-discount-pill.cyan {
+  background: rgba(0, 212, 255, 0.12);
   color: var(--neon-blue);
-  border: 1px solid var(--border-blue);
+  border: 1px solid rgba(0, 212, 255, 0.35);
 }
-.package-card h3 {
+.package-discount-pill.green {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+.package-discount-pill.purple {
+  background: rgba(157, 78, 221, 0.2);
+  color: #e9d5ff;
+  border: 1px solid rgba(157, 78, 221, 0.5);
+}
+
+.package-box-title {
   font-family: var(--font-heading);
-  font-size: 18px;
-  margin-bottom: 8px;
-  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #ffffff;
+  margin-bottom: 4px;
 }
-.package-price-row {
+
+.package-box-sub {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+}
+
+.package-price-wrap {
   display: flex;
   align-items: baseline;
-  gap: 10px;
-  margin: 12px 0 16px;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  margin-bottom: 20px;
 }
-.package-act-price {
+
+.package-main-price {
   font-family: var(--font-heading);
+  font-size: 34px;
   font-weight: 900;
-  font-size: 32px;
-  color: #fff;
+  letter-spacing: 1px;
 }
-.package-old-price {
+.package-main-price.cyan { color: var(--neon-blue-light); }
+.package-main-price.green { color: #34d399; }
+.package-main-price.purple { color: #f472b6; }
+
+.package-original-price {
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 15px;
   color: var(--text-muted);
   text-decoration: line-through;
 }
-.package-features {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 20px;
-  flex-grow: 1;
-}
-.package-features li {
-  font-size: 13px;
-  color: var(--text-dim);
-  position: relative;
-  padding-left: 16px;
-}
-.package-features li:before {
-  content: '✓';
-  position: absolute;
-  left: 0;
-  color: var(--neon-blue);
-  font-weight: bold;
+
+.package-validity-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #e9d5ff;
+  background: rgba(157, 78, 221, 0.25);
+  border: 1px solid rgba(157, 78, 221, 0.4);
+  padding: 3px 8px;
+  border-radius: 2px;
+  margin-left: auto;
 }
 
-/* CREDIT POINTS MEMBERSHIP */
-.credit-points-banner {
-  max-width: 1040px;
-  margin: 0 auto 30px;
-  background: linear-gradient(135deg, rgba(14, 19, 34, 0.95) 0%, rgba(20, 10, 36, 0.95) 100%);
+.package-features-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 22px;
+  flex-grow: 1;
+}
+
+.package-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13.5px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+.feature-dot {
+  font-weight: 900;
+  font-size: 13px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.feature-dot.cyan { color: var(--neon-blue); }
+.feature-dot.green { color: #34d399; }
+.feature-dot.purple { color: #c084fc; }
+
+.btn-package {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 12px 18px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: var(--radius);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.btn-package.cyan {
+  background: linear-gradient(90deg, #00d4ff, #0099cc);
+  color: #07080f;
+  border: none;
+}
+.btn-package.cyan:hover {
+  box-shadow: 0 0 18px rgba(0, 212, 255, 0.4);
+  transform: translateY(-1px);
+}
+.btn-package.green {
+  background: linear-gradient(90deg, #10b981, #059669);
+  color: #07080f;
+  border: none;
+}
+.btn-package.green:hover {
+  box-shadow: 0 0 18px rgba(16, 185, 129, 0.4);
+  transform: translateY(-1px);
+}
+.btn-package.purple {
+  background: linear-gradient(90deg, var(--neon-purple), var(--neon-pink));
+  color: #ffffff;
+  border: none;
+}
+.btn-package.purple:hover {
+  box-shadow: 0 0 22px rgba(255, 20, 147, 0.45);
+  transform: translateY(-1px);
+}
+
+/* 3. INFINITY CREDIT POINTS MEMBERSHIP */
+.membership-boxed-container {
+  background: linear-gradient(145deg, rgba(14, 19, 34, 0.96) 0%, rgba(22, 12, 40, 0.96) 100%);
   border: 1px solid rgba(157, 78, 221, 0.4);
   border-radius: var(--radius);
-  padding: 28px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
+  padding: 30px;
+  box-shadow: 0 8px 36px rgba(0, 0, 0, 0.6);
 }
-.credit-points-header {
+
+.membership-top-banner {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 20px;
+  gap: 20px;
+  padding-bottom: 22px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding-bottom: 16px;
+  margin-bottom: 24px;
 }
-.credit-points-title h3 {
-  font-family: var(--font-heading);
-  font-size: 22px;
-  color: #fff;
-  letter-spacing: 1px;
-}
-.credit-points-title p {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--neon-pink-light);
-  letter-spacing: 1px;
-  margin-top: 4px;
-}
-.credit-fee-chip {
-  background: rgba(255, 20, 147, 0.15);
-  border: 1px solid var(--neon-pink);
-  color: #fff;
-  padding: 8px 18px;
-  border-radius: 4px;
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 18px;
-  text-align: right;
-}
-.credit-fee-chip small {
-  display: block;
+
+.membership-badge {
   font-family: var(--font-mono);
   font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 1px;
-  color: var(--text-dim);
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #d8b4fe;
+  background: rgba(157, 78, 221, 0.2);
+  border: 1px solid rgba(157, 78, 221, 0.4);
+  padding: 3px 8px;
+  border-radius: 2px;
+  display: inline-block;
+  margin-bottom: 8px;
+  text-transform: uppercase;
 }
-.credit-tiers-grid {
+
+.membership-heading {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.membership-rate-rule {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--neon-pink-light);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.membership-rate-rule .rule-icon {
+  color: #ffd700;
+}
+.membership-rate-rule strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.membership-fee-card {
+  background: rgba(255, 20, 147, 0.12);
+  border: 1px solid rgba(255, 20, 147, 0.4);
+  border-radius: 4px;
+  padding: 12px 22px;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fee-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--neon-pink-light);
+  text-transform: uppercase;
+}
+
+.fee-amount {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.1;
+}
+
+.fee-validity {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+
+.membership-milestones-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.membership-tiers-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
+  gap: 14px;
 }
-.credit-tier-box {
+
+.tier-tile {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius);
-  padding: 12px;
+  border-radius: 4px;
+  padding: 14px 12px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 0.2s, border-color 0.2s;
 }
-.credit-tier-pts {
+
+.tier-tile:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0, 212, 255, 0.4);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tier-tile-vip {
+  border-color: rgba(255, 20, 147, 0.4);
+  background: rgba(255, 20, 147, 0.05);
+}
+.tier-tile-vip:hover {
+  border-color: rgba(255, 20, 147, 0.8);
+}
+
+.tier-pts-box {
   font-family: var(--font-heading);
-  font-size: 15px;
+  font-size: 16px;
+  font-weight: 800;
   color: var(--neon-blue);
-  margin-bottom: 4px;
+  letter-spacing: 0.5px;
 }
-.credit-tier-reward {
+.tier-pts-box.vip {
+  color: var(--neon-pink-light);
+}
+
+.tier-reward-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tier-reward-label {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.tier-reward-val {
   font-family: var(--font-sub);
+  font-size: 13.5px;
   font-weight: 700;
-  font-size: 12px;
-  color: #fff;
+  color: #ffffff;
+  line-height: 1.25;
+}
+
+/* 4. PRE-BOOKING NOTICE CARD */
+.booking-notice-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 24px;
+  background: rgba(13, 17, 30, 0.95);
+  border: 1px solid rgba(0, 212, 255, 0.35);
+  border-left: 4px solid var(--neon-blue);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.booking-notice-icon {
+  font-size: 24px;
+  color: var(--neon-blue);
+  flex-shrink: 0;
+}
+
+.booking-notice-content {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+.booking-notice-content strong {
+  color: #ffffff;
+}
+
+.booking-notice-content a {
+  color: var(--neon-blue-light);
+  text-decoration: underline;
+  font-weight: 700;
 }
 
 /* ========================================================
