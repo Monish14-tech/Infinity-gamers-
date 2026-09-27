@@ -6,7 +6,7 @@
   <title>Contact Us | Infinity Gamers — PS5 Lounge in Coimbatore</title>
   <meta name="description" content="Contact Infinity Gamers in Thoppampatti Pirivu, Coimbatore. Phone: 99944 20447. WhatsApp chat, direct enquiries, timings, and FAQs for our PlayStation 5 gaming lounge.">
   <link rel="icon" type="image/png" href="assets/logo.png">
-  <link rel="stylesheet" href="style.css?v=3.2.0">
+  <link rel="stylesheet" href="style.css?v=3.3.0">
   <style>
     body {
       background-color: #07080f !important;
@@ -34,6 +34,26 @@
   </style>
 </head>
 <body data-page="contact">
+
+  <!-- LOGO LOADING ANIMATION WITH GLOW EFFECT -->
+  <div class="logo-loader-screen" id="logoLoader">
+    <div class="loader-portal">
+      <div class="loader-ambient-glow"></div>
+      <div class="loader-ring loader-ring-outer"></div>
+      <div class="loader-ring loader-ring-inner"></div>
+      <div class="loader-logo-wrap">
+        <img src="assets/logo.png" alt="Infinity Gamers" class="loader-logo-img">
+      </div>
+    </div>
+    <div class="loader-brand-title">INFINITY GAMERS</div>
+    <div class="loader-status">
+      <span class="loader-status-text" id="loaderStatusText">INITIALIZING PORTAL</span>
+      <span class="loader-dots"><span>.</span><span>.</span><span>.</span></span>
+    </div>
+    <div class="loader-progress-track">
+      <div class="loader-progress-bar"></div>
+    </div>
+  </div>
 
   <!-- NAVIGATION BAR -->
   <header class="navbar">
@@ -131,12 +151,12 @@
           <form id="enquiryForm">
             <div class="form-group">
               <label for="contactName">YOUR NAME</label>
-              <input type="text" id="contactName" class="form-control" placeholder="e.g. Prasath Kumar" required>
+              <input type="text" id="contactName" class="form-control" placeholder="e.g. Karthik Raman" required>
             </div>
 
             <div class="form-group">
               <label for="contactPhone">PHONE NUMBER</label>
-              <input type="tel" id="contactPhone" class="form-control" placeholder="e.g. 99944 20447" required>
+              <input type="tel" id="contactPhone" class="form-control" placeholder="e.g. 98421 54321" required>
             </div>
 
             <div class="form-group">
@@ -151,7 +171,7 @@
 
             <div class="form-group">
               <label for="contactMsg">MESSAGE / QUERY</label>
-              <textarea id="contactMsg" class="form-control" placeholder="Ask about specific games, timing, tournaments, or directions..." required></textarea>
+              <textarea id="contactMsg" class="form-control" placeholder="e.g. Want to reserve 2 PS5 controllers for Cricket 24 &amp; FC 26 this Saturday at 5 PM..." required></textarea>
             </div>
 
             <button type="submit" class="btn-primary" style="width:100%; min-height:46px;">

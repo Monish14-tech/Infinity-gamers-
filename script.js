@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initContactForm();
   initActiveNavLink();
   initHeroVideo();
+  initLogoLoader();
 });
 
 // HERO VIDEO PLAYBACK (MOBILE + DESKTOP)
@@ -127,6 +128,15 @@ function initContactForm() {
       return;
     }
 
+    // Show glowing logo loader during submission
+    const loader = document.getElementById("logoLoader");
+    const statusText = document.getElementById("loaderStatusText");
+    if (loader) {
+      if (statusText) statusText.textContent = "TRANSMITTING ENQUIRY";
+      loader.style.display = "flex";
+      loader.classList.remove("fade-out");
+    }
+
     // Save enquiry to local storage for offline backup
     try {
       const enquiries = JSON.parse(localStorage.getItem("infinity_enquiries") || "[]");
@@ -149,8 +159,17 @@ function initContactForm() {
       body: JSON.stringify({ name, phone, players, msg })
     }).catch(err => console.warn("Server enquiry sync error:", err));
 
-    form.reset();
-    showToast(`Thank you, ${name}! Your enquiry has been received. We will contact you shortly.`);
+    setTimeout(() => {
+      if (loader) {
+        loader.classList.add("fade-out");
+        setTimeout(() => {
+          loader.style.display = "none";
+          if (statusText) statusText.textContent = "INITIALIZING PORTAL";
+        }, 500);
+      }
+      form.reset();
+      showToast(`Thank you, ${name}! Your enquiry has been received. We will contact you shortly.`);
+    }, 850);
   });
 }
 
@@ -170,4 +189,28 @@ function showToast(message) {
   setTimeout(() => {
     toastEl.classList.remove("show");
   }, 4000);
+}
+
+// LOGO LOADING ANIMATION CONTROLLER (WITH NEON GLOW)
+function initLogoLoader() {
+  const loader = document.getElementById("logoLoader");
+  if (!loader) return;
+
+  const hideLoader = () => {
+    loader.classList.add("fade-out");
+    setTimeout(() => {
+      loader.style.display = "none";
+    }, 600);
+  };
+
+  // Ensure minimum visibility of 750ms so user experiences the stunning glowing logo
+  const startTime = Date.now();
+  window.addEventListener("load", () => {
+    const elapsed = Date.now() - startTime;
+    const remaining = Math.max(0, 750 - elapsed);
+    setTimeout(hideLoader, remaining);
+  });
+
+  // Fallback in case window load fired early
+  setTimeout(hideLoader, 1300);
 }
