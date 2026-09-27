@@ -196,21 +196,59 @@ function initLogoLoader() {
   const loader = document.getElementById("logoLoader");
   if (!loader) return;
 
+  const statusText = document.getElementById("loaderStatusText");
+
   const hideLoader = () => {
     loader.classList.add("fade-out");
     setTimeout(() => {
       loader.style.display = "none";
+      if (statusText) statusText.textContent = "INITIALIZING PORTAL";
     }, 600);
   };
 
-  // Ensure minimum visibility of 750ms so user experiences the stunning glowing logo
+  // Ensure minimum visibility of 700ms so user experiences the glowing logo
   const startTime = Date.now();
   window.addEventListener("load", () => {
     const elapsed = Date.now() - startTime;
-    const remaining = Math.max(0, 750 - elapsed);
+    const remaining = Math.max(0, 700 - elapsed);
     setTimeout(hideLoader, remaining);
   });
 
   // Fallback in case window load fired early
   setTimeout(hideLoader, 1300);
+
+  // Restore on browser back/forward navigation
+  window.addEventListener("pageshow", (event) => {
+    if (event.persisted) {
+      hideLoader();
+    }
+  });
+
+  // Display glowing logo loader on internal page navigation clicks
+  document.querySelectorAll("a[href]").forEach((link) => {
+    link.addEventListener("click", (e) => {
+      const href = link.getAttribute("href");
+      const target = link.getAttribute("target");
+      if (!href) return;
+      if (
+        target === "_blank" ||
+        href.startsWith("http://") ||
+        href.startsWith("https://") ||
+        href.startsWith("tel:") ||
+        href.startsWith("mailto:") ||
+        href.startsWith("#") ||
+        href.startsWith("javascript:")
+      ) {
+        return;
+      }
+      if (e.ctrlKey || e.metaKey || e.shiftKey) return;
+
+      if (statusText) {
+        const dest = href.replace(".html", "").replace(/[^a-zA-Z]/g, "").toUpperCase();
+        statusText.textContent = dest === "INDEX" ? "LOADING PORTAL" : `LOADING ${dest || "PORTAL"}`;
+      }
+      loader.style.display = "flex";
+      loader.classList.remove("fade-out");
+    });
+  });
 }
