@@ -6,7 +6,7 @@
   <title>Infinity Gamers | PS5 Gaming Lounge — Thoppampatti Pirivu, Coimbatore</title>
   <meta name="description" content="Infinity Gamers — PlayStation 5 console gaming lounge in Thoppampatti Pirivu, CBE - 17, Pincode - 641017 (Opp. HDFC Bank). PS5 setups, up to 4 players per console, 4K 120Hz displays, air conditioned.">
   <link rel="icon" type="image/png" href="assets/logo.png">
-  <link rel="stylesheet" href="style.css?v=3.3.0">
+  <link rel="stylesheet" href="style.css?v=3.4.0">
   <style>
     /* GUARANTEED BOXED & ALIGNED LAYOUT FOR OFFERS & TARIFF SECTION */
     .offers-wrapper {
@@ -44,15 +44,15 @@
       letter-spacing: 1.5px;
       padding: 3px 10px;
       border-radius: 2px;
-      background: rgba(0, 212, 255, 0.12);
-      color: #00d4ff;
-      border: 1px solid rgba(0, 212, 255, 0.35);
+      background: rgba(0, 225, 255, 0.12);
+      color: var(--neon-blue);
+      border: 1px solid rgba(0, 225, 255, 0.35);
       text-transform: uppercase;
     }
     .offers-group-tag.pink {
-      background: rgba(255, 20, 147, 0.12);
-      color: #ff66b2;
-      border-color: rgba(255, 20, 147, 0.35);
+      background: rgba(255, 112, 204, 0.12);
+      color: var(--neon-pink);
+      border-color: rgba(255, 112, 204, 0.35);
     }
     .offers-group-tag.purple {
       background: rgba(157, 78, 221, 0.15);
@@ -114,8 +114,8 @@
       border-radius: 2px;
       text-transform: uppercase;
     }
-    .tariff-box-pill.cyan { background: rgba(0, 212, 255, 0.15); color: #00d4ff; border: 1px solid rgba(0, 212, 255, 0.35); }
-    .tariff-box-pill.pink { background: rgba(255, 20, 147, 0.15); color: #ff66b2; border: 1px solid rgba(255, 20, 147, 0.35); }
+    .tariff-box-pill.cyan { background: rgba(0, 225, 255, 0.15); color: var(--neon-blue); border: 1px solid rgba(0, 225, 255, 0.35); }
+    .tariff-box-pill.pink { background: rgba(255, 112, 204, 0.15); color: var(--neon-pink); border: 1px solid rgba(255, 112, 204, 0.35); }
     .tariff-box-days {
       font-family: var(--font-mono, monospace);
       font-size: 12px;
@@ -165,8 +165,8 @@
       padding: 4px 12px;
       border-radius: 4px;
     }
-    .tariff-price-badge.cyan { color: #6be5ff; background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.25); }
-    .tariff-price-badge.pink { color: #ff66b2; background: rgba(255, 20, 147, 0.1); border: 1px solid rgba(255, 20, 147, 0.25); }
+    .tariff-price-badge.cyan { color: var(--neon-blue-light); background: rgba(0, 225, 255, 0.1); border: 1px solid rgba(0, 225, 255, 0.25); }
+    .tariff-price-badge.pink { color: var(--neon-pink); background: rgba(255, 112, 204, 0.1); border: 1px solid rgba(255, 112, 204, 0.25); }
     .tariff-extra-box {
       display: flex;
       align-items: center;
@@ -233,7 +233,7 @@
       margin-bottom: 12px;
       text-transform: uppercase;
     }
-    .package-discount-pill.cyan { background: rgba(0, 212, 255, 0.12); color: #00d4ff; border: 1px solid rgba(0, 212, 255, 0.35); }
+    .package-discount-pill.cyan { background: rgba(0, 225, 255, 0.12); color: var(--neon-blue); border: 1px solid rgba(0, 225, 255, 0.35); }
     .package-discount-pill.green { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
     .package-discount-pill.purple { background: rgba(157, 78, 221, 0.2); color: #e9d5ff; border: 1px solid rgba(157, 78, 221, 0.5); }
     .package-box-title {
@@ -387,7 +387,7 @@
     .membership-rate-rule {
       font-family: var(--font-mono, monospace);
       font-size: 12.5px;
-      color: #ff66b2;
+      color: var(--neon-pink);
       display: flex;
       align-items: center;
       gap: 8px;
@@ -409,7 +409,7 @@
       font-size: 10px;
       font-weight: 700;
       letter-spacing: 1.5px;
-      color: #ff66b2;
+      color: var(--neon-pink);
       text-transform: uppercase;
     }
     .fee-amount {
@@ -464,10 +464,10 @@
       font-family: var(--font-heading, sans-serif);
       font-size: 16px;
       font-weight: 800;
-      color: #00d4ff;
+      color: var(--neon-blue);
       letter-spacing: 0.5px;
     }
-    .tier-pts-box.vip { color: #ff66b2; }
+    .tier-pts-box.vip { color: var(--neon-pink); }
     .tier-reward-box { display: flex; flex-direction: column; gap: 2px; }
     .tier-reward-label {
       font-family: var(--font-mono, monospace);
@@ -491,11 +491,11 @@
       padding: 18px 24px;
       background: rgba(13, 17, 30, 0.95);
       border: 1px solid rgba(0, 212, 255, 0.35);
-      border-left: 4px solid #00d4ff;
+      border-left: 4px solid var(--neon-blue);
       border-radius: 4px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
-    .booking-notice-icon { font-size: 24px; color: #00d4ff; flex-shrink: 0; }
+    .booking-notice-icon { font-size: 24px; color: var(--neon-blue); flex-shrink: 0; }
     .booking-notice-content { font-size: 14px; line-height: 1.6; color: #cbd5e1; }
     .booking-notice-content strong { color: #ffffff; }
     .booking-notice-content a { color: #6be5ff; text-decoration: underline; font-weight: 700; }
@@ -705,7 +705,7 @@
               <span class="offers-group-tag pink">PLAN 02</span>
               <h3 class="offers-group-title">VALUE COMBO PACKAGES</h3>
             </div>
-            <p class="offers-group-desc">Extended playtime packages with free bonus hours and extra controllers. Only available on weekdays and government holidays.</p>
+            <p class="offers-group-desc">Extended playtime packages with free bonus hours and extra controllers. Only available on weekdays.</p>
           </div>
 
           <div class="packages-grid">
@@ -737,7 +737,7 @@
                 </div>
                 <div class="package-feature-item">
                   <svg class="feature-svg-check cyan" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                  <span>Only available on weekdays &amp; government holidays</span>
+                  <span>Only available on weekdays</span>
                 </div>
               </div>
               <a href="tel:9994420447" class="btn-package cyan">PRE-BOOK PACKAGE</a>
@@ -771,7 +771,7 @@
                 </div>
                 <div class="package-feature-item">
                   <svg class="feature-svg-check green" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                  <span>Only available on weekdays &amp; government holidays</span>
+                  <span>Only available on weekdays</span>
                 </div>
               </div>
               <a href="tel:9994420447" class="btn-package green">PRE-BOOK PACKAGE</a>
@@ -797,15 +797,11 @@
                 </div>
                 <div class="package-feature-item">
                   <svg class="feature-svg-check purple" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                  <span>1 snack free + 1 tin can soft drink free</span>
-                </div>
-                <div class="package-feature-item">
-                  <svg class="feature-svg-check purple" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                   <span>Maximum value for dedicated gaming squads</span>
                 </div>
                 <div class="package-feature-item">
                   <svg class="feature-svg-check purple" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                  <span>Only available on weekdays &amp; government holidays</span>
+                  <span>Only available on weekdays</span>
                 </div>
               </div>
               <a href="tel:9994420447" class="btn-package purple">PRE-BOOK ₹888 SPECIAL</a>

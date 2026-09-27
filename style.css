@@ -8,12 +8,12 @@
   --bg-panel-solid: #0d111e;
   --bg-card: rgba(14, 19, 34, 0.85);
 
-  /* BRAND ACCENTS */
-  --neon-blue: #00d4ff;
-  --neon-blue-light: #6be5ff;
-  --neon-pink: #ff1493;
-  --neon-pink-light: #ff66b2;
-  --neon-purple: #9d4edd;
+  /* BRAND ACCENTS - EQUALIZED HIGH-LUMINANCE NEON */
+  --neon-blue: #00e1ff;
+  --neon-blue-light: #70edff;
+  --neon-pink: #ff70cc;
+  --neon-pink-light: #ff99dd;
+  --neon-purple: #b866ff;
 
   --text-white: #ffffff;
   --text-dim: #cbd5e1;
@@ -21,8 +21,8 @@
 
   --border-line: rgba(255, 255, 255, 0.08);
   --border-subtle: rgba(255, 255, 255, 0.12);
-  --border-blue: rgba(0, 212, 255, 0.35);
-  --border-pink: rgba(255, 20, 147, 0.35);
+  --border-blue: rgba(0, 225, 255, 0.4);
+  --border-pink: rgba(255, 112, 204, 0.4);
 
   --font-logo-infinity: 'Orbitron', sans-serif;
   --font-logo-gamers: 'Permanent Marker', cursive;
@@ -308,10 +308,12 @@ button, input, select, textarea { font: inherit; }
   font-size: clamp(46px, 8vw, 102px);
   line-height: 0.9;
   letter-spacing: 2px;
-  background: linear-gradient(90deg, #00d4ff 0%, #a855f7 50%, #ff1493 100%);
+  background: linear-gradient(90deg, #00e1ff 0%, #60a5fa 32%, #c084fc 68%, #ff70cc 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.8));
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 12px rgba(0, 225, 255, 0.45)) drop-shadow(0 0 12px rgba(255, 112, 204, 0.45));
   margin-top: 2px;
   text-align: left;
 }
@@ -493,9 +495,12 @@ button, input, select, textarea { font: inherit; }
   text-shadow: 0 3px 18px rgba(0, 0, 0, 0.95), 0 0 28px rgba(0, 212, 255, 0.22);
 }
 .section-header h2 span {
-  background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+  background: linear-gradient(90deg, #00e1ff 0%, #60a5fa 32%, #c084fc 68%, #ff70cc 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  filter: drop-shadow(0 0 10px rgba(0, 225, 255, 0.4)) drop-shadow(0 0 10px rgba(255, 112, 204, 0.4));
 }
 .section-header p {
   color: var(--text-dim);
@@ -2177,20 +2182,20 @@ footer * {
 
 .loader-ring-outer {
   inset: 0;
-  border: 2px dashed rgba(0, 212, 255, 0.6);
-  border-top-color: #00d4ff;
+  border: 2px dashed rgba(0, 225, 255, 0.6);
+  border-top-color: var(--neon-blue);
   border-right-color: transparent;
-  box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+  box-shadow: 0 0 15px rgba(0, 225, 255, 0.5);
   animation: ringSpin 3s linear infinite;
 }
 
 /* Inner Spinning Counter-Ring */
 .loader-ring-inner {
   inset: 10px;
-  border: 2px solid rgba(255, 20, 147, 0.3);
-  border-bottom-color: #ff1493;
-  border-left-color: #ff66b2;
-  box-shadow: 0 0 18px rgba(255, 20, 147, 0.5);
+  border: 2px solid rgba(255, 112, 204, 0.3);
+  border-bottom-color: var(--neon-pink);
+  border-left-color: var(--neon-pink-light);
+  box-shadow: 0 0 18px rgba(255, 112, 204, 0.5);
   animation: ringSpinRev 2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
 }
 
@@ -2205,11 +2210,11 @@ footer * {
   align-items: center;
   justify-content: center;
   background: #090c16;
-  border: 2px solid rgba(0, 212, 255, 0.8);
+  border: 2px solid rgba(0, 225, 255, 0.8);
   box-shadow:
-    0 0 25px rgba(0, 212, 255, 0.8),
-    0 0 50px rgba(255, 20, 147, 0.5),
-    inset 0 0 15px rgba(0, 212, 255, 0.4);
+    0 0 25px rgba(0, 225, 255, 0.8),
+    0 0 50px rgba(255, 112, 204, 0.5),
+    inset 0 0 15px rgba(0, 225, 255, 0.4);
   animation: logoPulse 1.8s ease-in-out infinite alternate;
 }
 
@@ -2218,7 +2223,7 @@ footer * {
   height: 82px;
   border-radius: 50%;
   object-fit: cover;
-  filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.6));
+  filter: drop-shadow(0 0 10px rgba(0, 225, 255, 0.6));
 }
 
 /* Brand Title with Glow */
@@ -2228,7 +2233,7 @@ footer * {
   font-weight: 900;
   letter-spacing: 3px;
   color: #ffffff;
-  text-shadow: 0 0 12px rgba(0, 212, 255, 0.7), 0 0 24px rgba(255, 20, 147, 0.5);
+  text-shadow: 0 0 12px rgba(0, 225, 255, 0.7), 0 0 24px rgba(255, 112, 204, 0.5);
 }
 
 /* Status Label */
@@ -2236,7 +2241,7 @@ footer * {
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 2px;
-  color: #00d4ff;
+  color: var(--neon-blue);
   text-transform: uppercase;
   display: flex;
   align-items: center;
@@ -2257,13 +2262,13 @@ footer * {
   border-radius: 2px;
   overflow: hidden;
   position: relative;
-  box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+  box-shadow: 0 0 10px rgba(0, 225, 255, 0.2);
 }
 
 .loader-progress-bar {
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, #00d4ff 40%, #ff1493 80%, #ffffff);
+  background: linear-gradient(90deg, transparent, var(--neon-blue) 40%, var(--neon-pink) 80%, #ffffff);
   background-size: 200% 100%;
   animation: progressLaser 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
