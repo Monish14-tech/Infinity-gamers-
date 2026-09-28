@@ -373,12 +373,23 @@ const server = createServer(async (request, response) => {
         current.pausedAt = null;
       }
 
-      // 4. Edit details
+      // 4. Edit details & bill modifications
       if (updates.customerName !== undefined) current.customerName = String(updates.customerName).trim();
       if (updates.phone !== undefined) current.phone = String(updates.phone).trim();
       if (updates.gamerTag !== undefined) current.gamerTag = String(updates.gamerTag).replace(/[^a-zA-Z\s]/g, "").trim();
       if (updates.amount !== undefined) current.amount = Number(updates.amount) || 0;
+      if (updates.rateBasis !== undefined) current.rateBasis = Number(updates.rateBasis) || current.rateBasis || 150;
       if (updates.notes !== undefined) current.notes = String(updates.notes).trim();
+      if (updates.durationMinutes !== undefined && !updates.checkout) current.durationMinutes = Math.max(1, Number(updates.durationMinutes) || 1);
+      if (updates.inTime !== undefined && updates.inTime) current.inTime = new Date(updates.inTime).toISOString();
+      if (updates.outTime !== undefined && updates.outTime) current.outTime = new Date(updates.outTime).toISOString();
+      if (updates.gamesPlayed !== undefined) {
+        if (Array.isArray(updates.gamesPlayed)) {
+          current.gamesPlayed = updates.gamesPlayed;
+        } else if (typeof updates.gamesPlayed === "string" && updates.gamesPlayed.trim()) {
+          current.gamesPlayed = updates.gamesPlayed.split(",").map(g => g.trim()).filter(Boolean);
+        }
+      }
 
       // 5. Checkout / End session
       if (updates.checkout === true || updates.status === "completed" || (updates.outTime && !updates.isPaused && updates.action === "checkout")) {
