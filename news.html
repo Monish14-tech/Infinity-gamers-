@@ -384,8 +384,9 @@
               <thead>
                 <tr>
                   <th>RANK</th>
+                  <th>GAMER TAG</th>
                   <th>PLAYER NAME</th>
-                  <th>TOTAL HOURS</th>
+                  <th>VERIFIED HOURS</th>
                   <th>SESSIONS</th>
                   <th>TOP TITLE</th>
                   <th>TIER</th>
@@ -393,7 +394,7 @@
               </thead>
               <tbody id="publicLeaderboardBody">
                 <tr>
-                  <td colspan="6" style="text-align:center; color:var(--text-muted); padding:24px;">No player rankings available yet.</td>
+                  <td colspan="7" style="text-align:center; color:var(--text-muted); padding:24px;">No player rankings available yet.</td>
                 </tr>
               </tbody>
             </table>
@@ -650,17 +651,19 @@
       podiumEl.innerHTML = top3.map((p, idx) => {
         const rankClass = `rank-${idx + 1}`;
         const label = rankLabels[idx] || `RANK ${idx + 1}`;
+        const gamerTagDisplay = p.gamerTag ? `<div style="font-family:var(--font-mono); font-size:12px; font-weight:700; color:var(--neon-pink); letter-spacing:1px; margin-bottom:3px;">@${escapeHtml(p.gamerTag)}</div>` : '';
+
         return `
           <div class="podium-box ${rankClass}">
             <span class="podium-rank-tag">${label}</span>
-            <div class="podium-name">${escapeHtml(p.customerName)}</div>
+            <div class="podium-name">${gamerTagDisplay}${escapeHtml(p.customerName)}</div>
             <div class="podium-tier">${escapeHtml(p.tier)}</div>
             <div class="podium-stat-box">
               <div class="podium-stat-val">${p.totalHours} HRS</div>
-              <div class="podium-stat-lbl">CUMULATIVE PLAYTIME</div>
+              <div class="podium-stat-lbl">VERIFIED PLAYTIME</div>
             </div>
             <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted); margin-top:12px;">
-              Primary: <strong style="color:#fff;">${escapeHtml(p.favoriteGame)}</strong> • ${p.sessionCount} Sessions
+              Primary: <strong style="color:#fff;">${escapeHtml(p.favoriteGame)}</strong> • ${p.sessionCount || 1} Sessions
             </div>
           </div>
         `;
@@ -672,7 +675,7 @@
       if (!body) return;
 
       if (!players || players.length === 0) {
-        body.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:24px;">No player rankings available yet.</td></tr>`;
+        body.innerHTML = `<tr><td colspan="7" style="text-align:center; color:var(--text-muted); padding:24px;">No player rankings available yet.</td></tr>`;
         return;
       }
 
@@ -689,9 +692,10 @@
         return `
           <tr>
             <td><strong style="color:${rankColor};">#${p.rank}</strong></td>
+            <td><strong style="color:var(--neon-pink); font-family:var(--font-mono); font-size:12.5px;">@${escapeHtml(p.gamerTag || 'GAMER')}</strong></td>
             <td><strong style="color:#fff;">${escapeHtml(p.customerName)}</strong></td>
             <td><span class="time-chip">${p.totalHours} HRS</span></td>
-            <td>${p.sessionCount}</td>
+            <td>${p.sessionCount || 1}</td>
             <td>${escapeHtml(p.favoriteGame)}</td>
             <td><span class="status-chip ${tierClass}">${escapeHtml(p.tier)}</span></td>
           </tr>

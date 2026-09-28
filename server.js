@@ -9,6 +9,7 @@ const dataDir = path.join(__dirname, "data");
 const enquiriesFile = path.join(dataDir, "enquiries.json");
 const sessionsFile = path.join(dataDir, "sessions.json");
 const newsFile = path.join(dataDir, "news.json");
+const hallOfFameFile = path.join(dataDir, "hall_of_fame.json");
 
 if (!existsSync(dataDir)) {
   mkdirSync(dataDir, { recursive: true });
@@ -206,11 +207,11 @@ const server = createServer(async (request, response) => {
     return send(response, 200, news);
   }
 
-  // PUBLIC TOP PLAYERS LEADERBOARD
+  // PUBLIC TOP PLAYERS / HALL OF FAME (ADMIN CURATED)
   if (request.method === "GET" && url.pathname === "/api/top-players") {
-    const sessions = readJson(sessionsFile, []);
-    const topPlayers = calculateTopPlayers(sessions);
-    return send(response, 200, topPlayers.slice(0, 10));
+    let hallOfFame = readJson(hallOfFameFile, []);
+    hallOfFame.sort((a, b) => (Number(a.rank) || 999) - (Number(b.rank) || 999));
+    return send(response, 200, hallOfFame);
   }
 
   // CONTACT ENQUIRY SUBMISSION
@@ -292,17 +293,24 @@ const server = createServer(async (request, response) => {
           if (diffMs > 0) durationMinutes = Math.round(diffMs / 60000);
         }
 
+        const gamerTag = (payload.gamerTag || "").replace(/[^a-zA-Z\s]/g, "").trim();
+
         const newSession = {
           id: "sess_" + Date.now(),
           customerName: (payload.customerName || "Customer").trim(),
+          gamerTag,
           phone: (payload.phone || "").trim(),
           station,
           inTime,
           outTime,
           status,
+          isPaused: false,
+          pausedAt: null,
+          totalPausedMs: 0,
           durationMinutes,
           amount: Number(payload.amount) || 150,
           game: payload.game || "EA Sports FC 26",
+          gamesPlayed: [payload.game || "EA Sports FC 26"],
           notes: payload.notes || ""
         };
 
@@ -315,7 +323,7 @@ const server = createServer(async (request, response) => {
     }
   }
 
-  // UPDATE SESSION (CHECKOUT / END SESSION)
+  // UPDATE SESSION (PAUSE, RESUME, SWITCH STATION/GAME, EDIT, CHECKOUT)
   if (request.method === "PATCH" && url.pathname.startsWith("/api/admin/sessions/")) {
     if (!checkAdminAuth(request)) return send(response, 401, { error: "Unauthorized." });
 
@@ -328,25 +336,71 @@ const server = createServer(async (request, response) => {
       if (index === -1) return send(response, 404, { error: "Session record not found." });
 
       const current = sessions[index];
-      const outTime = updates.outTime ? new Date(updates.outTime).toISOString() : new Date().toISOString();
-      const inTime = current.inTime;
-      let durationMinutes = Number(updates.durationMinutes) || 0;
 
-      if (!durationMinutes && inTime && outTime) {
-        const diffMs = new Date(outTime).getTime() - new Date(inTime).getTime();
-        if (diffMs > 0) durationMinutes = Math.round(diffMs / 60000);
+      // 1. Station switch check
+      if (updates.station && updates.station !== current.station) {
+        const targetStation = updates.station.trim();
+        const occupied = sessions.find(s => s.id !== id && s.station === targetStation && s.status === "active");
+        if (occupied) {
+          return send(response, 400, {
+            error: `${targetStation} is currently occupied by "${occupied.customerName}". Please choose a vacant station.`
+          });
+        }
+        current.station = targetStation;
       }
 
-      sessions[index] = {
-        ...current,
-        ...updates,
-        outTime,
-        durationMinutes,
-        status: "completed"
-      };
+      // 2. Game switch or addition
+      if (updates.game && updates.game !== current.game) {
+        current.game = updates.game.trim();
+        if (!Array.isArray(current.gamesPlayed)) current.gamesPlayed = [];
+        if (!current.gamesPlayed.includes(current.game)) {
+          current.gamesPlayed.push(current.game);
+        }
+      }
 
+      // 3. Pause / Resume logic
+      if (updates.action === "pause" || updates.isPaused === true) {
+        if (!current.isPaused) {
+          current.isPaused = true;
+          current.pausedAt = new Date().toISOString();
+        }
+      } else if (updates.action === "resume" || updates.isPaused === false) {
+        if (current.isPaused && current.pausedAt) {
+          const pauseDur = Date.now() - new Date(current.pausedAt).getTime();
+          current.totalPausedMs = (Number(current.totalPausedMs) || 0) + Math.max(0, pauseDur);
+        }
+        current.isPaused = false;
+        current.pausedAt = null;
+      }
+
+      // 4. Edit details
+      if (updates.customerName !== undefined) current.customerName = String(updates.customerName).trim();
+      if (updates.phone !== undefined) current.phone = String(updates.phone).trim();
+      if (updates.gamerTag !== undefined) current.gamerTag = String(updates.gamerTag).replace(/[^a-zA-Z\s]/g, "").trim();
+      if (updates.amount !== undefined) current.amount = Number(updates.amount) || 0;
+      if (updates.notes !== undefined) current.notes = String(updates.notes).trim();
+
+      // 5. Checkout / End session
+      if (updates.checkout === true || updates.status === "completed" || (updates.outTime && !updates.isPaused && updates.action === "checkout")) {
+        const outTime = updates.outTime ? new Date(updates.outTime).toISOString() : new Date().toISOString();
+        let pausedMs = Number(current.totalPausedMs) || 0;
+        if (current.isPaused && current.pausedAt) {
+          pausedMs += Math.max(0, new Date(outTime).getTime() - new Date(current.pausedAt).getTime());
+        }
+        const diffMs = new Date(outTime).getTime() - new Date(current.inTime).getTime() - pausedMs;
+        const durationMinutes = Math.max(1, Math.round(diffMs / 60000));
+
+        current.outTime = outTime;
+        current.durationMinutes = durationMinutes;
+        current.status = "completed";
+        current.isPaused = false;
+        current.pausedAt = null;
+        current.totalPausedMs = pausedMs;
+      }
+
+      sessions[index] = current;
       writeJson(sessionsFile, sessions);
-      return send(response, 200, { success: true, session: sessions[index] });
+      return send(response, 200, { success: true, session: current });
     } catch (err) {
       return send(response, 400, { error: "Failed to update session: " + err.message });
     }
@@ -361,6 +415,92 @@ const server = createServer(async (request, response) => {
     sessions = sessions.filter(s => s.id !== id);
     writeJson(sessionsFile, sessions);
     return send(response, 200, { success: true, message: "Session record removed." });
+  }
+
+  // ADMIN HALL OF FAME CURATION APIS
+  if (url.pathname === "/api/admin/hall-of-fame") {
+    if (!checkAdminAuth(request)) return send(response, 401, { error: "Unauthorized. Admin login required." });
+
+    if (request.method === "GET") {
+      let hallOfFame = readJson(hallOfFameFile, []);
+      hallOfFame.sort((a, b) => (Number(a.rank) || 999) - (Number(b.rank) || 999));
+      return send(response, 200, hallOfFame);
+    }
+
+    if (request.method === "POST") {
+      try {
+        const payload = await body(request);
+        const hallOfFame = readJson(hallOfFameFile, []);
+
+        const gamerTag = (payload.gamerTag || "").replace(/[^a-zA-Z\s]/g, "").trim();
+        const customerName = (payload.customerName || "Player").trim();
+        const rank = Number(payload.rank) || (hallOfFame.length + 1);
+        const tier = (payload.tier || "GOLD CONTENDER").trim();
+        const favoriteGame = (payload.favoriteGame || "EA Sports FC 26").trim();
+        const totalHours = Number(payload.totalHours) || 1.0;
+        const sessionCount = Number(payload.sessionCount) || 1;
+        const phone = (payload.phone || "").trim();
+
+        const newEntry = {
+          id: "hof_" + Date.now(),
+          rank,
+          gamerTag,
+          customerName,
+          phone,
+          favoriteGame,
+          totalHours,
+          sessionCount,
+          tier,
+          notes: payload.notes || "",
+          addedAt: new Date().toISOString()
+        };
+
+        hallOfFame.push(newEntry);
+        hallOfFame.sort((a, b) => (Number(a.rank) || 999) - (Number(b.rank) || 999));
+        writeJson(hallOfFameFile, hallOfFame);
+        return send(response, 201, { success: true, player: newEntry });
+      } catch (err) {
+        return send(response, 400, { error: "Failed to add player to Hall of Fame: " + err.message });
+      }
+    }
+  }
+
+  if (url.pathname.startsWith("/api/admin/hall-of-fame/")) {
+    if (!checkAdminAuth(request)) return send(response, 401, { error: "Unauthorized." });
+    const id = url.pathname.replace("/api/admin/hall-of-fame/", "");
+    let hallOfFame = readJson(hallOfFameFile, []);
+    const idx = hallOfFame.findIndex(p => p.id === id);
+
+    if (request.method === "PATCH") {
+      if (idx === -1) return send(response, 404, { error: "Player not found in Hall of Fame." });
+      try {
+        const updates = await body(request);
+        if (updates.gamerTag !== undefined) {
+          hallOfFame[idx].gamerTag = String(updates.gamerTag).replace(/[^a-zA-Z\s]/g, "").trim();
+        }
+        if (updates.customerName !== undefined) hallOfFame[idx].customerName = String(updates.customerName).trim();
+        if (updates.phone !== undefined) hallOfFame[idx].phone = String(updates.phone).trim();
+        if (updates.rank !== undefined) hallOfFame[idx].rank = Number(updates.rank) || hallOfFame[idx].rank;
+        if (updates.tier !== undefined) hallOfFame[idx].tier = String(updates.tier).trim();
+        if (updates.favoriteGame !== undefined) hallOfFame[idx].favoriteGame = String(updates.favoriteGame).trim();
+        if (updates.totalHours !== undefined) hallOfFame[idx].totalHours = Number(updates.totalHours) || hallOfFame[idx].totalHours;
+        if (updates.sessionCount !== undefined) hallOfFame[idx].sessionCount = Number(updates.sessionCount) || hallOfFame[idx].sessionCount;
+        if (updates.notes !== undefined) hallOfFame[idx].notes = String(updates.notes).trim();
+
+        hallOfFame.sort((a, b) => (Number(a.rank) || 999) - (Number(b.rank) || 999));
+        writeJson(hallOfFameFile, hallOfFame);
+        return send(response, 200, { success: true, player: hallOfFame[idx] });
+      } catch (err) {
+        return send(response, 400, { error: "Failed to update Hall of Fame player: " + err.message });
+      }
+    }
+
+    if (request.method === "DELETE") {
+      if (idx === -1) return send(response, 404, { error: "Player not found in Hall of Fame." });
+      hallOfFame = hallOfFame.filter(p => p.id !== id);
+      writeJson(hallOfFameFile, hallOfFame);
+      return send(response, 200, { success: true, message: "Player removed from Hall of Fame." });
+    }
   }
 
   // ADMIN NEWS MANAGEMENT (CREATE / DELETE)
