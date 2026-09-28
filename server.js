@@ -165,16 +165,19 @@ function calculateTopPlayers(sessions) {
 
   const list = Array.from(playerMap.values()).sort((a, b) => b.totalMinutes - a.totalMinutes);
 
-  // Assign ranks & badges
+  // Assign ranks & badges as per official tariff
   return list.map((p, idx) => {
-    let tier = "ROOKIE";
-    if (p.totalHours >= 15) tier = "DIAMOND SQUAD";
-    else if (p.totalHours >= 8) tier = "PLATINUM";
-    else if (p.totalHours >= 3) tier = "GOLD";
+    let tier = "LV 1: IGNITE";
+    const pts = Math.round(p.totalHours * 10);
+    if (pts >= 1000) tier = "LV 5: INFINITY";
+    else if (pts >= 500) tier = "LV 4: ELITE";
+    else if (pts >= 250) tier = "LV 3: POWER";
+    else if (pts >= 100) tier = "LV 2: RISE";
 
     return {
       rank: idx + 1,
       ...p,
+      loyaltyPoints: pts,
       tier
     };
   });
