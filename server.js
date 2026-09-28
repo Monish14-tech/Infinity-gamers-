@@ -70,6 +70,8 @@ function send(response, statusCode, data, isJson = true) {
     "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     "Pragma": "no-cache",
     "Expires": "0",
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
     "Content-Type": isJson ? "application/json; charset=utf-8" : "text/plain; charset=utf-8"
   });
   response.end(isJson ? JSON.stringify(data) : data);
@@ -83,7 +85,17 @@ function redirect(response, location) {
 function body(request) {
   return new Promise((resolve, reject) => {
     let payload = "";
-    request.on("data", chunk => { payload += chunk; });
+    const MAX_BODY_BYTES = 50 * 1024; // 50KB limit
+    let received = 0;
+    request.on("data", chunk => {
+      received += chunk.length;
+      if (received > MAX_BODY_BYTES) {
+        reject(new Error("Request payload too large."));
+        request.destroy();
+        return;
+      }
+      payload += chunk;
+    });
     request.on("end", () => {
       if (!payload || !payload.trim()) return resolve({});
       try {
