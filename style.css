@@ -2536,3 +2536,70 @@ footer * {
 @media (max-width: 360px) {
   .arcade-games-grid { grid-template-columns: 1fr; }
 }
+
+/* ========================================================
+   GLOBAL DATA TABLE & LEADERBOARD STYLING
+   ======================================================== */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(7, 10, 20, 0.7);
+}
+.data-table {
+  width: 100%;
+  min-width: 880px;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+  font-size: 13.5px;
+}
+.data-table th {
+  background: rgba(13, 17, 30, 0.98);
+  color: #94a3b8;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  padding: 14px 18px;
+  border-bottom: 2px solid rgba(0, 225, 255, 0.25);
+  white-space: nowrap;
+}
+.data-table td {
+  padding: 15px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  vertical-align: middle;
+  white-space: nowrap;
+  color: #cbd5e1;
+}
+.data-table tbody tr:hover td {
+  background: rgba(0, 225, 255, 0.035);
+}
+.loyalty-pts-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+.time-chip {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--neon-blue);
+  background: rgba(0, 225, 255, 0.1);
+  border: 1px solid rgba(0, 225, 255, 0.3);
+  padding: 4px 10px;
+  border-radius: 4px;
+}

@@ -8,6 +8,7 @@
     "favoriteGame": "EA Sports FC 26",
     "totalHours": 18.5,
     "sessionCount": 14,
+    "loyaltyPoints": 1850,
     "tier": "GRAND CHAMPION",
     "addedAt": "2026-09-20T10:00:00.000Z"
   },
@@ -20,6 +21,7 @@
     "favoriteGame": "WWE 2K26",
     "totalHours": 12,
     "sessionCount": 9,
+    "loyaltyPoints": 1200,
     "tier": "PLATINUM ELITE",
     "addedAt": "2026-09-22T14:30:00.000Z"
   },
@@ -32,6 +34,7 @@
     "favoriteGame": "Mortal Kombat 1",
     "totalHours": 7.5,
     "sessionCount": 6,
+    "loyaltyPoints": 750,
     "tier": "GOLD CONTENDER",
     "addedAt": "2026-09-24T18:00:00.000Z"
   }
