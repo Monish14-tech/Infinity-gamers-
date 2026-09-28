@@ -224,7 +224,7 @@ const server = createServer(async (request, response) => {
     let hallOfFame = readJson(hallOfFameFile, []);
     hallOfFame.forEach(p => {
       if (p.loyaltyPoints === undefined || p.loyaltyPoints === null) {
-        p.loyaltyPoints = Math.round((Number(p.totalHours) || 0) * 100);
+        p.loyaltyPoints = Math.round((Number(p.totalHours) || 0) * 10);
       } else {
         p.loyaltyPoints = Number(p.loyaltyPoints) || 0;
       }
@@ -313,6 +313,11 @@ const server = createServer(async (request, response) => {
         }
 
         const gamerTag = (payload.gamerTag || "").replace(/[^a-zA-Z0-9\s]/g, "").trim();
+        const rateBasis = Number(payload.rateBasis) || Number(payload.amount) || 150;
+        const additionalCharges = Number(payload.additionalCharges) || 0;
+        const additionalNote = (payload.additionalNote || "").trim();
+        const baseAmount = payload.baseAmount !== undefined ? Number(payload.baseAmount) : (Number(payload.amount) || 150);
+        const amount = payload.amount !== undefined ? Number(payload.amount) : (baseAmount + additionalCharges);
 
         const newSession = {
           id: "sess_" + Date.now(),
@@ -327,7 +332,11 @@ const server = createServer(async (request, response) => {
           pausedAt: null,
           totalPausedMs: 0,
           durationMinutes,
-          amount: Number(payload.amount) || 150,
+          baseAmount,
+          additionalCharges,
+          additionalNote,
+          rateBasis,
+          amount,
           game: payload.game || "EA Sports FC 26",
           gamesPlayed: [payload.game || "EA Sports FC 26"],
           notes: payload.notes || ""
@@ -396,6 +405,9 @@ const server = createServer(async (request, response) => {
       if (updates.customerName !== undefined) current.customerName = String(updates.customerName).trim();
       if (updates.phone !== undefined) current.phone = String(updates.phone).trim();
       if (updates.gamerTag !== undefined) current.gamerTag = String(updates.gamerTag).replace(/[^a-zA-Z0-9\s]/g, "").trim();
+      if (updates.baseAmount !== undefined) current.baseAmount = Number(updates.baseAmount) || 0;
+      if (updates.additionalCharges !== undefined) current.additionalCharges = Number(updates.additionalCharges) || 0;
+      if (updates.additionalNote !== undefined) current.additionalNote = String(updates.additionalNote).trim();
       if (updates.amount !== undefined) current.amount = Number(updates.amount) || 0;
       if (updates.rateBasis !== undefined) current.rateBasis = Number(updates.rateBasis) || current.rateBasis || 150;
       if (updates.notes !== undefined) current.notes = String(updates.notes).trim();
@@ -455,7 +467,7 @@ const server = createServer(async (request, response) => {
       let hallOfFame = readJson(hallOfFameFile, []);
       hallOfFame.forEach(p => {
         if (p.loyaltyPoints === undefined || p.loyaltyPoints === null) {
-          p.loyaltyPoints = Math.round((Number(p.totalHours) || 0) * 100);
+          p.loyaltyPoints = Math.round((Number(p.totalHours) || 0) * 10);
         } else {
           p.loyaltyPoints = Number(p.loyaltyPoints) || 0;
         }
@@ -472,11 +484,11 @@ const server = createServer(async (request, response) => {
         const gamerTag = (payload.gamerTag || "").replace(/[^a-zA-Z0-9\s]/g, "").trim();
         const customerName = (payload.customerName || "Player").trim();
         const rank = Number(payload.rank) || (hallOfFame.length + 1);
-        const tier = (payload.tier || "GOLD CONTENDER").trim();
+        const tier = (payload.tier || "LV 1: IGNITE").trim();
         const favoriteGame = (payload.favoriteGame || "EA Sports FC 26").trim();
         const totalHours = Number(payload.totalHours) || 1.0;
         const sessionCount = Number(payload.sessionCount) || 1;
-        const loyaltyPoints = payload.loyaltyPoints !== undefined ? Math.max(0, Number(payload.loyaltyPoints) || 0) : Math.round(totalHours * 100);
+        const loyaltyPoints = payload.loyaltyPoints !== undefined ? Math.max(0, Number(payload.loyaltyPoints) || 0) : Math.round(totalHours * 10);
         const phone = (payload.phone || "").trim();
 
         const newEntry = {
@@ -528,11 +540,11 @@ const server = createServer(async (request, response) => {
           hallOfFame[idx].loyaltyPoints = Math.max(0, Number(updates.loyaltyPoints) || 0);
         }
         if (updates.redeemPoints !== undefined) {
-          const currentPts = hallOfFame[idx].loyaltyPoints !== undefined ? Number(hallOfFame[idx].loyaltyPoints) : Math.round((Number(hallOfFame[idx].totalHours) || 0) * 100);
+          const currentPts = hallOfFame[idx].loyaltyPoints !== undefined ? Number(hallOfFame[idx].loyaltyPoints) : Math.round((Number(hallOfFame[idx].totalHours) || 0) * 10);
           hallOfFame[idx].loyaltyPoints = Math.max(0, currentPts - Math.max(0, Number(updates.redeemPoints) || 0));
         }
         if (updates.addPoints !== undefined) {
-          const currentPts = hallOfFame[idx].loyaltyPoints !== undefined ? Number(hallOfFame[idx].loyaltyPoints) : Math.round((Number(hallOfFame[idx].totalHours) || 0) * 100);
+          const currentPts = hallOfFame[idx].loyaltyPoints !== undefined ? Number(hallOfFame[idx].loyaltyPoints) : Math.round((Number(hallOfFame[idx].totalHours) || 0) * 10);
           hallOfFame[idx].loyaltyPoints = currentPts + Math.max(0, Number(updates.addPoints) || 0);
         }
         if (updates.notes !== undefined) hallOfFame[idx].notes = String(updates.notes).trim();

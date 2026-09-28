@@ -366,31 +366,32 @@
       border-radius: 4px;
       text-transform: uppercase;
     }
-    .status-chip.tier-champ {
+    .status-chip.tier-infinity {
+      background: rgba(176, 38, 255, 0.18);
+      border: 1px solid #b026ff;
+      color: #00d4ff;
+      box-shadow: 0 0 12px rgba(176, 38, 255, 0.35);
+    }
+    .status-chip.tier-elite {
       background: rgba(255, 215, 0, 0.15);
       border: 1px solid #ffd700;
       color: #ffd700;
       box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
     }
-    .status-chip.tier-elite {
-      background: rgba(229, 228, 226, 0.15);
-      border: 1px solid #e5e4e2;
-      color: #f1f5f9;
+    .status-chip.tier-power {
+      background: rgba(255, 0, 127, 0.15);
+      border: 1px solid #ff007f;
+      color: #ff69b4;
     }
-    .status-chip.tier-contender {
-      background: rgba(205, 127, 50, 0.15);
-      border: 1px solid #cd7f32;
-      color: #f59e0b;
+    .status-chip.tier-rise {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid #38bdf8;
+      color: #38bdf8;
     }
-    .status-chip.tier-diamond {
-      background: rgba(0, 225, 255, 0.15);
-      border: 1px solid var(--neon-blue);
-      color: var(--neon-blue);
-    }
-    .status-chip.tier-pro {
-      background: rgba(184, 102, 255, 0.15);
-      border: 1px solid var(--neon-purple);
-      color: #d8b4fe;
+    .status-chip.tier-ignite {
+      background: rgba(255, 107, 0, 0.15);
+      border: 1px solid #ff6b00;
+      color: #ff8c00;
     }
 
     .podium-pts-row {
@@ -531,7 +532,7 @@
               </span>
             </div>
             <div style="font-family:var(--font-mono); font-size:11px; color:#fbbf24; background:rgba(245, 158, 11, 0.1); border:1px solid rgba(245, 158, 11, 0.3); padding:4px 10px; border-radius:3px;">
-              RATE: 100 LOYALTY PTS / 1 VERIFIED HOUR
+              RATE: 10 PTS / 1 HOUR PLAY • 3-MONTH CYCLE
             </div>
           </div>
           <div class="table-container">
@@ -799,16 +800,16 @@
       }
 
       const rankLabels = [
-        "RANK 1 // GRAND CHAMPION",
-        "RANK 2 // PLATINUM ELITE",
-        "RANK 3 // GOLD CONTENDER"
+        "RANK 1 // LV 5: INFINITY",
+        "RANK 2 // LV 4: ELITE",
+        "RANK 3 // LV 3: POWER"
       ];
 
       podiumEl.innerHTML = top3.map((p, idx) => {
         const rankClass = `rank-${idx + 1}`;
         const label = rankLabels[idx] || `RANK ${idx + 1}`;
         const gamerTagDisplay = p.gamerTag ? `<div style="font-family:var(--font-mono); font-size:12px; font-weight:700; color:var(--neon-pink); letter-spacing:1px; margin-bottom:3px;">@${escapeHtml(p.gamerTag)}</div>` : '';
-        const pts = p.loyaltyPoints !== undefined ? Number(p.loyaltyPoints) : Math.round((Number(p.totalHours) || 0) * 100);
+        const pts = p.loyaltyPoints !== undefined ? Number(p.loyaltyPoints) : Math.round((Number(p.totalHours) || 0) * 10);
 
         return `
           <div class="podium-box ${rankClass}">
@@ -846,14 +847,15 @@
         if (p.rank === 2) rankColor = "#e5e4e2";
         if (p.rank === 3) rankColor = "#cd7f32";
 
-        const points = p.loyaltyPoints !== undefined ? Number(p.loyaltyPoints) : Math.round((Number(p.totalHours) || 0) * 100);
+        const points = p.loyaltyPoints !== undefined ? Number(p.loyaltyPoints) : Math.round((Number(p.totalHours) || 0) * 10);
 
-        let tierClass = "tier-pro";
+        let tierClass = "tier-ignite";
         const tierUpper = String(p.tier || '').toUpperCase();
-        if (tierUpper.includes("CHAMPION")) tierClass = "tier-champ";
+        if (tierUpper.includes("INFINITY")) tierClass = "tier-infinity";
         else if (tierUpper.includes("ELITE")) tierClass = "tier-elite";
-        else if (tierUpper.includes("CONTENDER")) tierClass = "tier-contender";
-        else if (tierUpper.includes("DIAMOND")) tierClass = "tier-diamond";
+        else if (tierUpper.includes("POWER")) tierClass = "tier-power";
+        else if (tierUpper.includes("RISE")) tierClass = "tier-rise";
+        else if (tierUpper.includes("IGNITE")) tierClass = "tier-ignite";
 
         return `
           <tr>
