@@ -312,7 +312,7 @@ const server = createServer(async (request, response) => {
           if (diffMs > 0) durationMinutes = Math.round(diffMs / 60000);
         }
 
-        const gamerTag = (payload.gamerTag || "").replace(/[^a-zA-Z\s]/g, "").trim();
+        const gamerTag = (payload.gamerTag || "").replace(/[^a-zA-Z0-9\s]/g, "").trim();
 
         const newSession = {
           id: "sess_" + Date.now(),
@@ -395,7 +395,7 @@ const server = createServer(async (request, response) => {
       // 4. Edit details & bill modifications
       if (updates.customerName !== undefined) current.customerName = String(updates.customerName).trim();
       if (updates.phone !== undefined) current.phone = String(updates.phone).trim();
-      if (updates.gamerTag !== undefined) current.gamerTag = String(updates.gamerTag).replace(/[^a-zA-Z\s]/g, "").trim();
+      if (updates.gamerTag !== undefined) current.gamerTag = String(updates.gamerTag).replace(/[^a-zA-Z0-9\s]/g, "").trim();
       if (updates.amount !== undefined) current.amount = Number(updates.amount) || 0;
       if (updates.rateBasis !== undefined) current.rateBasis = Number(updates.rateBasis) || current.rateBasis || 150;
       if (updates.notes !== undefined) current.notes = String(updates.notes).trim();
@@ -469,7 +469,7 @@ const server = createServer(async (request, response) => {
         const payload = await body(request);
         const hallOfFame = readJson(hallOfFameFile, []);
 
-        const gamerTag = (payload.gamerTag || "").replace(/[^a-zA-Z\s]/g, "").trim();
+        const gamerTag = (payload.gamerTag || "").replace(/[^a-zA-Z0-9\s]/g, "").trim();
         const customerName = (payload.customerName || "Player").trim();
         const rank = Number(payload.rank) || (hallOfFame.length + 1);
         const tier = (payload.tier || "GOLD CONTENDER").trim();
@@ -515,7 +515,7 @@ const server = createServer(async (request, response) => {
       try {
         const updates = await body(request);
         if (updates.gamerTag !== undefined) {
-          hallOfFame[idx].gamerTag = String(updates.gamerTag).replace(/[^a-zA-Z\s]/g, "").trim();
+          hallOfFame[idx].gamerTag = String(updates.gamerTag).replace(/[^a-zA-Z0-9\s]/g, "").trim();
         }
         if (updates.customerName !== undefined) hallOfFame[idx].customerName = String(updates.customerName).trim();
         if (updates.phone !== undefined) hallOfFame[idx].phone = String(updates.phone).trim();
