@@ -340,6 +340,7 @@ const server = createServer(async (request, response) => {
           additionalNote,
           rateBasis,
           amount,
+          paymentMethod: payload.paymentMethod || "UPI",
           game: payload.game || "EA Sports FC 26",
           gamesPlayed: [payload.game || "EA Sports FC 26"],
           notes: payload.notes || ""
@@ -413,6 +414,7 @@ const server = createServer(async (request, response) => {
       if (updates.additionalNote !== undefined) current.additionalNote = String(updates.additionalNote).trim();
       if (updates.amount !== undefined) current.amount = Number(updates.amount) || 0;
       if (updates.rateBasis !== undefined) current.rateBasis = Number(updates.rateBasis) || current.rateBasis || 150;
+      if (updates.paymentMethod !== undefined) current.paymentMethod = String(updates.paymentMethod).trim();
       if (updates.notes !== undefined) current.notes = String(updates.notes).trim();
       if (updates.durationMinutes !== undefined && !updates.checkout) current.durationMinutes = Math.max(1, Number(updates.durationMinutes) || 1);
       if (updates.inTime !== undefined && updates.inTime) current.inTime = new Date(updates.inTime).toISOString();
