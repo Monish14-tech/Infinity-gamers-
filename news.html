@@ -635,6 +635,8 @@
   <script src="script.js"></script>
   <script>
     // DYNAMIC NEWS & LEADERBOARD FETCHING (WITH AUTO-REFRESH)
+    const API_BASE = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "" : "https://infinity-gamers.onrender.com";
+
     document.addEventListener("DOMContentLoaded", () => {
       initFilterTabs();
       fetchLatestNews();
@@ -673,7 +675,7 @@
 
     async function fetchLatestNews() {
       try {
-        const res = await fetch("/api/news");
+        const res = await fetch(`${API_BASE}/api/news`);
         if (!res.ok) return;
         const newsList = await res.json();
         renderNewsCards(Array.isArray(newsList) ? newsList : []);
@@ -774,7 +776,7 @@
 
     async function fetchTopPlayers() {
       try {
-        const res = await fetch("/api/top-players");
+        const res = await fetch(`${API_BASE}/api/top-players`);
         if (!res.ok) return;
         const players = await res.json();
         const list = Array.isArray(players) ? players : [];

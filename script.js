@@ -177,7 +177,8 @@ function initContactForm() {
     }
 
     // Also sync with backend API if running
-    fetch("/api/enquiry", {
+    const apiBase = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "" : "https://infinity-gamers.onrender.com";
+    fetch(`${apiBase}/api/enquiry`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, phone, players, msg })
