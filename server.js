@@ -320,7 +320,11 @@ const server = createServer(async (request, response) => {
         const additionalCharges = Number(payload.additionalCharges) || 0;
         const additionalNote = (payload.additionalNote || "").trim();
         const baseAmount = payload.baseAmount !== undefined ? Number(payload.baseAmount) : (Number(payload.amount) || 150);
-        const amount = payload.amount !== undefined ? Number(payload.amount) : (baseAmount + additionalCharges);
+        const expectedTotal = baseAmount + additionalCharges;
+        let amount = payload.amount !== undefined ? Number(payload.amount) : expectedTotal;
+        if (additionalCharges > 0 && amount <= baseAmount) {
+          amount = expectedTotal;
+        }
 
         const newSession = {
           id: "sess_" + Date.now(),
@@ -412,7 +416,21 @@ const server = createServer(async (request, response) => {
       if (updates.baseAmount !== undefined) current.baseAmount = Number(updates.baseAmount) || 0;
       if (updates.additionalCharges !== undefined) current.additionalCharges = Number(updates.additionalCharges) || 0;
       if (updates.additionalNote !== undefined) current.additionalNote = String(updates.additionalNote).trim();
-      if (updates.amount !== undefined) current.amount = Number(updates.amount) || 0;
+
+      const calcBase = current.baseAmount !== undefined ? Number(current.baseAmount) : (Number(current.rateBasis) || 150);
+      const calcAddl = Number(current.additionalCharges) || 0;
+      const expectedTotal = calcBase + calcAddl;
+
+      if (updates.amount !== undefined) {
+        const passedAmt = Number(updates.amount) || 0;
+        if (calcAddl > 0 && passedAmt <= calcBase) {
+          current.amount = expectedTotal;
+        } else {
+          current.amount = passedAmt || expectedTotal;
+        }
+      } else if (calcAddl > 0) {
+        current.amount = expectedTotal;
+      }
       if (updates.rateBasis !== undefined) current.rateBasis = Number(updates.rateBasis) || current.rateBasis || 150;
       if (updates.paymentMethod !== undefined) current.paymentMethod = String(updates.paymentMethod).trim();
       if (updates.notes !== undefined) current.notes = String(updates.notes).trim();
