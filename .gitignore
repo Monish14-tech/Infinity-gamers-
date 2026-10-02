@@ -13,4 +13,3 @@ yarn-error.log*
 *.bak
 data/enquiries.json
 data/sessions.json
-data/news.json
