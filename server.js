@@ -16,8 +16,8 @@ if (!existsSync(dataDir)) {
 }
 
 // ADMIN CREDENTIALS (Can be configured via environment variables)
-const ADMIN_USER = process.env.ADMIN_USER || "admin";
-const ADMIN_PASS = process.env.ADMIN_PASS || "infinity2026";
+const ADMIN_USER = process.env.ADMIN_USER || "Infinitygamers001";
+const ADMIN_PASS = process.env.ADMIN_PASS || "Infinitygamers@8";
 const ADMIN_TOKEN = "ig_auth_" + Buffer.from(`${ADMIN_USER}:${ADMIN_PASS}`).toString("base64");
 
 const venueInfo = {

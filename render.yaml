@@ -9,6 +9,6 @@ services:
       - key: NODE_VERSION
         value: 20.0.0
       - key: ADMIN_USER
-        value: admin
+        value: Infinitygamers001
       - key: ADMIN_PASS
-        value: infinity2026
+        value: Infinitygamers@8
