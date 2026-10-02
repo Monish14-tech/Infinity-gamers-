@@ -504,62 +504,6 @@
       </div>
     </section>
 
-    <!-- TOP PLAYERS SECTION (HIGH PLAYTIME) -->
-    <section class="top-players-section">
-      <div class="news-wrapper">
-        <div class="section-header-clean">
-          <span class="section-subtitle-tag">COMMUNITY HONORS // CUMULATIVE TIME LOG</span>
-          <h2 class="section-title-large">TOP PLAYERS &amp; HALL OF FAME</h2>
-          <p class="section-desc-clean">
-            Recognizing the most dedicated console gamers at Infinity Gamers, ranked strictly by verified cumulative in-session playtime logged on our PlayStation 5 consoles.
-          </p>
-        </div>
-
-        <!-- PODIUM DISPLAY -->
-        <div class="podium-showcase" id="podiumShowcase">
-          <div style="grid-column: 1 / -1; background: var(--bg-card); border: 1px dashed var(--border-line); border-radius: var(--radius); padding: 48px 24px; text-align: center;">
-            <p style="font-family: var(--font-mono); font-size: 13px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase;">NO SESSIONS LOGGED YET</p>
-            <p style="color: var(--text-dim); font-size: 13.5px; margin-top: 6px;">Top players with high cumulative playtime will rank here automatically once customer sessions are recorded.</p>
-          </div>
-        </div>
-
-        <!-- FULL LEADERBOARD TABLE -->
-        <div class="panel-card" style="margin-top:24px;">
-          <div class="panel-header-row">
-            <div>
-              <h3 style="font-family:var(--font-heading); font-size:16px; color:#fff; letter-spacing:1px;">VERIFIED HIGH PLAYTIME STANDINGS</h3>
-              <span style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);" id="leaderboardUpdateStamp">
-                LIVE FROM ADMINISTRATIVE SESSION LOG
-              </span>
-            </div>
-            <div style="font-family:var(--font-mono); font-size:11px; color:#fbbf24; background:rgba(245, 158, 11, 0.1); border:1px solid rgba(245, 158, 11, 0.3); padding:4px 10px; border-radius:3px;">
-              RATE: 10 PTS / 1 HOUR PLAY • 3-MONTH CYCLE
-            </div>
-          </div>
-          <div class="table-container">
-            <table class="data-table" id="publicLeaderboardTable">
-              <thead>
-                <tr>
-                  <th style="width:70px; text-align:center;">RANK</th>
-                  <th style="min-width:140px;">GAMER TAG</th>
-                  <th style="min-width:160px;">PLAYER NAME</th>
-                  <th style="min-width:150px;">LOYALTY POINTS</th>
-                  <th style="min-width:140px;">VERIFIED HOURS</th>
-                  <th style="width:90px; text-align:center;">SESSIONS</th>
-                  <th style="min-width:170px;">TOP TITLE</th>
-                  <th style="min-width:160px; text-align:right;">TIER</th>
-                </tr>
-              </thead>
-              <tbody id="publicLeaderboardBody">
-                <tr>
-                  <td colspan="8" style="text-align:center; color:var(--text-muted); padding:28px;">No player rankings available yet.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- CALL TO ACTION BANNER -->
     <section class="news-wrapper" style="padding-bottom: 20px;">
@@ -641,13 +585,9 @@
     document.addEventListener("DOMContentLoaded", () => {
       initFilterTabs();
       fetchLatestNews();
-      fetchTopPlayers();
 
-      // Automatically refresh news & leaderboard every 10 seconds
-      setInterval(() => {
-        fetchLatestNews();
-        fetchTopPlayers();
-      }, 10000);
+      // Automatically refresh news every 10 seconds
+      setInterval(fetchLatestNews, 10000);
     });
 
     function initFilterTabs() {
@@ -775,112 +715,6 @@
       }
     }
 
-    async function fetchTopPlayers() {
-      try {
-        const res = await fetch(`${API_BASE}/api/top-players`);
-        if (!res.ok) return;
-        const players = await res.json();
-        const list = Array.isArray(players) ? players : [];
-        renderPodium(list.slice(0, 3));
-        renderPublicTable(list);
-      } catch (e) {
-        console.warn("Error loading leaderboard", e);
-      }
-    }
-
-    function renderPodium(top3) {
-      const podiumEl = document.getElementById("podiumShowcase");
-      if (!podiumEl) return;
-
-      if (!top3 || top3.length === 0) {
-        podiumEl.innerHTML = `
-          <div style="grid-column: 1 / -1; background: var(--bg-card); border: 1px dashed var(--border-line); border-radius: var(--radius); padding: 48px 24px; text-align: center;">
-            <p style="font-family: var(--font-mono); font-size: 13px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase;">NO SESSIONS LOGGED YET</p>
-            <p style="color: var(--text-dim); font-size: 13.5px; margin-top: 6px;">Top players with high cumulative playtime will rank here automatically once customer sessions are recorded.</p>
-          </div>
-        `;
-        return;
-      }
-
-      const rankLabels = [
-        "RANK 1 // LV 5: INFINITY",
-        "RANK 2 // LV 4: ELITE",
-        "RANK 3 // LV 3: POWER"
-      ];
-
-      podiumEl.innerHTML = top3.map((p, idx) => {
-        const rankClass = `rank-${idx + 1}`;
-        const label = rankLabels[idx] || `RANK ${idx + 1}`;
-        const gamerTagDisplay = p.gamerTag ? `<div style="font-family:var(--font-mono); font-size:12px; font-weight:700; color:var(--neon-pink); letter-spacing:1px; margin-bottom:3px;">@${escapeHtml(p.gamerTag)}</div>` : '';
-        const pts = p.loyaltyPoints !== undefined ? Number(p.loyaltyPoints) : Math.round((Number(p.totalHours) || 0) * 10);
-
-        return `
-          <div class="podium-box ${rankClass}">
-            <span class="podium-rank-tag">${label}</span>
-            <div class="podium-name">${gamerTagDisplay}${escapeHtml(p.customerName)}</div>
-            <div class="podium-tier">${escapeHtml(p.tier)}</div>
-            <div class="podium-stat-box">
-              <div class="podium-stat-val">${p.totalHours} HRS</div>
-              <div class="podium-stat-lbl">VERIFIED PLAYTIME</div>
-              <div class="podium-pts-row">
-                <span class="podium-pts-val">${pts.toLocaleString()} PTS</span>
-                <span class="podium-pts-lbl">LOYALTY REWARD BALANCE</span>
-              </div>
-            </div>
-            <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted); margin-top:12px;">
-              Primary: <strong style="color:#fff;">${escapeHtml(p.favoriteGame)}</strong> • ${p.sessionCount || 1} Sessions
-            </div>
-          </div>
-        `;
-      }).join("");
-    }
-
-    function renderPublicTable(players) {
-      const body = document.getElementById("publicLeaderboardBody");
-      if (!body) return;
-
-      if (!players || players.length === 0) {
-        body.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:28px;">No player rankings available yet.</td></tr>`;
-        return;
-      }
-
-      body.innerHTML = players.map(p => {
-        let rankColor = "#94a3b8";
-        if (p.rank === 1) rankColor = "#ffd700";
-        if (p.rank === 2) rankColor = "#e5e4e2";
-        if (p.rank === 3) rankColor = "#cd7f32";
-
-        const points = p.loyaltyPoints !== undefined ? Number(p.loyaltyPoints) : Math.round((Number(p.totalHours) || 0) * 10);
-
-        let tierClass = "tier-ignite";
-        const tierUpper = String(p.tier || '').toUpperCase();
-        if (tierUpper.includes("INFINITY")) tierClass = "tier-infinity";
-        else if (tierUpper.includes("ELITE")) tierClass = "tier-elite";
-        else if (tierUpper.includes("POWER")) tierClass = "tier-power";
-        else if (tierUpper.includes("RISE")) tierClass = "tier-rise";
-        else if (tierUpper.includes("IGNITE")) tierClass = "tier-ignite";
-
-        return `
-          <tr>
-            <td style="text-align:center;"><strong style="font-family:var(--font-heading); font-size:14px; color:${rankColor};">#${p.rank}</strong></td>
-            <td><strong style="color:var(--neon-pink); font-family:var(--font-mono); font-size:13px; letter-spacing:0.5px;">@${escapeHtml(p.gamerTag || 'GAMER')}</strong></td>
-            <td><strong style="color:#fff; font-size:14px;">${escapeHtml(p.customerName)}</strong></td>
-            <td>
-              <span class="loyalty-pts-chip">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block;">
-                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                </svg>
-                ${points.toLocaleString()} PTS
-              </span>
-            </td>
-            <td><span class="time-chip">${p.totalHours} HRS</span></td>
-            <td style="text-align:center; font-family:var(--font-mono); font-weight:700; color:#e2e8f0;">${p.sessionCount || 1}</td>
-            <td><span style="color:#f1f5f9; font-weight:500;">${escapeHtml(p.favoriteGame)}</span></td>
-            <td style="text-align:right;"><span class="status-chip ${tierClass}">${escapeHtml(p.tier)}</span></td>
-          </tr>
-        `;
-      }).join("");
-    }
 
     function escapeHtml(str) {
       if (!str) return "";
