@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top Players & Hall of Fame | Infinity Gamers</title>
+  <meta name="description" content="Meet the elite gamers of Infinity Gamers. View the Hall of Fame podium, verified playtime leaderboard, and the latest news & tournament highlights.">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="stylesheet" href="style.css?v=3.6.0">
+  <style>
+    body {
+      background-color: #07080f !important;
+      color: #ffffff !important;
+      position: relative;
+      isolation: isolate;
+    }
+    body:before {
+      content: '' !important;
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      z-index: -1 !important;
+      pointer-events: none !important;
+      background-color: #07080f !important;
+      background-image: 
+        linear-gradient(180deg, rgba(7, 8, 15, 0.78) 0%, rgba(7, 8, 15, 0.84) 45%, rgba(7, 8, 15, 0.94) 100%),
+        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0, 212, 255, 0.15), transparent 70%),
+        url('assets/bg_futuristic_blue2.jpg') !important;
+      background-size: cover !important;
+      background-position: center top !important;
+      background-repeat: no-repeat !important;
+    }
+
+    /* ===== NEWS CAROUSEL ===== */
+    .news-carousel-section {
+      width: 100%;
+      background: rgba(7, 8, 15, 0.85);
+      border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+      padding: 0;
+      overflow: hidden;
+      position: relative;
+    }
+    .carousel-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px clamp(16px, 3.5vw, 60px) 0;
+    }
+    .carousel-label span {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--neon-blue);
+    }
+    .carousel-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0, 212, 255, 0.4), transparent);
+    }
+    .carousel-live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--neon-green);
+      box-shadow: 0 0 8px var(--neon-green);
+      animation: pulse-dot 1.5s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+    .carousel-track-wrapper {
+      position: relative;
+      overflow: hidden;
+      padding: 16px clamp(16px, 3.5vw, 60px) 20px;
+    }
+    .carousel-track {
+      display: flex;
+      gap: 16px;
+      transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+    }
+    .carousel-slide {
+      flex: 0 0 calc(33.333% - 12px);
+      min-width: 280px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      cursor: pointer;
+      transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .carousel-slide::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .carousel-slide:hover {
+      border-color: var(--border-blue);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0, 212, 255, 0.12);
+    }
+    .carousel-slide:hover::before { opacity: 1; }
+    .carousel-slide.active-slide {
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.15);
+    }
+    .carousel-slide.active-slide::before { opacity: 1; }
+    .carousel-slide-cat {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--neon-blue);
+      background: rgba(0, 212, 255, 0.08);
+      border: 1px solid var(--border-blue);
+      padding: 2px 8px;
+      border-radius: 2px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+    .carousel-slide-title {
+      font-family: var(--font-heading);
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+    .carousel-slide-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .carousel-slide-date {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.8px;
+    }
+    .carousel-slide-badge {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      color: var(--neon-green);
+      background: rgba(0, 255, 157, 0.08);
+      border: 1px solid rgba(0, 255, 157, 0.3);
+      padding: 2px 7px;
+      border-radius: 2px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+    .carousel-slide-summary {
+      font-size: 12.5px;
+      color: var(--text-dim);
+      line-height: 1.5;
+      margin-top: 8px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .carousel-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 0 0 18px;
+    }
+    .carousel-btn {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border-line);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .carousel-btn:hover {
+      border-color: var(--neon-blue);
+      color: var(--neon-blue);
+      background: rgba(0, 212, 255, 0.06);
+    }
+    .carousel-dots { display: flex; gap: 7px; align-items: center; }
+    .carousel-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--border-line);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border: none; padding: 0;
+    }
+    .carousel-dot.active {
+      background: var(--neon-blue);
+      width: 20px; border-radius: 3px;
+      box-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
+    }
+    .carousel-empty {
+      padding: 24px clamp(16px, 3.5vw, 60px) 20px;
+    }
+    .carousel-empty p {
+      font-family: var(--font-mono);
+      font-size: 12px; color: var(--text-muted); letter-spacing: 1px;
+    }
+
+    /* ===== WRAPPER ===== */
+    .top-players-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 clamp(16px, 3.5vw, 40px);
+    }
+
+    /* ===== PODIUM ===== */
+    .podium-section { padding: 60px 0 40px; }
+    .podium-showcase {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px; margin: 32px 0;
+    }
+    .podium-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-line);
+      border-radius: var(--radius);
+      padding: 32px 20px 24px;
+      text-align: center; position: relative;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .podium-box:hover { transform: translateY(-4px); }
+    .podium-box.rank-1 {
+      border-color: #ffd700;
+      background: linear-gradient(180deg, rgba(255,215,0,0.06) 0%, rgba(13,17,30,0.95) 100%);
+      box-shadow: 0 0 30px rgba(255,215,0,0.1);
+    }
+    .podium-box.rank-2 { border-color: #c0c0c0; }
+    .podium-box.rank-3 { border-color: #cd7f32; }
+    .podium-box.rank-1::before {
+      content: '👑';
+      position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
+      font-size: 28px; filter: drop-shadow(0 0 8px rgba(255,215,0,0.6));
+    }
+    .podium-rank-tag {
+      font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 3px 10px; display: inline-block; margin-bottom: 12px; border-radius: 2px;
+    }
+    .rank-1 .podium-rank-tag { background: rgba(255,215,0,0.15); color: #ffd700; border: 1px solid #ffd700; }
+    .rank-2 .podium-rank-tag { background: rgba(192,192,192,0.15); color: #c0c0c0; border: 1px solid #c0c0c0; }
+    .rank-3 .podium-rank-tag { background: rgba(205,127,50,0.15); color: #cd7f32; border: 1px solid #cd7f32; }
+    .podium-name { font-family: var(--font-heading); font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+    .podium-tier { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px; color: var(--neon-blue); margin-bottom: 16px; }
+    .podium-stat-box {
+      background: rgba(0,0,0,0.3); border: 1px solid var(--border-line);
+      border-radius: var(--radius); padding: 12px; margin-top: 10px;
+    }
+    .podium-stat-val { font-family: var(--font-mono); font-size: 22px; font-weight: 800; color: #fff; }
+    .podium-stat-lbl { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 1.5px; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; }
+    .podium-pts-row { margin-top: 8px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1); }
+    .podium-pts-val { display: block; font-family: var(--font-mono); font-size: 15px; font-weight: 800; color: #fbbf24; }
+    .podium-pts-lbl { display: block; font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px; color: #94a3b8; text-transform: uppercase; margin-top: 1px; }
+
+    /* ===== LEADERBOARD ===== */
+    .leaderboard-section { padding-bottom: 60px; }
+    .panel-card { background: var(--bg-card); border: 1px solid var(--border-line); border-radius: 8px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+    .panel-header-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--border-line); }
+    .table-container { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08); background: rgba(7,10,20,0.7); }
+    .data-table { width: 100%; min-width: 880px; border-collapse: separate; border-spacing: 0; text-align: left; font-size: 13.5px; }
+    .data-table th { background: rgba(13,17,30,0.98); color: #94a3b8; font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 14px 18px; border-bottom: 2px solid rgba(0,225,255,0.25); white-space: nowrap; }
+    .data-table td { padding: 15px 18px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; white-space: nowrap; color: #cbd5e1; }
+    .data-table tbody tr { transition: background 0.15s ease; }
+    .data-table tbody tr:hover td { background: rgba(0,225,255,0.035); }
+    .data-table tbody tr:last-child td { border-bottom: none; }
+    .loyalty-pts-chip { display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: #fbbf24; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.4); padding: 4px 10px; border-radius: 4px; }
+    .time-chip { display: inline-flex; align-items: center; font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--neon-blue); background: rgba(0,225,255,0.1); border: 1px solid rgba(0,225,255,0.3); padding: 4px 10px; border-radius: 4px; }
+    .status-chip { display: inline-block; font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.8px; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; }
+    .status-chip.tier-infinity { background: rgba(176,38,255,0.18); border: 1px solid #b026ff; color: #00d4ff; box-shadow: 0 0 12px rgba(176,38,255,0.35); }
+    .status-chip.tier-elite { background: rgba(255,215,0,0.15); border: 1px solid #ffd700; color: #ffd700; box-shadow: 0 0 10px rgba(255,215,0,0.2); }
+    .status-chip.tier-power { background: rgba(255,0,127,0.15); border: 1px solid #ff007f; color: #ff69b4; }
+    .status-chip.tier-rise { background: rgba(56,189,248,0.15); border: 1px solid #38bdf8; color: #38bdf8; }
+    .status-chip.tier-ignite { background: rgba(255,107,0,0.15); border: 1px solid #ff6b00; color: #ff8c00; }
+
+    .cta-wrap { padding: 0 0 60px; }
+
+    @media (max-width: 900px) {
+      .podium-showcase { grid-template-columns: 1fr; }
+      .carousel-slide { flex: 0 0 calc(85% - 8px); min-width: unset; }
+      .panel-card { padding: 16px; }
+    }
+    @media (max-width: 600px) {
+      .carousel-slide { flex: 0 0 calc(92% - 8px); }
+    }
+  </style>
+</head>
+<body data-page="top-players">
+
+  <!-- LOGO LOADING ANIMATION -->
+  <div class="logo-loader-screen" id="logoLoader">
+    <div class="loader-portal">
+      <div class="loader-ambient-glow"></div>
+      <div class="loader-ring loader-ring-outer"></div>
+      <div class="loader-ring loader-ring-inner"></div>
+      <div class="loader-logo-wrap">
+        <img src="assets/logo.png" alt="Infinity Gamers" class="loader-logo-img">
+      </div>
+    </div>
+    <div class="loader-brand-title">INFINITY GAMERS</div>
+    <div class="loader-status">
+      <span class="loader-status-text" id="loaderStatusText">LOADING ARENA</span>
+      <span class="loader-dots"><span>.</span><span>.</span><span>.</span></span>
+    </div>
+    <div class="loader-progress-track">
+      <div class="loader-progress-bar"></div>
+    </div>
+  </div>
+
+  <!-- NAVIGATION BAR -->
+  <header class="navbar">
+    <a class="logo" href="index.html">
+      <img src="assets/logo.png" alt="Infinity Gamers Logo" class="logo-img">
+      <div class="logo-text-block">
+        <span class="logo-title">INFINITY</span>
+        <span class="logo-gamers-text">GAMERS</span>
+        <span class="logo-tagline">PLAY BEYOND LIMITS</span>
+      </div>
+    </a>
+    <nav id="navLinks">
+      <a href="index.html">HOME</a>
+      <a href="arcade.html">ARCADE</a>
+      <a href="visit.html">VISIT US</a>
+      <a href="about.html">ABOUT US</a>
+      <a href="news.html">NEWS</a>
+      <a href="top-players.html" class="active">TOP PLAYERS</a>
+      <a href="contact.html">CONTACT</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <main style="padding-top:80px;">
+
+    <!-- NEWS CAROUSEL -->
+    <section class="news-carousel-section" id="newsCarouselSection">
+      <div class="carousel-label">
+        <div class="carousel-live-dot"></div>
+        <span>LIVE UPDATES &amp; ANNOUNCEMENTS</span>
+      </div>
+      <div id="carouselContainer">
+        <div class="carousel-empty">
+          <p>LOADING LATEST ANNOUNCEMENTS...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE HERO -->
+    <section class="section-container" style="padding-bottom: 10px;">
+      <div class="top-players-wrapper">
+        <div class="section-header-clean">
+          <span class="section-subtitle-tag">COMMUNITY HONORS // VERIFIED PLAYTIME RANKINGS</span>
+          <h1 class="section-title-large">TOP PLAYERS &amp; HALL OF FAME</h1>
+          <p class="section-desc-clean">
+            Recognizing the most dedicated console gamers at Infinity Gamers, ranked strictly by verified cumulative in-session playtime logged on our PlayStation 5 consoles.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PODIUM / HALL OF FAME -->
+    <section class="podium-section">
+      <div class="top-players-wrapper">
+        <div class="podium-showcase" id="podiumShowcase">
+          <div style="grid-column: 1 / -1; background: var(--bg-card); border: 1px dashed var(--border-line); border-radius: var(--radius); padding: 48px 24px; text-align: center;">
+            <p style="font-family: var(--font-mono); font-size: 13px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase;">LOADING HALL OF FAME...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FULL LEADERBOARD TABLE -->
+    <section class="leaderboard-section">
+      <div class="top-players-wrapper">
+        <div class="panel-card">
+          <div class="panel-header-row">
+            <div>
+              <h2 style="font-family:var(--font-heading); font-size:16px; color:#fff; letter-spacing:1px;">VERIFIED HIGH PLAYTIME STANDINGS</h2>
+              <span style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);" id="leaderboardUpdateStamp">
+                LIVE FROM ADMINISTRATIVE SESSION LOG
+              </span>
+            </div>
+            <div style="font-family:var(--font-mono); font-size:11px; color:#fbbf24; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:4px 10px; border-radius:3px;">
+              RATE: 10 PTS / 1 HOUR PLAY &bull; 3-MONTH CYCLE
+            </div>
+          </div>
+          <div class="table-container">
+            <table class="data-table" id="publicLeaderboardTable">
+              <thead>
+                <tr>
+                  <th style="width:70px; text-align:center;">RANK</th>
+                  <th style="min-width:140px;">GAMER TAG</th>
+                  <th style="min-width:160px;">PLAYER NAME</th>
+                  <th style="min-width:150px;">LOYALTY POINTS</th>
+                  <th style="min-width:140px;">VERIFIED HOURS</th>
+                  <th style="width:90px; text-align:center;">SESSIONS</th>
+                  <th style="min-width:170px;">TOP TITLE</th>
+                  <th style="min-width:160px; text-align:right;">TIER</th>
+                </tr>
+              </thead>
+              <tbody id="publicLeaderboardBody">
+                <tr>
+                  <td colspan="8" style="text-align:center; color:var(--text-muted); padding:28px;">Loading player rankings...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALL TO ACTION -->
+    <section class="cta-wrap">
+      <div class="top-players-wrapper">
+        <div class="cta-banner">
+          <div class="cta-banner-text">
+            <h3>WANT TO CLAIM YOUR SPOT ON THE <span>LEADERBOARD?</span></h3>
+            <p>Drop by our lounge opposite HDFC Bank, Thoppampatti Pirivu. Bring your squad of up to 5 friends per PlayStation 5 station.</p>
+          </div>
+          <div class="hero-actions" style="margin-top:0;">
+            <a href="visit.html" class="btn-primary">VISIT LOUNGE</a>
+            <a href="arcade.html" class="btn-secondary">ARCADE GAMES</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand-box">
+        <div class="footer-logo-row">
+          <img src="assets/logo.png" alt="Infinity Gamers">
+          <div>
+            <div class="footer-brand-title">INFINITY GAMERS</div>
+            <div class="footer-brand-sub">PLAY BEYOND LIMITS</div>
+          </div>
+        </div>
+        <p class="footer-brand-desc">PlayStation 5 Gaming Lounge in Coimbatore. 4K 120Hz displays, DualSense multiplayer &amp; air-conditioned arena.</p>
+      </div>
+      <div class="footer-col">
+        <h4>QUICK LINKS</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="arcade.html">Arcade Games</a></li>
+          <li><a href="news.html">News &amp; Events</a></li>
+          <li><a href="top-players.html">Top Players</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col footer-col-location">
+        <h4>LOCATION &amp; CONTACT</h4>
+        <p>Thoppampatti Pirivu, CBE - 17, Pincode - 641017<br>Opposite HDFC Bank</p>
+        <p>Open Daily: 10:00 AM - 09:30 PM</p>
+        <p>Phone: <a href="tel:9994420447">99944 20447</a></p>
+        <p>Instagram: <a href="https://instagram.com/infinitygamers_cbe" target="_blank" rel="noopener">@infinitygamers_cbe</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 Infinity Gamers. All rights reserved.</div>
+      <div><a href="terms.html">Terms &amp; Conditions</a></div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    const API_BASE = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "" : "https://infinity-gamers.onrender.com";
+
+    let carouselItems = [];
+    let currentSlide = 0;
+    let carouselTimer = null;
+    const CAROUSEL_INTERVAL = 4500;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      fetchLatestNews();
+      fetchTopPlayers();
+      setInterval(() => { fetchLatestNews(); fetchTopPlayers(); }, 10000);
+    });
+
+    // ===== CAROUSEL =====
+    async function fetchLatestNews() {
+      try {
+        const res = await fetch(`${API_BASE}/api/news`);
+        if (!res.ok) return;
+        const newsList = await res.json();
+        carouselItems = Array.isArray(newsList) ? newsList : [];
+        renderCarousel(carouselItems);
+      } catch(e) { console.warn("News error", e); }
+    }
+
+    function renderCarousel(items) {
+      const container = document.getElementById("carouselContainer");
+      if (!container) return;
+
+      if (!items || items.length === 0) {
+        container.innerHTML = `<div class="carousel-empty"><p>NO ANNOUNCEMENTS OR TOURNAMENTS POSTED YET — CHECK BACK SOON</p></div>`;
+        return;
+      }
+
+      const slidesHtml = items.map((item, idx) => `
+        <div class="carousel-slide ${idx === 0 ? 'active-slide' : ''}" data-index="${idx}">
+          <div class="carousel-slide-cat">${escapeHtml(item.category)}</div>
+          <div class="carousel-slide-title">${escapeHtml(item.title)}</div>
+          <div class="carousel-slide-meta">
+            <span class="carousel-slide-date">${escapeHtml(item.date || 'UPCOMING')}</span>
+            <span class="carousel-slide-badge">${escapeHtml(item.badge || 'ANNOUNCEMENT')}</span>
+            ${item.prize ? `<span class="carousel-slide-badge" style="color:#fbbf24;border-color:rgba(245,158,11,0.4);background:rgba(245,158,11,0.08);">&#127942; ${escapeHtml(item.prize)}</span>` : ''}
+          </div>
+          ${item.summary ? `<div class="carousel-slide-summary">${escapeHtml(item.summary)}</div>` : ''}
+        </div>
+      `).join('');
+
+      const dotsHtml = items.map((_, idx) => `
+        <button class="carousel-dot ${idx === 0 ? 'active' : ''}" data-dot="${idx}" aria-label="Slide ${idx + 1}"></button>
+      `).join('');
+
+      container.innerHTML = `
+        <div class="carousel-track-wrapper">
+          <div class="carousel-track" id="carouselTrack">${slidesHtml}</div>
+        </div>
+        <div class="carousel-controls">
+          <button class="carousel-btn" id="carouselPrev" aria-label="Previous">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          </button>
+          <div class="carousel-dots" id="carouselDots">${dotsHtml}</div>
+          <button class="carousel-btn" id="carouselNext" aria-label="Next">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+        </div>
+      `;
+
+      currentSlide = 0;
+      bindCarouselEvents();
+      startCarouselAuto();
+    }
+
+    function bindCarouselEvents() {
+      const prevBtn = document.getElementById("carouselPrev");
+      const nextBtn = document.getElementById("carouselNext");
+      const dots = document.querySelectorAll(".carousel-dot");
+      const slides = document.querySelectorAll(".carousel-slide");
+
+      if (prevBtn) prevBtn.addEventListener("click", () => { stopCarouselAuto(); moveCarousel(-1); startCarouselAuto(); });
+      if (nextBtn) nextBtn.addEventListener("click", () => { stopCarouselAuto(); moveCarousel(1); startCarouselAuto(); });
+
+      dots.forEach(dot => {
+        dot.addEventListener("click", () => {
+          stopCarouselAuto();
+          goToSlide(parseInt(dot.getAttribute("data-dot")));
+          startCarouselAuto();
+        });
+      });
+
+      slides.forEach(slide => {
+        slide.addEventListener("click", () => {
+          const idx = parseInt(slide.getAttribute("data-index"));
+          const item = carouselItems[idx];
+          if (item) {
+            const waMsg = encodeURIComponent("Hello Infinity Gamers, I would like to inquire about: " + item.title);
+            window.open("https://wa.me/919994420447?text=" + waMsg, '_blank');
+          }
+        });
+      });
+
+      // Touch swipe
+      const trackWrapper = document.querySelector(".carousel-track-wrapper");
+      if (trackWrapper) {
+        let touchStartX = 0;
+        trackWrapper.addEventListener("touchstart", e => { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+        trackWrapper.addEventListener("touchend", e => {
+          const dx = touchStartX - e.changedTouches[0].clientX;
+          if (Math.abs(dx) > 40) { stopCarouselAuto(); moveCarousel(dx > 0 ? 1 : -1); startCarouselAuto(); }
+        });
+      }
+    }
+
+    function moveCarousel(dir) {
+      currentSlide = (currentSlide + dir + carouselItems.length) % carouselItems.length;
+      goToSlide(currentSlide);
+    }
+
+    function goToSlide(idx) {
+      currentSlide = idx;
+      const track = document.getElementById("carouselTrack");
+      const slides = document.querySelectorAll(".carousel-slide");
+      const dots = document.querySelectorAll(".carousel-dot");
+      if (!track || !slides.length) return;
+
+      const perView = window.innerWidth < 900 ? 1 : 3;
+      const slideWidth = slides[0].offsetWidth + 16;
+      const maxOffset = Math.max(0, slides.length - perView);
+      const offset = Math.min(idx, maxOffset);
+
+      track.style.transform = `translateX(-${offset * slideWidth}px)`;
+      slides.forEach((s, i) => s.classList.toggle("active-slide", i === idx));
+      dots.forEach((d, i) => d.classList.toggle("active", i === idx));
+    }
+
+    function startCarouselAuto() {
+      stopCarouselAuto();
+      if (carouselItems.length > 1) carouselTimer = setInterval(() => moveCarousel(1), CAROUSEL_INTERVAL);
+    }
+    function stopCarouselAuto() {
+      if (carouselTimer) { clearInterval(carouselTimer); carouselTimer = null; }
+    }
+
+    // ===== TOP PLAYERS =====
+    async function fetchTopPlayers() {
+      try {
+        const res = await fetch(`${API_BASE}/api/top-players`);
+        if (!res.ok) return;
+        const players = await res.json();
+        const list = Array.isArray(players) ? players : [];
+        renderPodium(list.slice(0, 3));
+        renderPublicTable(list);
+      } catch(e) { console.warn("Leaderboard error", e); }
+    }
+
+    function renderPodium(top3) {
+      const podiumEl = document.getElementById("podiumShowcase");
+      if (!podiumEl) return;
+      if (!top3 || top3.length === 0) {
+        podiumEl.innerHTML = `
+          <div style="grid-column:1/-1;background:var(--bg-card);border:1px dashed var(--border-line);border-radius:var(--radius);padding:48px 24px;text-align:center;">
+            <p style="font-family:var(--font-mono);font-size:13px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;">NO SESSIONS LOGGED YET</p>
+            <p style="color:var(--text-dim);font-size:13.5px;margin-top:6px;">Top players will rank here once sessions are recorded.</p>
+          </div>`;
+        return;
+      }
+      const rankLabels = ["RANK 1 // LV 5: INFINITY","RANK 2 // LV 4: ELITE","RANK 3 // LV 3: POWER"];
+      podiumEl.innerHTML = top3.map((p, idx) => {
+        const rankClass = `rank-${idx + 1}`;
+        const label = rankLabels[idx] || `RANK ${idx + 1}`;
+        const gamerTagHtml = p.gamerTag ? `<div style="font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--neon-pink);letter-spacing:1px;margin-bottom:3px;">@${escapeHtml(p.gamerTag)}</div>` : '';
+        const pts = p.loyaltyPoints !== undefined ? Number(p.loyaltyPoints) : Math.round((Number(p.totalHours) || 0) * 10);
+        return `
+          <div class="podium-box ${rankClass}">
+            <span class="podium-rank-tag">${label}</span>
+            <div class="podium-name">${gamerTagHtml}${escapeHtml(p.customerName)}</div>
+            <div class="podium-tier">${escapeHtml(p.tier)}</div>
+            <div class="podium-stat-box">
+              <div class="podium-stat-val">${p.totalHours} HRS</div>
+              <div class="podium-stat-lbl">VERIFIED PLAYTIME</div>
+              <div class="podium-pts-row">
+                <span class="podium-pts-val">${pts.toLocaleString()} PTS</span>
+                <span class="podium-pts-lbl">LOYALTY REWARD BALANCE</span>
+              </div>
+            </div>
+            <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);margin-top:12px;">
+              Primary: <strong style="color:#fff;">${escapeHtml(p.favoriteGame)}</strong> &bull; ${p.sessionCount || 1} Sessions
+            </div>
+          </div>`;
+      }).join("");
+    }
+
+    function renderPublicTable(players) {
+      const body = document.getElementById("publicLeaderboardBody");
+      if (!body) return;
+      if (!players || players.length === 0) {
+        body.innerHTML = `<tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:28px;">No player rankings available yet.</td></tr>`;
+        return;
+      }
+      body.innerHTML = players.map(p => {
+        let rankColor = "#94a3b8";
+        if (p.rank === 1) rankColor = "#ffd700";
+        if (p.rank === 2) rankColor = "#c0c0c0";
+        if (p.rank === 3) rankColor = "#cd7f32";
+        const points = p.loyaltyPoints !== undefined ? Number(p.loyaltyPoints) : Math.round((Number(p.totalHours) || 0) * 10);
+        let tierClass = "tier-ignite";
+        const t = String(p.tier || '').toUpperCase();
+        if (t.includes("INFINITY")) tierClass = "tier-infinity";
+        else if (t.includes("ELITE")) tierClass = "tier-elite";
+        else if (t.includes("POWER")) tierClass = "tier-power";
+        else if (t.includes("RISE")) tierClass = "tier-rise";
+        return `
+          <tr>
+            <td style="text-align:center;"><strong style="font-family:var(--font-heading);font-size:14px;color:${rankColor};">#${p.rank}</strong></td>
+            <td><strong style="color:var(--neon-pink);font-family:var(--font-mono);font-size:13px;letter-spacing:0.5px;">@${escapeHtml(p.gamerTag || 'GAMER')}</strong></td>
+            <td><strong style="color:#fff;font-size:14px;">${escapeHtml(p.customerName)}</strong></td>
+            <td><span class="loyalty-pts-chip"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>${points.toLocaleString()} PTS</span></td>
+            <td><span class="time-chip">${p.totalHours} HRS</span></td>
+            <td style="text-align:center;font-family:var(--font-mono);font-weight:700;color:#e2e8f0;">${p.sessionCount || 1}</td>
+            <td><span style="color:#f1f5f9;font-weight:500;">${escapeHtml(p.favoriteGame)}</span></td>
+            <td style="text-align:right;"><span class="status-chip ${tierClass}">${escapeHtml(p.tier)}</span></td>
+          </tr>`;
+      }).join("");
+    }
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+    }
+  </script>
+</body>
+</html>
