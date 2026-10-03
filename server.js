@@ -2,18 +2,10 @@ import { createServer } from "node:http";
 import { existsSync, mkdirSync, readFileSync, writeFileSync, statSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import * as db from "./db.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 let port = Number(process.env.PORT) || 3000;
-const dataDir = path.join(__dirname, "data");
-const enquiriesFile = path.join(dataDir, "enquiries.json");
-const sessionsFile = path.join(dataDir, "sessions.json");
-const newsFile = path.join(dataDir, "news.json");
-const hallOfFameFile = path.join(dataDir, "hall_of_fame.json");
-
-if (!existsSync(dataDir)) {
-  mkdirSync(dataDir, { recursive: true });
-}
 
 // ADMIN CREDENTIALS (Can be configured via environment variables)
 const ADMIN_USER = process.env.ADMIN_USER || "Infinitygamers001";
@@ -218,21 +210,17 @@ const server = createServer(async (request, response) => {
 
   // PUBLIC NEWS FEED
   if (request.method === "GET" && url.pathname === "/api/news") {
-    const news = readJson(newsFile, []);
+    const news = await db.getNews();
     return send(response, 200, news);
   }
 
   // PUBLIC TOP PLAYERS / HALL OF FAME (ADMIN CURATED WITH LOYALTY POINTS)
   if (request.method === "GET" && url.pathname === "/api/top-players") {
-    let hallOfFame = readJson(hallOfFameFile, []);
-    hallOfFame.forEach(p => {
-      if (p.loyaltyPoints === undefined || p.loyaltyPoints === null) {
-        p.loyaltyPoints = Math.round((Number(p.totalHours) || 0) * 10);
-      } else {
-        p.loyaltyPoints = Number(p.loyaltyPoints) || 0;
-      }
-    });
-    hallOfFame.sort((a, b) => (Number(a.rank) || 999) - (Number(b.rank) || 999));
+    let hallOfFame = await db.getHallOfFame();
+    if (!hallOfFame || hallOfFame.length === 0) {
+      const sessions = await db.getSessions();
+      hallOfFame = calculateTopPlayers(sessions);
+    }
     return send(response, 200, hallOfFame);
   }
 
@@ -240,7 +228,6 @@ const server = createServer(async (request, response) => {
   if (request.method === "POST" && url.pathname === "/api/enquiry") {
     try {
       const data = await body(request);
-      const enquiries = readJson(enquiriesFile, []);
       const entry = {
         id: Date.now(),
         name: data.name || "Anonymous",
@@ -249,8 +236,7 @@ const server = createServer(async (request, response) => {
         msg: data.msg || "",
         receivedAt: new Date().toISOString()
       };
-      enquiries.push(entry);
-      writeJson(enquiriesFile, enquiries);
+      await db.addEnquiry(entry);
       return send(response, 201, { success: true, message: "Enquiry saved", enquiry: entry });
     } catch {
       return send(response, 400, { error: "Failed to process enquiry." });
@@ -283,14 +269,14 @@ const server = createServer(async (request, response) => {
     if (!checkAdminAuth(request)) return send(response, 401, { error: "Unauthorized. Admin login required." });
 
     if (request.method === "GET") {
-      const sessions = readJson(sessionsFile, []);
+      const sessions = await db.getSessions();
       return send(response, 200, sessions);
     }
 
     if (request.method === "POST") {
       try {
         const payload = await body(request);
-        const sessions = readJson(sessionsFile, []);
+        const sessions = await db.getSessions();
 
         const inTime = payload.inTime ? new Date(payload.inTime).toISOString() : new Date().toISOString();
         const outTime = payload.outTime ? new Date(payload.outTime).toISOString() : "";
@@ -350,8 +336,7 @@ const server = createServer(async (request, response) => {
           notes: payload.notes || ""
         };
 
-        sessions.unshift(newSession);
-        writeJson(sessionsFile, sessions);
+        await db.addSession(newSession);
         return send(response, 201, { success: true, session: newSession });
       } catch (err) {
         return send(response, 400, { error: "Failed to record session: " + err.message });
@@ -366,7 +351,7 @@ const server = createServer(async (request, response) => {
     const id = url.pathname.replace("/api/admin/sessions/", "");
     try {
       const updates = await body(request);
-      const sessions = readJson(sessionsFile, []);
+      const sessions = await db.getSessions();
       const index = sessions.findIndex(s => s.id === id);
 
       if (index === -1) return send(response, 404, { error: "Session record not found." });
@@ -463,8 +448,7 @@ const server = createServer(async (request, response) => {
         current.totalPausedMs = pausedMs;
       }
 
-      sessions[index] = current;
-      writeJson(sessionsFile, sessions);
+      await db.updateSession(id, current);
       return send(response, 200, { success: true, session: current });
     } catch (err) {
       return send(response, 400, { error: "Failed to update session: " + err.message });
@@ -476,9 +460,7 @@ const server = createServer(async (request, response) => {
     if (!checkAdminAuth(request)) return send(response, 401, { error: "Unauthorized." });
 
     const id = url.pathname.replace("/api/admin/sessions/", "");
-    let sessions = readJson(sessionsFile, []);
-    sessions = sessions.filter(s => s.id !== id);
-    writeJson(sessionsFile, sessions);
+    await db.deleteSession(id);
     return send(response, 200, { success: true, message: "Session record removed." });
   }
 
@@ -487,22 +469,14 @@ const server = createServer(async (request, response) => {
     if (!checkAdminAuth(request)) return send(response, 401, { error: "Unauthorized. Admin login required." });
 
     if (request.method === "GET") {
-      let hallOfFame = readJson(hallOfFameFile, []);
-      hallOfFame.forEach(p => {
-        if (p.loyaltyPoints === undefined || p.loyaltyPoints === null) {
-          p.loyaltyPoints = Math.round((Number(p.totalHours) || 0) * 10);
-        } else {
-          p.loyaltyPoints = Number(p.loyaltyPoints) || 0;
-        }
-      });
-      hallOfFame.sort((a, b) => (Number(a.rank) || 999) - (Number(b.rank) || 999));
+      const hallOfFame = await db.getHallOfFame();
       return send(response, 200, hallOfFame);
     }
 
     if (request.method === "POST") {
       try {
         const payload = await body(request);
-        const hallOfFame = readJson(hallOfFameFile, []);
+        const hallOfFame = await db.getHallOfFame();
 
         const gamerTag = (payload.gamerTag || "").replace(/[^a-zA-Z0-9\s]/g, "").trim();
         const customerName = (payload.customerName || "Player").trim();
@@ -529,9 +503,7 @@ const server = createServer(async (request, response) => {
           addedAt: new Date().toISOString()
         };
 
-        hallOfFame.push(newEntry);
-        hallOfFame.sort((a, b) => (Number(a.rank) || 999) - (Number(b.rank) || 999));
-        writeJson(hallOfFameFile, hallOfFame);
+        await db.addHallOfFame(newEntry);
         return send(response, 201, { success: true, player: newEntry });
       } catch (err) {
         return send(response, 400, { error: "Failed to add player to Hall of Fame: " + err.message });
@@ -542,48 +514,20 @@ const server = createServer(async (request, response) => {
   if (url.pathname.startsWith("/api/admin/hall-of-fame/")) {
     if (!checkAdminAuth(request)) return send(response, 401, { error: "Unauthorized." });
     const id = url.pathname.replace("/api/admin/hall-of-fame/", "");
-    let hallOfFame = readJson(hallOfFameFile, []);
-    const idx = hallOfFame.findIndex(p => p.id === id);
 
     if (request.method === "PATCH") {
-      if (idx === -1) return send(response, 404, { error: "Player not found in Hall of Fame." });
       try {
         const updates = await body(request);
-        if (updates.gamerTag !== undefined) {
-          hallOfFame[idx].gamerTag = String(updates.gamerTag).replace(/[^a-zA-Z0-9\s]/g, "").trim();
-        }
-        if (updates.customerName !== undefined) hallOfFame[idx].customerName = String(updates.customerName).trim();
-        if (updates.phone !== undefined) hallOfFame[idx].phone = String(updates.phone).trim();
-        if (updates.rank !== undefined) hallOfFame[idx].rank = Number(updates.rank) || hallOfFame[idx].rank;
-        if (updates.tier !== undefined) hallOfFame[idx].tier = String(updates.tier).trim();
-        if (updates.favoriteGame !== undefined) hallOfFame[idx].favoriteGame = String(updates.favoriteGame).trim();
-        if (updates.totalHours !== undefined) hallOfFame[idx].totalHours = Number(updates.totalHours) || hallOfFame[idx].totalHours;
-        if (updates.sessionCount !== undefined) hallOfFame[idx].sessionCount = Number(updates.sessionCount) || hallOfFame[idx].sessionCount;
-        if (updates.loyaltyPoints !== undefined) {
-          hallOfFame[idx].loyaltyPoints = Math.max(0, Number(updates.loyaltyPoints) || 0);
-        }
-        if (updates.redeemPoints !== undefined) {
-          const currentPts = hallOfFame[idx].loyaltyPoints !== undefined ? Number(hallOfFame[idx].loyaltyPoints) : Math.round((Number(hallOfFame[idx].totalHours) || 0) * 10);
-          hallOfFame[idx].loyaltyPoints = Math.max(0, currentPts - Math.max(0, Number(updates.redeemPoints) || 0));
-        }
-        if (updates.addPoints !== undefined) {
-          const currentPts = hallOfFame[idx].loyaltyPoints !== undefined ? Number(hallOfFame[idx].loyaltyPoints) : Math.round((Number(hallOfFame[idx].totalHours) || 0) * 10);
-          hallOfFame[idx].loyaltyPoints = currentPts + Math.max(0, Number(updates.addPoints) || 0);
-        }
-        if (updates.notes !== undefined) hallOfFame[idx].notes = String(updates.notes).trim();
-
-        hallOfFame.sort((a, b) => (Number(a.rank) || 999) - (Number(b.rank) || 999));
-        writeJson(hallOfFameFile, hallOfFame);
-        return send(response, 200, { success: true, player: hallOfFame[idx] });
+        const updated = await db.updateHallOfFame(id, updates);
+        if (!updated) return send(response, 404, { error: "Player not found in Hall of Fame." });
+        return send(response, 200, { success: true, player: updated });
       } catch (err) {
         return send(response, 400, { error: "Failed to update Hall of Fame player: " + err.message });
       }
     }
 
     if (request.method === "DELETE") {
-      if (idx === -1) return send(response, 404, { error: "Player not found in Hall of Fame." });
-      hallOfFame = hallOfFame.filter(p => p.id !== id);
-      writeJson(hallOfFameFile, hallOfFame);
+      await db.deleteHallOfFame(id);
       return send(response, 200, { success: true, message: "Player removed from Hall of Fame." });
     }
   }
@@ -595,7 +539,6 @@ const server = createServer(async (request, response) => {
     if (request.method === "POST") {
       try {
         const payload = await body(request);
-        const news = readJson(newsFile, []);
         const entry = {
           id: "news_" + Date.now(),
           title: payload.title || "Announcement",
@@ -608,8 +551,7 @@ const server = createServer(async (request, response) => {
           time: payload.time || "ALL DAY",
           featured: Boolean(payload.featured)
         };
-        news.unshift(entry);
-        writeJson(newsFile, news);
+        await db.addNews(entry);
         return send(response, 201, { success: true, news: entry });
       } catch (err) {
         return send(response, 400, { error: "Failed to post news: " + err.message });
@@ -621,9 +563,7 @@ const server = createServer(async (request, response) => {
     if (!checkAdminAuth(request)) return send(response, 401, { error: "Unauthorized." });
 
     const id = url.pathname.replace("/api/admin/news/", "");
-    let news = readJson(newsFile, []);
-    news = news.filter(n => n.id !== id);
-    writeJson(newsFile, news);
+    await db.deleteNews(id);
     return send(response, 200, { success: true, message: "News item deleted." });
   }
 
@@ -671,4 +611,5 @@ server.on("error", error => {
 });
 
 const host = process.env.HOST || "0.0.0.0";
+await db.initDb();
 server.listen(port, host, () => console.log(`Infinity Gamers server running at http://${host}:${port}`));

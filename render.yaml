@@ -3,7 +3,7 @@ services:
     name: infinity-gamers
     env: node
     plan: free
-    buildCommand: ""
+    buildCommand: npm install
     startCommand: npm start
     envVars:
       - key: NODE_VERSION
