@@ -201,7 +201,12 @@ const server = createServer(async (request, response) => {
   // PUBLIC APIS
   // ========================================================
   if (request.method === "GET" && url.pathname === "/api/health") {
-    return send(response, 200, { status: "ok", uptime: process.uptime(), timestamp: new Date().toISOString() });
+    return send(response, 200, {
+      status: "ok",
+      uptime: process.uptime(),
+      database: db.getDbStatus(),
+      timestamp: new Date().toISOString()
+    });
   }
 
   if (request.method === "GET" && url.pathname === "/api/info") {

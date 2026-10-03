@@ -36,10 +36,13 @@ let mongoClient = null;
 let db = null;
 let isMongoConnected = false;
 
+let connectionError = null;
+
 export async function initDb() {
   const uri = process.env.MONGODB_URI;
   if (!uri) {
     console.log("ℹ️ [DB] MONGODB_URI not set. Operating in local JSON file mode.");
+    connectionError = "MONGODB_URI not set";
     return false;
   }
 
@@ -52,6 +55,7 @@ export async function initDb() {
     await mongoClient.connect();
     db = mongoClient.db("infinity_gamers");
     isMongoConnected = true;
+    connectionError = null;
     console.log("✅ [DB] Successfully connected to MongoDB Atlas (database: infinity_gamers)");
 
     // Auto-seed collections if empty
@@ -62,11 +66,21 @@ export async function initDb() {
 
     return true;
   } catch (err) {
+    connectionError = err.message;
     console.error("⚠️ [DB] MongoDB Atlas connection failed:", err.message);
     console.log("ℹ️ [DB] Falling back to local JSON file mode.");
     isMongoConnected = false;
     return false;
   }
+}
+
+export function getDbStatus() {
+  return {
+    connected: isMongoConnected,
+    type: isMongoConnected ? "mongodb" : "local-json",
+    database: isMongoConnected ? "infinity_gamers" : null,
+    error: connectionError
+  };
 }
 
 async function autoSeedCollection(collName, jsonPath) {
